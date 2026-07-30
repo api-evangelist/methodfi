@@ -1,7 +1,27 @@
 aid: methodfi
 name: MethodFi
-description: MethodFi is a company surfaced as a portfolio company of a16z and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Method (Method Financial) is the infrastructure layer for consumer liability data and
+  payments. Its API lets developers create entities, verify identity, and use Connect to
+  discover a user's complete liability picture across 15,000+ institutions (credit cards,
+  auto loans, student loans, mortgages, personal loans) without credential sharing, then
+  normalize that data and move money via ACH to pay down those liabilities. Additional
+  products include credit scores, card-brand enrichment, financial attributes, transactions,
+  updates/subscriptions for monitoring, reports, and embeddable UI (Opal/Elements). Method
+  powers lending, personal finance management, and commerce/card-linking use cases.
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://framerusercontent.com/assets/ZHgWyxIoZ4u3muxNTrEuOhP9o.jpg
 url: https://raw.githubusercontent.com/api-evangelist/methodfi/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,12 +31,519 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 25
+  pass: local-v1
 tags:
 - Company
-apis: []
+- Fintech
+- Liability Data
+- Payments
+- Lending
+- Personal Finance
+- Credit
+- ACH
+- Debt
+- Identity Verification
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- aid: methodfi:methodfi-account-attributes-api
+  name: MethodFi Account Attributes API
+  description: Attribute data for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Attributes
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-attributes-api-openapi.yml
+- aid: methodfi:methodfi-account-balances-api
+  name: MethodFi Account Balances API
+  description: Balance data for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Balances
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-balances-api-openapi.yml
+- aid: methodfi:methodfi-account-card-brands-api
+  name: MethodFi Account Card Brands API
+  description: Card brand information for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Card Brands
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-card-brands-api-openapi.yml
+- aid: methodfi:methodfi-account-consent-api
+  name: MethodFi Account Consent API
+  description: Consent management for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Consent
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-consent-api-openapi.yml
+- aid: methodfi:methodfi-account-payment-instruments-api
+  name: MethodFi Account Payment Instruments API
+  description: Payment instruments for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Payment Instruments
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-payment-instruments-api-openapi.yml
+- aid: methodfi:methodfi-account-payoffs-api
+  name: MethodFi Account Payoffs API
+  description: Payoff data for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Payoffs
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-payoffs-api-openapi.yml
+- aid: methodfi:methodfi-account-products-api
+  name: MethodFi Account Products API
+  description: Products associated with accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Products
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-products-api-openapi.yml
+- aid: methodfi:methodfi-account-sensitive-api
+  name: MethodFi Account Sensitive API
+  description: Sensitive data for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Sensitive
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-sensitive-api-openapi.yml
+- aid: methodfi:methodfi-account-subscriptions-api
+  name: MethodFi Account Subscriptions API
+  description: Subscriptions for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-subscriptions-api-openapi.yml
+- aid: methodfi:methodfi-account-transactions-api
+  name: MethodFi Account Transactions API
+  description: Transactions for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-transactions-api-openapi.yml
+- aid: methodfi:methodfi-account-updates-api
+  name: MethodFi Account Updates API
+  description: Update records for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Updates
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-updates-api-openapi.yml
+- aid: methodfi:methodfi-account-verification-sessions-api
+  name: MethodFi Account Verification Sessions API
+  description: Verification sessions for accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Account Verification Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-account-verification-sessions-api-openapi.yml
+- aid: methodfi:methodfi-accounts-api
+  name: MethodFi Accounts API
+  description: Financial accounts (ACH, liability, clearing, debit card)
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-accounts-api-openapi.yml
+- aid: methodfi:methodfi-card-products-api
+  name: MethodFi Card Products API
+  description: Card product definitions
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Card Products
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-card-products-api-openapi.yml
+- aid: methodfi:methodfi-elements-api
+  name: MethodFi Elements API
+  description: Client-side Element endpoints
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Elements
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-elements-api-openapi.yml
+- aid: methodfi:methodfi-entities-api
+  name: MethodFi Entities API
+  description: Individuals, corporations, and receive-only entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entities
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entities-api-openapi.yml
+- aid: methodfi:methodfi-entity-attributes-api
+  name: MethodFi Entity Attributes API
+  description: Attribute data for entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Attributes
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-attributes-api-openapi.yml
+- aid: methodfi:methodfi-entity-connects-api
+  name: MethodFi Entity Connects API
+  description: Account connection sessions for entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Connects
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-connects-api-openapi.yml
+- aid: methodfi:methodfi-entity-consent-api
+  name: MethodFi Entity Consent API
+  description: Consent management for entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Consent
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-consent-api-openapi.yml
+- aid: methodfi:methodfi-entity-credit-scores-api
+  name: MethodFi Entity Credit Scores API
+  description: Credit score data for entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Credit Scores
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-credit-scores-api-openapi.yml
+- aid: methodfi:methodfi-entity-identities-api
+  name: MethodFi Entity Identities API
+  description: Identity verification data for entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Identities
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-identities-api-openapi.yml
+- aid: methodfi:methodfi-entity-products-api
+  name: MethodFi Entity Products API
+  description: Products associated with entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Products
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-products-api-openapi.yml
+- aid: methodfi:methodfi-entity-subscriptions-api
+  name: MethodFi Entity Subscriptions API
+  description: Subscriptions for entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-subscriptions-api-openapi.yml
+- aid: methodfi:methodfi-entity-vehicles-api
+  name: MethodFi Entity Vehicles API
+  description: Vehicle data for entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Vehicles
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-vehicles-api-openapi.yml
+- aid: methodfi:methodfi-entity-verification-sessions-api
+  name: MethodFi Entity Verification Sessions API
+  description: Verification sessions for entities
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entity Verification Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-entity-verification-sessions-api-openapi.yml
+- aid: methodfi:methodfi-events-api
+  name: MethodFi Events API
+  description: Webhook event log
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-events-api-openapi.yml
+- aid: methodfi:methodfi-forwarding-requests-api
+  name: MethodFi Forwarding Requests API
+  description: Request forwarding with sensitive data injection
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Forwarding Requests
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-forwarding-requests-api-openapi.yml
+- aid: methodfi:methodfi-managed-accounts-api
+  name: MethodFi Managed Accounts API
+  description: Method-managed accounts
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Managed Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-managed-accounts-api-openapi.yml
+- aid: methodfi:methodfi-merchants-api
+  name: MethodFi Merchants API
+  description: Merchant directory
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Merchants
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-merchants-api-openapi.yml
+- aid: methodfi:methodfi-opal-api
+  name: MethodFi Opal API
+  description: Opal client-side session and token management
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Opal
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-opal-api-openapi.yml
+- aid: methodfi:methodfi-payment-reversals-api
+  name: MethodFi Payment Reversals API
+  description: Reversals for payments
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Payment Reversals
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-payment-reversals-api-openapi.yml
+- aid: methodfi:methodfi-payments-api
+  name: MethodFi Payments API
+  description: ACH and clearing payments
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-payments-api-openapi.yml
+- aid: methodfi:methodfi-ping-api
+  name: MethodFi Ping API
+  description: Health check endpoint
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Ping
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-ping-api-openapi.yml
+- aid: methodfi:methodfi-public-keys-api
+  name: MethodFi Public Keys API
+  description: Public key discovery endpoints for Message-Level Encryption.
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Public Keys
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-public-keys-api-openapi.yml
+- aid: methodfi:methodfi-reports-api
+  name: MethodFi Reports API
+  description: Downloadable reports
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-reports-api-openapi.yml
+- aid: methodfi:methodfi-secrets-api
+  name: MethodFi Secrets API
+  description: Secure secret storage
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Secrets
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-secrets-api-openapi.yml
+- aid: methodfi:methodfi-simulate-accounts-api
+  name: MethodFi Simulate Accounts API
+  description: Sandbox account simulation
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Simulate Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-simulate-accounts-api-openapi.yml
+- aid: methodfi:methodfi-simulate-entities-api
+  name: MethodFi Simulate Entities API
+  description: Sandbox entity simulation
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Simulate Entities
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-simulate-entities-api-openapi.yml
+- aid: methodfi:methodfi-simulate-events-api
+  name: MethodFi Simulate Events API
+  description: Sandbox event simulation
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Simulate Events
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-simulate-events-api-openapi.yml
+- aid: methodfi:methodfi-simulate-payments-api
+  name: MethodFi Simulate Payments API
+  description: Sandbox payment simulation
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Simulate Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-simulate-payments-api-openapi.yml
+- aid: methodfi:methodfi-teams-api
+  name: MethodFi Teams API
+  description: Team and API key management
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-teams-api-openapi.yml
+- aid: methodfi:methodfi-webhooks-api
+  name: MethodFi Webhooks API
+  description: Webhook subscriptions
+  humanURL: https://docs.methodfi.com/reference/introduction
+  baseURL: https://production.methodfi.com
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/methodfi-webhooks-api-openapi.yml
+common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/methodfi/overview
+# --- artifact pointers ---
+- type: DomainSecurity
+  url: security/methodfi-domain-security.yml
+- type: AgenticAccess
+  url: agentic-access/methodfi-agentic-access.yml
+- type: Authentication
+  url: authentication/methodfi-authentication.yml
+- type: Conventions
+  url: conventions/methodfi-conventions.yml
+- type: Idempotency
+  url: conventions/methodfi-conventions.yml
+- type: Packages
+  url: packages/methodfi-packages.yml
+- type: SDKs
+  url: packages/methodfi-packages.yml
+- type: Components
+  url: components/methodfi-components.yml
+- type: Sandbox
+  url: sandbox/methodfi-sandbox.yml
+- type: Lifecycle
+  url: lifecycle/methodfi-lifecycle.yml
+- type: StatusPage
+  url: https://methodfi.statuspage.io
+- type: Deprecation
+  url: lifecycle/methodfi-lifecycle.yml
+- type: Conformance
+  url: conformance/methodfi-conformance.yml
+- type: Compliance
+  url: https://methodfi.com/security
+- type: ErrorCatalog
+  url: errors/methodfi-problem-types.yml
+- type: DeclineCodes
+  url: errors/methodfi-decline-codes.yml
+- type: ChangeLog
+  url: changelog/methodfi-changelog.yml
+- type: DataModel
+  url: data-model/methodfi-data-model.yml
+- type: Webhooks
+  url: asyncapi/methodfi-webhooks.yml
+- type: RateLimits
+  url: rate-limits/methodfi-rate-limits.yml
+- type: MCPServer
+  url: mcp/methodfi-mcp.yml
+- type: LLMsTxt
+  url: llms/methodfi-llms.txt
+- type: AgentSkill
+  url: skills/_index.yml
+# --- link properties ---
+- type: Website
+  url: https://methodfi.com
+- type: DeveloperPortal
+  url: https://docs.methodfi.com
+- type: Documentation
+  url: https://docs.methodfi.com
+- type: APIReference
+  url: https://docs.methodfi.com/reference/introduction
+- type: GettingStarted
+  url: https://docs.methodfi.com/guides/quickstart
+- type: Support
+  url: https://methodfi.com/contact-us
+- type: GitHubOrganization
+  url: https://github.com/MethodFi
+- type: Postman
+  url: https://www.postman.com/methodfi/method-api
+- type: SignUp
+  url: https://dashboard.methodfi.com
+- type: TermsOfService
+  url: https://methodfi.com/legal/terms
+- type: PrivacyPolicy
+  url: https://methodfi.com/privacy
