@@ -1,0 +1,2632 @@
+{
+  "info": {
+    "_postman_id": "64593ff5-3f16-422c-9e8c-b9f45be6a615",
+    "name": "Method Account Attributes Entity Verification Sessions API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:12:06.000Z",
+    "updatedAt": "2026-07-28T02:12:07.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-64593ff5-3f16-422c-9e8c-b9f45be6a615"
+  },
+  "item": [
+    {
+      "name": "entities",
+      "item": [
+        {
+          "name": "{entityId}",
+          "item": [
+            {
+              "name": "verification_sessions",
+              "item": [
+                {
+                  "name": "{evfId}",
+                  "item": [
+                    {
+                      "name": "Retrieve an entity verification session",
+                      "id": "22e67b23-67a9-46d2-8699-aeff4bdc0f30",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions",
+                            ":evfId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "52acce02-7a16-4861-85c4-d72736f6b024",
+                              "key": "entityId",
+                              "value": "ent_Aqfhm8huRnc",
+                              "description": "(Required) Unique identifier for the entity."
+                            },
+                            {
+                              "id": "176c26c3-4320-447b-a642-b2d7f8d38055",
+                              "key": "evfId",
+                              "value": "evf_xU2oiTNh",
+                              "description": "(Required) Unique identifier for the entity verification session."
+                            }
+                          ]
+                        },
+                        "description": "Returns a single entity verification session by its identifier."
+                      },
+                      "response": [
+                        {
+                          "id": "0201c2e5-dbbf-4229-88cb-8c88b20b1abd",
+                          "name": "The requested entity verification session.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"pending\",\n    \"type\": \"identity\",\n    \"method\": \"kba\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": {\n      \"type\": \"VERIFICATION_SESSION_FAILED\",\n      \"code\": 19004,\n      \"sub_type\": \"VERIFICATION_SESSION_EXPIRED\",\n      \"message\": \"<string>\"\n    },\n    \"expired_at\": \"<string,null-date-time>\",\n    \"sms\": null,\n    \"sna\": {},\n    \"byo_sms\": null,\n    \"byo_kyc\": {},\n    \"kba\": {},\n    \"element\": null,\n    \"opal\": {}\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-0201c2e5-dbbf-4229-88cb-8c88b20b1abd"
+                        },
+                        {
+                          "id": "dc246388-29d1-450d-8904-bd7250975ad3",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-dc246388-29d1-450d-8904-bd7250975ad3"
+                        },
+                        {
+                          "id": "39973094-3168-4348-a635-143d99d1ca11",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-39973094-3168-4348-a635-143d99d1ca11"
+                        },
+                        {
+                          "id": "d5b5ea27-e6c7-43af-9e57-7c82f0f4a135",
+                          "name": "Forbidden - insufficient permissions for this operation.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-d5b5ea27-e6c7-43af-9e57-7c82f0f4a135"
+                        },
+                        {
+                          "id": "f6c9938b-044d-4c68-8ff3-add74ab2fea6",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-f6c9938b-044d-4c68-8ff3-add74ab2fea6"
+                        },
+                        {
+                          "id": "ca6cf642-dca8-4347-993a-1c77898ee0c7",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-ca6cf642-dca8-4347-993a-1c77898ee0c7"
+                        },
+                        {
+                          "id": "656c0dcf-7d17-464e-93d4-4609bbb49d9c",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-656c0dcf-7d17-464e-93d4-4609bbb49d9c"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-22e67b23-67a9-46d2-8699-aeff4bdc0f30"
+                    },
+                    {
+                      "name": "Update an entity verification session",
+                      "id": "19753329-f701-437b-91b6-a79e3f9d8d6f",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions",
+                            ":evfId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "df4b99f0-521b-4fe9-9fae-248dc8b463e3",
+                              "key": "entityId",
+                              "value": "ent_Aqfhm8huRnc",
+                              "description": "(Required) Unique identifier for the entity."
+                            },
+                            {
+                              "id": "aa6abb1b-ecfe-40f2-bd6a-c6e724235d9c",
+                              "key": "evfId",
+                              "value": "evf_xU2oiTNh",
+                              "description": "(Required) Unique identifier for the entity verification session."
+                            }
+                          ]
+                        },
+                        "description": "Updates a verification session, for example by submitting an SMS verification code or KBA answers. The request body shape depends on the verification type and method.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "b50d3fa7-75a5-4afd-b788-7ca51b92c5c8",
+                          "name": "The updated entity verification session.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"pending\",\n    \"type\": \"identity\",\n    \"method\": \"kba\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": {\n      \"type\": \"VERIFICATION_SESSION_FAILED\",\n      \"code\": 19004,\n      \"sub_type\": \"VERIFICATION_SESSION_EXPIRED\",\n      \"message\": \"<string>\"\n    },\n    \"expired_at\": \"<string,null-date-time>\",\n    \"sms\": null,\n    \"sna\": {},\n    \"byo_sms\": null,\n    \"byo_kyc\": {},\n    \"kba\": {},\n    \"element\": null,\n    \"opal\": {}\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-b50d3fa7-75a5-4afd-b788-7ca51b92c5c8"
+                        },
+                        {
+                          "id": "3cc79992-baf6-4e3d-b00c-4bbd541522d2",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-3cc79992-baf6-4e3d-b00c-4bbd541522d2"
+                        },
+                        {
+                          "id": "db2c4f9f-e6a7-459c-a10e-523c3446e0b7",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-db2c4f9f-e6a7-459c-a10e-523c3446e0b7"
+                        },
+                        {
+                          "id": "6d2e2661-d9c7-4fd1-ab01-eb4ece8b9dc8",
+                          "name": "Forbidden - insufficient permissions for this operation.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-6d2e2661-d9c7-4fd1-ab01-eb4ece8b9dc8"
+                        },
+                        {
+                          "id": "9ad875ba-e58f-47c4-9810-38ad513422d6",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-9ad875ba-e58f-47c4-9810-38ad513422d6"
+                        },
+                        {
+                          "id": "f78227c9-a745-4baa-a577-4b6d00a17d84",
+                          "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                          "code": 422,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-f78227c9-a745-4baa-a577-4b6d00a17d84"
+                        },
+                        {
+                          "id": "c236004f-9551-4878-8e36-09189e7dd341",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-c236004f-9551-4878-8e36-09189e7dd341"
+                        },
+                        {
+                          "id": "fc4205e2-344c-4226-81b2-9fa8cdaa47fb",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"type\": \"<string>\",\n  \"method\": \"byo_sms\",\n  \"sms\": {\n    \"sms_code\": \"<string>\"\n  },\n  \"sna\": {},\n  \"kba\": {\n    \"answers\": [\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      },\n      {\n        \"question_id\": \"<string>\",\n        \"answer_id\": \"<string>\"\n      }\n    ]\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/verification_sessions/:evfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "verification_sessions",
+                                ":evfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "evfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:07.000Z",
+                          "updatedAt": "2026-07-28T02:12:07.000Z",
+                          "uid": "35240-fc4205e2-344c-4226-81b2-9fa8cdaa47fb"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-19753329-f701-437b-91b6-a79e3f9d8d6f"
+                    }
+                  ],
+                  "id": "93b4ab79-dac0-434f-a47d-98eded355c0b",
+                  "createdAt": "2026-07-28T02:12:07.000Z",
+                  "updatedAt": "2026-07-28T02:12:07.000Z",
+                  "uid": "35240-93b4ab79-dac0-434f-a47d-98eded355c0b"
+                },
+                {
+                  "name": "List all entity verification sessions",
+                  "id": "c9599335-1b36-41c5-93bf-03376767a9f7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId/verification_sessions?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId",
+                        "verification_sessions"
+                      ],
+                      "query": [
+                        {
+                          "description": "Page number for pagination (1-indexed).",
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Number of items per page.",
+                          "key": "page_limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                          "key": "page_cursor",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                          "key": "from_date",
+                          "value": "<date>"
+                        },
+                        {
+                          "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                          "key": "to_date",
+                          "value": "<date>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "be67a845-4a4d-401d-863a-9c1455a84109",
+                          "key": "entityId",
+                          "value": "ent_Aqfhm8huRnc",
+                          "description": "(Required) Unique identifier for the entity."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of verification sessions for the specified entity."
+                  },
+                  "response": [
+                    {
+                      "id": "d2f7e119-7db3-4eda-8a66-9a5637a09db5",
+                      "name": "A list of entity verification sessions.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Current page number.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Total number of pages.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Count",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of items per page.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Total number of items across all pages.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Total-Count",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Cursor for the previous page, if available.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Prev",
+                          "value": "<string,null>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Cursor for the next page, if available.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Next",
+                          "value": "<string,null>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"entity_id\": \"<string>\",\n      \"status\": \"in_progress\",\n      \"type\": \"phone\",\n      \"method\": \"sms\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"error\": {\n        \"type\": \"VERIFICATION_SESSION_FAILED\",\n        \"code\": 19002,\n        \"sub_type\": \"VERIFICATION_SESSION_FAILED_SNA\",\n        \"message\": \"<string>\"\n      },\n      \"expired_at\": \"<string,null-date-time>\",\n      \"sms\": {},\n      \"sna\": {},\n      \"byo_sms\": null,\n      \"byo_kyc\": null,\n      \"kba\": null,\n      \"element\": null,\n      \"opal\": {}\n    },\n    {\n      \"id\": \"<string>\",\n      \"entity_id\": \"<string>\",\n      \"status\": \"verified\",\n      \"type\": \"phone\",\n      \"method\": \"byo_kyc\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"error\": {\n        \"type\": \"VERIFICATION_SESSION_FAILED\",\n        \"code\": 19002,\n        \"sub_type\": \"VERIFICATION_SESSION_FAILED_SNA\",\n        \"message\": \"<string>\"\n      },\n      \"expired_at\": \"<string,null-date-time>\",\n      \"sms\": null,\n      \"sna\": {},\n      \"byo_sms\": {},\n      \"byo_kyc\": {},\n      \"kba\": null,\n      \"element\": {},\n      \"opal\": {}\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-d2f7e119-7db3-4eda-8a66-9a5637a09db5"
+                    },
+                    {
+                      "id": "2cfb7050-78c4-4279-b89d-40da6fd77a84",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-2cfb7050-78c4-4279-b89d-40da6fd77a84"
+                    },
+                    {
+                      "id": "c29ff9bc-369f-4c34-a4df-8b53623770af",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-c29ff9bc-369f-4c34-a4df-8b53623770af"
+                    },
+                    {
+                      "id": "70365cfa-de3a-4e95-82a1-bf37b7f5e90f",
+                      "name": "Forbidden - insufficient permissions for this operation.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-70365cfa-de3a-4e95-82a1-bf37b7f5e90f"
+                    },
+                    {
+                      "id": "f9173a6b-5032-46ac-a1ab-606bb16ff657",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-f9173a6b-5032-46ac-a1ab-606bb16ff657"
+                    },
+                    {
+                      "id": "c2bd91c1-a14f-4735-94bb-dfe139d3c2e5",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-c2bd91c1-a14f-4735-94bb-dfe139d3c2e5"
+                    },
+                    {
+                      "id": "44dfad0d-efbe-4229-9e87-1cff4a0a9bdd",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-44dfad0d-efbe-4229-9e87-1cff4a0a9bdd"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:12:07.000Z",
+                  "updatedAt": "2026-07-28T02:12:07.000Z",
+                  "uid": "35240-c9599335-1b36-41c5-93bf-03376767a9f7"
+                },
+                {
+                  "name": "Create an entity verification session",
+                  "id": "3c2e59b5-4ab7-455e-b7ce-5143c1a095f0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId",
+                        "verification_sessions"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9b06dccb-bff9-4293-b508-9d76bdd96226",
+                          "key": "entityId",
+                          "value": "ent_Aqfhm8huRnc",
+                          "description": "(Required) Unique identifier for the entity."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new verification session for the specified entity."
+                  },
+                  "response": [
+                    {
+                      "id": "363665ac-0ea3-4063-93f8-c2c70148c71d",
+                      "name": "The created entity verification session.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"pending\",\n    \"type\": \"identity\",\n    \"method\": \"kba\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": {\n      \"type\": \"VERIFICATION_SESSION_FAILED\",\n      \"code\": 19004,\n      \"sub_type\": \"VERIFICATION_SESSION_EXPIRED\",\n      \"message\": \"<string>\"\n    },\n    \"expired_at\": \"<string,null-date-time>\",\n    \"sms\": null,\n    \"sna\": {},\n    \"byo_sms\": null,\n    \"byo_kyc\": {},\n    \"kba\": {},\n    \"element\": null,\n    \"opal\": {}\n  },\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-363665ac-0ea3-4063-93f8-c2c70148c71d"
+                    },
+                    {
+                      "id": "7c633a8d-d1db-41c6-ab93-90dad874374b",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-7c633a8d-d1db-41c6-ab93-90dad874374b"
+                    },
+                    {
+                      "id": "d88bd3f7-dae2-4bde-9cce-e494fe3dca45",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-d88bd3f7-dae2-4bde-9cce-e494fe3dca45"
+                    },
+                    {
+                      "id": "736516ff-cf28-43a3-a126-7e118034e024",
+                      "name": "Forbidden - insufficient permissions for this operation.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-736516ff-cf28-43a3-a126-7e118034e024"
+                    },
+                    {
+                      "id": "fd9e73fa-6424-4ed3-aa34-60e6d15a9830",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-fd9e73fa-6424-4ed3-aa34-60e6d15a9830"
+                    },
+                    {
+                      "id": "5e908b4b-e85e-4dfe-84cc-47258fe4be1e",
+                      "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-5e908b4b-e85e-4dfe-84cc-47258fe4be1e"
+                    },
+                    {
+                      "id": "50574300-5bd9-44b3-ad7f-94bf31536401",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-50574300-5bd9-44b3-ad7f-94bf31536401"
+                    },
+                    {
+                      "id": "0aa4c08d-b7be-443e-a757-7731e9290596",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"identity\",\n  \"method\": \"byo_kyc\",\n  \"sms\": {},\n  \"sna\": {},\n  \"byo_sms\": {\n    \"timestamp\": \"<string>\"\n  },\n  \"byo_kyc\": {},\n  \"kba\": {}\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:07.000Z",
+                      "updatedAt": "2026-07-28T02:12:07.000Z",
+                      "uid": "35240-0aa4c08d-b7be-443e-a757-7731e9290596"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:12:07.000Z",
+                  "updatedAt": "2026-07-28T02:12:07.000Z",
+                  "uid": "35240-3c2e59b5-4ab7-455e-b7ce-5143c1a095f0"
+                }
+              ],
+              "id": "9566a5c5-6a62-490b-a58f-2d498fa2ffaa",
+              "createdAt": "2026-07-28T02:12:07.000Z",
+              "updatedAt": "2026-07-28T02:12:07.000Z",
+              "uid": "35240-9566a5c5-6a62-490b-a58f-2d498fa2ffaa"
+            }
+          ],
+          "id": "aa89da2b-41c1-4761-b266-c6a85d1407de",
+          "createdAt": "2026-07-28T02:12:07.000Z",
+          "updatedAt": "2026-07-28T02:12:07.000Z",
+          "uid": "35240-aa89da2b-41c1-4761-b266-c6a85d1407de"
+        }
+      ],
+      "id": "e691848a-2991-4d50-a290-e1ad332c5442",
+      "createdAt": "2026-07-28T02:12:07.000Z",
+      "updatedAt": "2026-07-28T02:12:07.000Z",
+      "uid": "35240-e691848a-2991-4d50-a290-e1ad332c5442"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

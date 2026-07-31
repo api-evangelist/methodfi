@@ -1,0 +1,904 @@
+{
+  "info": {
+    "_postman_id": "b7733bdb-85b9-40f4-bd0a-dfa28c2bcebb",
+    "name": "Method Account Attributes Merchants API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:12:33.000Z",
+    "updatedAt": "2026-07-28T02:12:33.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-b7733bdb-85b9-40f4-bd0a-dfa28c2bcebb"
+  },
+  "item": [
+    {
+      "name": "merchants",
+      "item": [
+        {
+          "name": "{mchId}",
+          "item": [
+            {
+              "name": "Retrieve a merchant",
+              "id": "ffde4cd4-be4f-4f51-afcb-a66c28e5b830",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/merchants/:mchId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "merchants",
+                    ":mchId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "0d222f8d-715e-4839-8928-5361e13120cf",
+                      "key": "mchId",
+                      "value": "mch_jfI9NGE0y",
+                      "description": "(Required) Unique identifier for the merchant."
+                    }
+                  ]
+                },
+                "description": "Returns a single merchant by its identifier."
+              },
+              "response": [
+                {
+                  "id": "fba74dfd-d680-45ca-b016-533eaca3b523",
+                  "name": "The requested merchant.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/merchants/:mchId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "merchants",
+                        ":mchId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "mchId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"parent_name\": \"<string>\",\n    \"name\": \"<string>\",\n    \"logo\": \"<string>\",\n    \"type\": \"television_utility\",\n    \"provider_ids\": {\n      \"plaid\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"mx\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"finicity\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"dpp\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"rpps\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    \"is_temp\": \"<boolean>\",\n    \"account_number_formats\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"message\": \"<string,null>\"\n}",
+                  "createdAt": "2026-07-28T02:12:33.000Z",
+                  "updatedAt": "2026-07-28T02:12:33.000Z",
+                  "uid": "35240-fba74dfd-d680-45ca-b016-533eaca3b523"
+                },
+                {
+                  "id": "66646590-bd6d-4da9-8062-7b6029a0d169",
+                  "name": "Bad request - invalid parameters or request body.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/merchants/:mchId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "merchants",
+                        ":mchId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "mchId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:33.000Z",
+                  "updatedAt": "2026-07-28T02:12:33.000Z",
+                  "uid": "35240-66646590-bd6d-4da9-8062-7b6029a0d169"
+                },
+                {
+                  "id": "8438cc99-24b3-4b1e-a819-13ef02a91652",
+                  "name": "Unauthorized - missing or invalid authentication token.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/merchants/:mchId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "merchants",
+                        ":mchId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "mchId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:33.000Z",
+                  "updatedAt": "2026-07-28T02:12:33.000Z",
+                  "uid": "35240-8438cc99-24b3-4b1e-a819-13ef02a91652"
+                },
+                {
+                  "id": "03e5426b-662d-4a93-9525-c9ca9ffbc2f7",
+                  "name": "Forbidden - insufficient permissions for this operation.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/merchants/:mchId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "merchants",
+                        ":mchId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "mchId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:33.000Z",
+                  "updatedAt": "2026-07-28T02:12:33.000Z",
+                  "uid": "35240-03e5426b-662d-4a93-9525-c9ca9ffbc2f7"
+                },
+                {
+                  "id": "9c430808-b4bf-4c62-9f0c-92d971a2d4d9",
+                  "name": "Not found - the requested resource does not exist.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/merchants/:mchId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "merchants",
+                        ":mchId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "mchId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:33.000Z",
+                  "updatedAt": "2026-07-28T02:12:33.000Z",
+                  "uid": "35240-9c430808-b4bf-4c62-9f0c-92d971a2d4d9"
+                },
+                {
+                  "id": "ab73955b-cf8b-4548-85d9-c44b928d5a47",
+                  "name": "Too many requests - rate limit exceeded.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/merchants/:mchId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "merchants",
+                        ":mchId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "mchId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of seconds to wait before retrying.",
+                        "type": "text/plain"
+                      },
+                      "key": "Retry-After",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:33.000Z",
+                  "updatedAt": "2026-07-28T02:12:33.000Z",
+                  "uid": "35240-ab73955b-cf8b-4548-85d9-c44b928d5a47"
+                },
+                {
+                  "id": "aaf47229-6f4d-4e63-983e-bdc7bf5605a9",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/merchants/:mchId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "merchants",
+                        ":mchId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "mchId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:33.000Z",
+                  "updatedAt": "2026-07-28T02:12:33.000Z",
+                  "uid": "35240-aaf47229-6f4d-4e63-983e-bdc7bf5605a9"
+                }
+              ],
+              "createdAt": "2026-07-28T02:12:33.000Z",
+              "updatedAt": "2026-07-28T02:12:33.000Z",
+              "uid": "35240-ffde4cd4-be4f-4f51-afcb-a66c28e5b830"
+            }
+          ],
+          "id": "9c76dac3-4d12-458b-a2bc-92a7a6bea4cf",
+          "createdAt": "2026-07-28T02:12:33.000Z",
+          "updatedAt": "2026-07-28T02:12:33.000Z",
+          "uid": "35240-9c76dac3-4d12-458b-a2bc-92a7a6bea4cf"
+        },
+        {
+          "name": "List all merchants",
+          "id": "fafa914c-4245-4f64-95bc-48860720dc4d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                "key": "Method-Version",
+                "value": "2025-12-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/merchants?name=<string>&type=bnpl",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "merchants"
+              ],
+              "query": [
+                {
+                  "description": "Search merchants by name.",
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Filter merchants by account type.",
+                  "key": "type",
+                  "value": "bnpl"
+                }
+              ]
+            },
+            "description": "Returns a list of merchants from the Method merchant directory."
+          },
+          "response": [
+            {
+              "id": "ee760ecb-2add-4bce-8bb9-fb034b53b977",
+              "name": "A list of merchants.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/merchants?name=<string>&type=bnpl",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "merchants"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search merchants by name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter merchants by account type.",
+                      "key": "type",
+                      "value": "bnpl"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"parent_name\": \"<string>\",\n      \"name\": \"<string>\",\n      \"logo\": \"<string>\",\n      \"type\": \"credit_card\",\n      \"provider_ids\": {\n        \"plaid\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"mx\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"finicity\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"dpp\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"rpps\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"is_temp\": \"<boolean>\",\n      \"account_number_formats\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"parent_name\": \"<string>\",\n      \"name\": \"<string>\",\n      \"logo\": \"<string>\",\n      \"type\": \"home_loan\",\n      \"provider_ids\": {\n        \"plaid\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"mx\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"finicity\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"dpp\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"rpps\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"is_temp\": \"<boolean>\",\n      \"account_number_formats\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+              "createdAt": "2026-07-28T02:12:33.000Z",
+              "updatedAt": "2026-07-28T02:12:33.000Z",
+              "uid": "35240-ee760ecb-2add-4bce-8bb9-fb034b53b977"
+            },
+            {
+              "id": "8edb2dab-4621-4134-bb0b-660240552996",
+              "name": "Bad request - invalid parameters or request body.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/merchants?name=<string>&type=bnpl",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "merchants"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search merchants by name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter merchants by account type.",
+                      "key": "type",
+                      "value": "bnpl"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:33.000Z",
+              "updatedAt": "2026-07-28T02:12:33.000Z",
+              "uid": "35240-8edb2dab-4621-4134-bb0b-660240552996"
+            },
+            {
+              "id": "c0084aec-f5e4-4d87-bef6-6083fdae2328",
+              "name": "Unauthorized - missing or invalid authentication token.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/merchants?name=<string>&type=bnpl",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "merchants"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search merchants by name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter merchants by account type.",
+                      "key": "type",
+                      "value": "bnpl"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:33.000Z",
+              "updatedAt": "2026-07-28T02:12:33.000Z",
+              "uid": "35240-c0084aec-f5e4-4d87-bef6-6083fdae2328"
+            },
+            {
+              "id": "ebd745a1-4f68-478e-baf0-165ee15c7b34",
+              "name": "Forbidden - insufficient permissions for this operation.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/merchants?name=<string>&type=bnpl",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "merchants"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search merchants by name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter merchants by account type.",
+                      "key": "type",
+                      "value": "bnpl"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:33.000Z",
+              "updatedAt": "2026-07-28T02:12:33.000Z",
+              "uid": "35240-ebd745a1-4f68-478e-baf0-165ee15c7b34"
+            },
+            {
+              "id": "95bd9c52-fb5a-4816-8327-dd192bf3720c",
+              "name": "Too many requests - rate limit exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/merchants?name=<string>&type=bnpl",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "merchants"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search merchants by name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter merchants by account type.",
+                      "key": "type",
+                      "value": "bnpl"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of seconds to wait before retrying.",
+                    "type": "text/plain"
+                  },
+                  "key": "Retry-After",
+                  "value": "<integer>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:33.000Z",
+              "updatedAt": "2026-07-28T02:12:33.000Z",
+              "uid": "35240-95bd9c52-fb5a-4816-8327-dd192bf3720c"
+            },
+            {
+              "id": "a4a83cd8-f7cc-4769-ad92-d97e88693808",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/merchants?name=<string>&type=bnpl",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "merchants"
+                  ],
+                  "query": [
+                    {
+                      "description": "Search merchants by name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter merchants by account type.",
+                      "key": "type",
+                      "value": "bnpl"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:33.000Z",
+              "updatedAt": "2026-07-28T02:12:33.000Z",
+              "uid": "35240-a4a83cd8-f7cc-4769-ad92-d97e88693808"
+            }
+          ],
+          "createdAt": "2026-07-28T02:12:33.000Z",
+          "updatedAt": "2026-07-28T02:12:33.000Z",
+          "uid": "35240-fafa914c-4245-4f64-95bc-48860720dc4d"
+        }
+      ],
+      "id": "ca6a82c2-182b-49e5-96c7-280de9081b9c",
+      "createdAt": "2026-07-28T02:12:33.000Z",
+      "updatedAt": "2026-07-28T02:12:33.000Z",
+      "uid": "35240-ca6a82c2-182b-49e5-96c7-280de9081b9c"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.methodfi.com/2026-03-30/reference
+docs: https://docs.methodfi.com/guides/platform-fundamentals
+summary: >-
+  Cross-cutting request/response semantics for the Method API: bearer API-key auth,
+  a dated version header, idempotency keys on all POSTs, page/cursor pagination, a
+  standard success/error response envelope, resource metadata, and request-id tracing.
+authentication:
+  style: bearer-api-key
+  header: Authorization
+  format: 'Bearer sk_...'
+  version_header: Method-Version
+  ref: authentication/methodfi-authentication.yml
+idempotency:
+  supported: true
+  header: Idempotency-Key
+  scope: all POST requests
+  key_format: any unique string up to 255 characters (V4 UUID recommended)
+  retention: >-
+    Method stores the status code and body of the first request for a given key and
+    replays it for subsequent requests with the same key, including 500 errors.
+  unavailable_behavior: >-
+    Returns HTTP 503 with sub_type IDEMPOTENCY_UNAVAILABLE when the idempotency store
+    is unavailable; retry later or fall back to non-idempotent processing.
+  docs: https://docs.methodfi.com/2026-03-30/reference/idempotency
+pagination:
+  style: page-and-cursor
+  request_params:
+  - page            # 1-indexed page number
+  - page_cursor     # resource id to start/end from; mutually exclusive with page
+  - page_limit      # default and maximum 100 (OpenAPI param default 10)
+  - from_date       # ISO 8601 YYYY-MM-DD, inclusive
+  - to_date         # ISO 8601 YYYY-MM-DD, inclusive
+  response_envelope_field: data
+  response_headers:
+  - Pagination-Page
+  - Pagination-Page-Count
+  - Pagination-Page-Limit
+  - Pagination-Total-Count
+  - Pagination-Page-Cursor-Prev
+  - Pagination-Page-Cursor-Next
+  ordering: chronological (earliest created first)
+  docs: https://docs.methodfi.com/2026-03-30/reference/pagination
+expansion:
+  supported: true
+  style: expand[]
+  description: >-
+    Many resources expose expandable sub-resources (e.g. account balance, payoff,
+    payment_instrument, card_brand, latest_verification_session) that can be inflated
+    inline rather than returning only the id.
+  docs: https://docs.methodfi.com/2026-03-30/reference/expanding
+metadata:
+  supported: true
+  field: metadata
+  constraint: arbitrary JSON object, must serialize to under 1KB
+  docs: https://docs.methodfi.com/2026-03-30/reference/metadata
+request_tracing:
+  response_header: Request-Id
+  description: Every response returns a Request-Id header for tracing/support.
+  docs: https://docs.methodfi.com/2026-03-30/reference/request-id
+versioning:
+  style: dated-header
+  header: Method-Version
+  current: '2026-03-30'
+  policy: backwards-compatible additive changes; breaking changes ship as a new dated version
+  docs: https://docs.methodfi.com/2026-03-30/reference/versioning
+  ref: lifecycle/methodfi-lifecycle.yml
+error_envelope:
+  format: method-envelope
+  is_rfc9457: false
+  shape: '{ success: false, data: { error: { type, code, sub_type, message } }, message }'
+  request_error_types: [INVALID_AUTHORIZATION, INVALID_REQUEST, API_ERROR]
+  resource_error_field: error
+  ref: errors/methodfi-problem-types.yml
+rate_limiting:
+  signaled_via: HTTP 429 with sub_type TOO_MANY_REQUESTS
+  window: 60-second rolling window, per API key
+  retry_guidance: wait >=60s, exponential backoff with jitter, combine with Idempotency-Key
+  ref: rate-limits/methodfi-rate-limits.yml
+  docs: https://docs.methodfi.com/2026-03-30/reference/rate-limiting

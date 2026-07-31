@@ -1,0 +1,1531 @@
+{
+  "info": {
+    "_postman_id": "e95fd8db-0dd9-44f5-856d-999459536ba4",
+    "name": "Method Account Attributes Account Balances API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:09:08.000Z",
+    "updatedAt": "2026-07-28T02:09:08.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e95fd8db-0dd9-44f5-856d-999459536ba4"
+  },
+  "item": [
+    {
+      "name": "accounts",
+      "item": [
+        {
+          "name": "{accountId}",
+          "item": [
+            {
+              "name": "balances",
+              "item": [
+                {
+                  "name": "{balId}",
+                  "item": [
+                    {
+                      "name": "Retrieve an account balance",
+                      "id": "6ab765ee-3ae8-4bd3-b366-2aa8f0062221",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances/:balId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances",
+                            ":balId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "eb17e9cd-4525-47a5-974a-ea52e0b0fc97",
+                              "key": "accountId",
+                              "value": "acc_vLn0cFXcyn",
+                              "description": "(Required) Unique identifier for the account."
+                            },
+                            {
+                              "id": "34f63d16-e8e3-4426-9b75-888c6622346b",
+                              "key": "balId",
+                              "value": "bal_UaMAp",
+                              "description": "(Required) Unique identifier for the account balance."
+                            }
+                          ]
+                        },
+                        "description": "Retrieves an account balance by its unique identifier."
+                      },
+                      "response": [
+                        {
+                          "id": "02daa2b2-3c07-413a-b207-a2d80d6bd8cd",
+                          "name": "The requested account balance.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/balances/:balId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "balances",
+                                ":balId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "balId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"bal_z\",\n    \"account_id\": \"acc_Nmo0Yp\",\n    \"status\": \"failed\",\n    \"amount\": \"<number,null>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": {\n      \"type\": \"BALANCE_FAILED\",\n      \"code\": 20001,\n      \"sub_type\": \"BALANCE_TEMPORARILY_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    }\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:09:08.000Z",
+                          "updatedAt": "2026-07-28T02:09:08.000Z",
+                          "uid": "35240-02daa2b2-3c07-413a-b207-a2d80d6bd8cd"
+                        },
+                        {
+                          "id": "fb21f6fd-f9a7-4749-b2ec-76e0ab49ccf7",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/balances/:balId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "balances",
+                                ":balId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "balId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:08.000Z",
+                          "updatedAt": "2026-07-28T02:09:08.000Z",
+                          "uid": "35240-fb21f6fd-f9a7-4749-b2ec-76e0ab49ccf7"
+                        },
+                        {
+                          "id": "abc91439-6d56-4637-a811-949b04124b69",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/balances/:balId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "balances",
+                                ":balId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "balId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:08.000Z",
+                          "updatedAt": "2026-07-28T02:09:08.000Z",
+                          "uid": "35240-abc91439-6d56-4637-a811-949b04124b69"
+                        },
+                        {
+                          "id": "e05b2db2-e718-4eae-ad5e-b7aa1050b9b0",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/balances/:balId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "balances",
+                                ":balId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "balId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:08.000Z",
+                          "updatedAt": "2026-07-28T02:09:08.000Z",
+                          "uid": "35240-e05b2db2-e718-4eae-ad5e-b7aa1050b9b0"
+                        },
+                        {
+                          "id": "c93c603d-0411-4dff-b0de-1137f1afa069",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/balances/:balId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "balances",
+                                ":balId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "balId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:08.000Z",
+                          "updatedAt": "2026-07-28T02:09:08.000Z",
+                          "uid": "35240-c93c603d-0411-4dff-b0de-1137f1afa069"
+                        },
+                        {
+                          "id": "3eb8cb4e-34c6-49b0-9ec5-0544be021cb4",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/balances/:balId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "balances",
+                                ":balId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "balId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:08.000Z",
+                          "updatedAt": "2026-07-28T02:09:08.000Z",
+                          "uid": "35240-3eb8cb4e-34c6-49b0-9ec5-0544be021cb4"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-6ab765ee-3ae8-4bd3-b366-2aa8f0062221"
+                    }
+                  ],
+                  "id": "c8fcb0b6-4569-46a5-95fc-8ffef5f86d32",
+                  "createdAt": "2026-07-28T02:09:08.000Z",
+                  "updatedAt": "2026-07-28T02:09:08.000Z",
+                  "uid": "35240-c8fcb0b6-4569-46a5-95fc-8ffef5f86d32"
+                },
+                {
+                  "name": "List all account balances",
+                  "id": "e655bf46-f9be-4d44-8f39-3f03af660673",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId/balances?page=1&page_limit=10&page_cursor=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId",
+                        "balances"
+                      ],
+                      "query": [
+                        {
+                          "description": "Page number for pagination (1-indexed).",
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Number of items per page.",
+                          "key": "page_limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                          "key": "page_cursor",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "f9df89c0-c803-46c3-88ad-fcf677ae0e69",
+                          "key": "accountId",
+                          "value": "acc_vLn0cFXcyn",
+                          "description": "(Required) Unique identifier for the account."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of balance records for the specified account."
+                  },
+                  "response": [
+                    {
+                      "id": "0ccc2a9b-a42a-4e39-9929-58ec4c1b0632",
+                      "name": "A paginated list of account balances.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Count",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Limit",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Total-Count",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Prev",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Next",
+                          "value": ""
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"id\": \"bal_i\",\n      \"account_id\": \"acc_5VB\",\n      \"status\": \"completed\",\n      \"amount\": \"<number,null>\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"error\": {\n        \"type\": \"BALANCE_FAILED\",\n        \"code\": 20001,\n        \"sub_type\": \"BALANCE_TEMPORARILY_UNAVAILABLE\",\n        \"message\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"bal_C5R3c3\",\n      \"account_id\": \"acc_v2fdC\",\n      \"status\": \"completed\",\n      \"amount\": \"<number,null>\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"error\": {\n        \"type\": \"BALANCE_FAILED\",\n        \"code\": 20001,\n        \"sub_type\": \"BALANCE_TEMPORARILY_UNAVAILABLE\",\n        \"message\": \"<string>\"\n      }\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-0ccc2a9b-a42a-4e39-9929-58ec4c1b0632"
+                    },
+                    {
+                      "id": "a51351f0-d538-490d-8632-d988861f3dcd",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-a51351f0-d538-490d-8632-d988861f3dcd"
+                    },
+                    {
+                      "id": "de97f5b1-7972-4bbc-9699-e049496512a0",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-de97f5b1-7972-4bbc-9699-e049496512a0"
+                    },
+                    {
+                      "id": "c25484c3-1e54-4a8c-b3a6-8a7864a26fb1",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-c25484c3-1e54-4a8c-b3a6-8a7864a26fb1"
+                    },
+                    {
+                      "id": "ac1fa97e-af89-4991-b9ea-971270a41255",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-ac1fa97e-af89-4991-b9ea-971270a41255"
+                    },
+                    {
+                      "id": "44454307-bb49-46ed-9184-b160c79f7f49",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-44454307-bb49-46ed-9184-b160c79f7f49"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:09:08.000Z",
+                  "updatedAt": "2026-07-28T02:09:08.000Z",
+                  "uid": "35240-e655bf46-f9be-4d44-8f39-3f03af660673"
+                },
+                {
+                  "name": "Create an account balance",
+                  "id": "f5c40e3f-4072-41f8-b011-674b9608ddc5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId/balances",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId",
+                        "balances"
+                      ],
+                      "variable": [
+                        {
+                          "id": "a924d7fd-524b-4ad6-a8fa-e4e1a1a5005a",
+                          "key": "accountId",
+                          "value": "acc_vLn0cFXcyn",
+                          "description": "(Required) Unique identifier for the account."
+                        }
+                      ]
+                    },
+                    "description": "Triggers a balance sync for the specified account and returns the new balance record."
+                  },
+                  "response": [
+                    {
+                      "id": "91814253-4558-438f-a0ca-f59c883a2987",
+                      "name": "The newly created account balance.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"bal_z\",\n    \"account_id\": \"acc_Nmo0Yp\",\n    \"status\": \"failed\",\n    \"amount\": \"<number,null>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": {\n      \"type\": \"BALANCE_FAILED\",\n      \"code\": 20001,\n      \"sub_type\": \"BALANCE_TEMPORARILY_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    }\n  },\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-91814253-4558-438f-a0ca-f59c883a2987"
+                    },
+                    {
+                      "id": "f4202aa1-caea-4880-894b-7610bb264e6f",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-f4202aa1-caea-4880-894b-7610bb264e6f"
+                    },
+                    {
+                      "id": "dfe08a2a-54e7-4f05-bb98-576c21d5bcb8",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-dfe08a2a-54e7-4f05-bb98-576c21d5bcb8"
+                    },
+                    {
+                      "id": "f4e48f14-9401-4ddd-9f94-d4d5abd2b0d3",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-f4e48f14-9401-4ddd-9f94-d4d5abd2b0d3"
+                    },
+                    {
+                      "id": "a4cfc563-a356-4d8c-a5ca-6ab3d654775c",
+                      "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-a4cfc563-a356-4d8c-a5ca-6ab3d654775c"
+                    },
+                    {
+                      "id": "1d7eee85-8f3f-4619-9bcf-c155b3e56853",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-1d7eee85-8f3f-4619-9bcf-c155b3e56853"
+                    },
+                    {
+                      "id": "dedd436a-e9bb-4f01-a5b4-20599539fe4b",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/balances",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "balances"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:08.000Z",
+                      "updatedAt": "2026-07-28T02:09:08.000Z",
+                      "uid": "35240-dedd436a-e9bb-4f01-a5b4-20599539fe4b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:09:08.000Z",
+                  "updatedAt": "2026-07-28T02:09:08.000Z",
+                  "uid": "35240-f5c40e3f-4072-41f8-b011-674b9608ddc5"
+                }
+              ],
+              "id": "c8940633-478c-407e-b629-4cbab1d147fb",
+              "createdAt": "2026-07-28T02:09:08.000Z",
+              "updatedAt": "2026-07-28T02:09:08.000Z",
+              "uid": "35240-c8940633-478c-407e-b629-4cbab1d147fb"
+            }
+          ],
+          "id": "88a580ab-ce01-47dc-854d-1762d5b4b426",
+          "createdAt": "2026-07-28T02:09:08.000Z",
+          "updatedAt": "2026-07-28T02:09:08.000Z",
+          "uid": "35240-88a580ab-ce01-47dc-854d-1762d5b4b426"
+        }
+      ],
+      "id": "4d76b9ae-8b9c-4760-88c8-c8c88feb5e6e",
+      "createdAt": "2026-07-28T02:09:08.000Z",
+      "updatedAt": "2026-07-28T02:09:08.000Z",
+      "uid": "35240-4d76b9ae-8b9c-4760-88c8-c8c88feb5e6e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

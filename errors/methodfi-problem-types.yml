@@ -1,0 +1,84 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.methodfi.com/2026-03-30/reference/errors/request-errors
+derived_from: openapi/methodfi-openapi-original.yml
+format: method-envelope
+is_rfc9457: false
+envelope:
+  request_error: '{ success: false, data: { error: { type, code, sub_type, message } }, message }'
+  resource_error: 'set on the resource object''s `error` property: { type, code, sub_type, message }'
+  fields:
+    type: >-
+      High-level error class. Request errors: INVALID_AUTHORIZATION, INVALID_REQUEST,
+      API_ERROR. Resource errors use resource-specific types (e.g. PAYMENT_FAILED).
+    code: HTTP status code (request errors) or a 5-digit resource error code (resource errors).
+    sub_type: Fine-grained machine-readable identifier of the specific error.
+    message: Human-readable description.
+http_status_codes:
+- status: 200
+  meaning: OK — request succeeded.
+- status: 400
+  meaning: Bad Request — unacceptable request, often a missing/invalid parameter.
+- status: 401
+  meaning: Unauthorized — no valid API key provided.
+- status: 403
+  meaning: Forbidden — API key lacks permission for the request.
+- status: 404
+  meaning: Not Found — the requested resource does not exist.
+- status: 422
+  meaning: Unprocessable Entity — validation failed (present in OpenAPI responses).
+- status: 429
+  meaning: Too Many Requests — rate limit exceeded (sub_type TOO_MANY_REQUESTS).
+- status: 500
+  meaning: Server Error — something went wrong on Method's end.
+- status: 503
+  meaning: Service Unavailable — idempotency store unavailable (sub_type IDEMPOTENCY_UNAVAILABLE).
+- status: 504
+  meaning: Gateway Timeout (present in OpenAPI responses).
+resource_error_code_ranges:
+- range: 10XXX
+  resource: Payments
+  docs: https://docs.methodfi.com/2026-03-30/reference/errors/payment-errors
+- range: 11XXX
+  resource: Accounts
+  docs: https://docs.methodfi.com/2026-03-30/reference/errors/account-errors
+- range: 12XXX
+  resource: Entities
+  docs: https://docs.methodfi.com/2026-03-30/reference/errors/entity-errors
+- range: 14XXX
+  resource: PaymentReversals
+  docs: https://docs.methodfi.com/2026-03-30/reference/errors/payment-reversal-errors
+- range: 16XXX
+  resource: AccountVerificationSessions
+- range: 17XXX
+  resource: Sensitive
+- range: 18XXX
+  resource: Payoffs
+- range: 19XXX
+  resource: EntityVerificationSessions
+- range: 20XXX
+  resource: Balances
+- range: 21XXX
+  resource: Updates
+- range: 23XXX
+  resource: CreditScores
+- range: 25XXX
+  resource: Webhooks
+common_request_sub_types:
+- sub_type: INVALID_REQUEST
+  meaning: Request body failed basic validation for the endpoint.
+- sub_type: NOT_FOUND
+  meaning: The requested resource does not exist.
+- sub_type: TOO_MANY_REQUESTS
+  status: 429
+  meaning: Rate limit exceeded for the tier.
+- sub_type: IDEMPOTENCY_UNAVAILABLE
+  status: 503
+  meaning: Idempotent request store temporarily unavailable.
+- sub_type: DUPLICATE_ENTITY_DETAILS
+  meaning: An entity with the same details already exists.
+- sub_type: RESTRICTED_ENTITY_DETAILS
+  meaning: Entity information violates the organization's configured restrictions.
+notes: >-
+  Payment/reversal/account/entity RESOURCE failure codes (the money-movement decline
+  set) are catalogued separately in errors/methodfi-decline-codes.yml.

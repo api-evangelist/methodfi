@@ -1,0 +1,2236 @@
+{
+  "info": {
+    "_postman_id": "d343eab8-26a2-472b-ace5-c50dcb736cff",
+    "name": "Method Account Attributes Entity Subscriptions API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:12:04.000Z",
+    "updatedAt": "2026-07-28T02:12:04.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d343eab8-26a2-472b-ace5-c50dcb736cff"
+  },
+  "item": [
+    {
+      "name": "entities",
+      "item": [
+        {
+          "name": "{entityId}",
+          "item": [
+            {
+              "name": "subscriptions",
+              "item": [
+                {
+                  "name": "{subId}",
+                  "item": [
+                    {
+                      "name": "Retrieve an entity subscription",
+                      "id": "fd0dd302-6a95-4722-ba7f-ecb94740067a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions",
+                            ":subId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "1586d9ea-9840-4f7a-91f7-ebf6303358b0",
+                              "key": "entityId",
+                              "value": "ent_9f1LF8MrC4",
+                              "description": "(Required) Unique identifier for the entity."
+                            },
+                            {
+                              "id": "8dc31cc7-c728-4165-91c7-7461532e4599",
+                              "key": "subId",
+                              "value": "sub_8",
+                              "description": "(Required) Unique identifier for the entity subscription."
+                            }
+                          ]
+                        },
+                        "description": "Returns a single entity subscription by its identifier."
+                      },
+                      "response": [
+                        {
+                          "id": "5dfff0b5-a364-46f8-b9f8-133b59cfeee1",
+                          "name": "The requested entity subscription.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"status\": \"active\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"payload\": null,\n    \"latest_request_id\": \"<string,null>\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-5dfff0b5-a364-46f8-b9f8-133b59cfeee1"
+                        },
+                        {
+                          "id": "3bac3676-87ee-4bbc-a419-60ae81dd1ffd",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-3bac3676-87ee-4bbc-a419-60ae81dd1ffd"
+                        },
+                        {
+                          "id": "855e22a4-b3f7-4288-8fba-578fbefbfd65",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-855e22a4-b3f7-4288-8fba-578fbefbfd65"
+                        },
+                        {
+                          "id": "b2da2b43-9ad1-4b1a-bf69-427d2d3f6f6a",
+                          "name": "Forbidden - insufficient permissions for this operation.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-b2da2b43-9ad1-4b1a-bf69-427d2d3f6f6a"
+                        },
+                        {
+                          "id": "05879e28-1c6c-4459-b6be-e25a10379a45",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-05879e28-1c6c-4459-b6be-e25a10379a45"
+                        },
+                        {
+                          "id": "c9ed2a2f-092a-4bfb-92fc-f7ad3f397804",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-c9ed2a2f-092a-4bfb-92fc-f7ad3f397804"
+                        },
+                        {
+                          "id": "0a0404d6-9672-4051-9d54-e8920c7dc302",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-0a0404d6-9672-4051-9d54-e8920c7dc302"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-fd0dd302-6a95-4722-ba7f-ecb94740067a"
+                    },
+                    {
+                      "name": "Delete an entity subscription",
+                      "id": "f9e06a51-890a-4fc3-9f0e-42d2ca9f9ea7",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions",
+                            ":subId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "c66c6df3-56f5-457a-92af-fc1e12b8461f",
+                              "key": "entityId",
+                              "value": "ent_9f1LF8MrC4",
+                              "description": "(Required) Unique identifier for the entity."
+                            },
+                            {
+                              "id": "bd236db7-70bb-464a-9dad-43efc57ea702",
+                              "key": "subId",
+                              "value": "sub_8",
+                              "description": "(Required) Unique identifier for the entity subscription."
+                            }
+                          ]
+                        },
+                        "description": "Deletes an entity subscription by its identifier."
+                      },
+                      "response": [
+                        {
+                          "id": "fbb7ea82-16e6-4631-98f3-4f7f731420e7",
+                          "name": "The deleted entity subscription.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"status\": \"active\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"payload\": null,\n    \"latest_request_id\": \"<string,null>\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-fbb7ea82-16e6-4631-98f3-4f7f731420e7"
+                        },
+                        {
+                          "id": "51508a4e-8c73-448e-862d-476d7df17ecb",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-51508a4e-8c73-448e-862d-476d7df17ecb"
+                        },
+                        {
+                          "id": "95cb43d4-de0d-40db-bdbd-b63b6f3c0453",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-95cb43d4-de0d-40db-bdbd-b63b6f3c0453"
+                        },
+                        {
+                          "id": "243d82b4-cecd-41e5-a282-eae1608fe93b",
+                          "name": "Forbidden - insufficient permissions for this operation.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-243d82b4-cecd-41e5-a282-eae1608fe93b"
+                        },
+                        {
+                          "id": "1581b11f-c9d3-49fb-a3c2-7600b1c6376b",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-1581b11f-c9d3-49fb-a3c2-7600b1c6376b"
+                        },
+                        {
+                          "id": "95e94a96-1b35-4dc9-824e-ece2c75939d6",
+                          "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                          "code": 422,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-95e94a96-1b35-4dc9-824e-ece2c75939d6"
+                        },
+                        {
+                          "id": "34c361ba-4737-4ec4-9e20-b18b8fed90ea",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-34c361ba-4737-4ec4-9e20-b18b8fed90ea"
+                        },
+                        {
+                          "id": "3fd98f56-880d-4225-87d0-dc415962ea8a",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/subscriptions/:subId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "subscriptions",
+                                ":subId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "subId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:04.000Z",
+                          "updatedAt": "2026-07-28T02:12:04.000Z",
+                          "uid": "35240-3fd98f56-880d-4225-87d0-dc415962ea8a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-f9e06a51-890a-4fc3-9f0e-42d2ca9f9ea7"
+                    }
+                  ],
+                  "id": "7a29cf57-75e8-4253-a705-cc5fddaf4bf5",
+                  "createdAt": "2026-07-28T02:12:04.000Z",
+                  "updatedAt": "2026-07-28T02:12:04.000Z",
+                  "uid": "35240-7a29cf57-75e8-4253-a705-cc5fddaf4bf5"
+                },
+                {
+                  "name": "List all entity subscriptions",
+                  "id": "78dcda70-02b3-4dc1-9cba-88ddffd7667d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId",
+                        "subscriptions"
+                      ],
+                      "variable": [
+                        {
+                          "id": "9c754ae8-94d4-491a-83fa-7149c3bac2c6",
+                          "key": "entityId",
+                          "value": "ent_9f1LF8MrC4",
+                          "description": "(Required) Unique identifier for the entity."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of subscriptions for the specified entity."
+                  },
+                  "response": [
+                    {
+                      "id": "81d6dbe5-ff4c-4f1b-bf48-b6e7395b6f07",
+                      "name": "A list of entity subscriptions.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"aliquip_97\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"status\": \"inactive\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"payload\": {},\n      \"latest_request_id\": \"<string,null>\"\n    },\n    \"minim_e\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"status\": \"active\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"payload\": null,\n      \"latest_request_id\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-81d6dbe5-ff4c-4f1b-bf48-b6e7395b6f07"
+                    },
+                    {
+                      "id": "3814988b-fbf6-4122-9647-a69a6d8a0a2a",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-3814988b-fbf6-4122-9647-a69a6d8a0a2a"
+                    },
+                    {
+                      "id": "60511f13-249f-429c-8255-b8e68b957f7b",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-60511f13-249f-429c-8255-b8e68b957f7b"
+                    },
+                    {
+                      "id": "695f8ca5-cc9c-4197-8532-d46a5d0ed58a",
+                      "name": "Forbidden - insufficient permissions for this operation.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-695f8ca5-cc9c-4197-8532-d46a5d0ed58a"
+                    },
+                    {
+                      "id": "a6d89d20-3354-47e1-82cb-1395b635e79b",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-a6d89d20-3354-47e1-82cb-1395b635e79b"
+                    },
+                    {
+                      "id": "cbcd6396-226d-44a8-9c6c-d29fd3f3830e",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-cbcd6396-226d-44a8-9c6c-d29fd3f3830e"
+                    },
+                    {
+                      "id": "f82e9ba2-96c2-47a1-82c5-0e1edf2915d6",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-f82e9ba2-96c2-47a1-82c5-0e1edf2915d6"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:12:04.000Z",
+                  "updatedAt": "2026-07-28T02:12:04.000Z",
+                  "uid": "35240-78dcda70-02b3-4dc1-9cba-88ddffd7667d"
+                },
+                {
+                  "name": "Create an entity subscription",
+                  "id": "bf68458b-cf9b-4f97-96d0-292ee48f2d21",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId",
+                        "subscriptions"
+                      ],
+                      "variable": [
+                        {
+                          "id": "49b76a05-9256-4308-8427-43e2f4508753",
+                          "key": "entityId",
+                          "value": "ent_9f1LF8MrC4",
+                          "description": "(Required) Unique identifier for the entity."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new subscription for the specified entity."
+                  },
+                  "response": [
+                    {
+                      "id": "a06360b9-2118-4fb4-86a2-dcbd930b9f30",
+                      "name": "The created entity subscription.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"status\": \"active\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"payload\": null,\n    \"latest_request_id\": \"<string,null>\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-a06360b9-2118-4fb4-86a2-dcbd930b9f30"
+                    },
+                    {
+                      "id": "fdf8d90b-5755-43b0-b974-db907e0513e1",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-fdf8d90b-5755-43b0-b974-db907e0513e1"
+                    },
+                    {
+                      "id": "3b8c45f5-b893-4e63-acbf-ea8c77fbdda2",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-3b8c45f5-b893-4e63-acbf-ea8c77fbdda2"
+                    },
+                    {
+                      "id": "0d72a75f-5388-44a8-bcbe-44a529d07d05",
+                      "name": "Forbidden - insufficient permissions for this operation.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-0d72a75f-5388-44a8-bcbe-44a529d07d05"
+                    },
+                    {
+                      "id": "ae596c67-4420-4df7-83c3-27f2ed4fd9a9",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-ae596c67-4420-4df7-83c3-27f2ed4fd9a9"
+                    },
+                    {
+                      "id": "0c077c20-ad82-469d-86b0-1c40283346f5",
+                      "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-0c077c20-ad82-469d-86b0-1c40283346f5"
+                    },
+                    {
+                      "id": "893e0d23-7110-49d9-9274-c5bbb079ed9c",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-893e0d23-7110-49d9-9274-c5bbb079ed9c"
+                    },
+                    {
+                      "id": "446507ed-53b8-4226-bdb8-a8ad0cb0a172",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"enroll\": \"attribute\",\n  \"payload\": null\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/subscriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "subscriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:12:04.000Z",
+                      "updatedAt": "2026-07-28T02:12:04.000Z",
+                      "uid": "35240-446507ed-53b8-4226-bdb8-a8ad0cb0a172"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:12:04.000Z",
+                  "updatedAt": "2026-07-28T02:12:04.000Z",
+                  "uid": "35240-bf68458b-cf9b-4f97-96d0-292ee48f2d21"
+                }
+              ],
+              "id": "71c4860b-63b9-4002-b1c3-2e67c91dfb60",
+              "createdAt": "2026-07-28T02:12:04.000Z",
+              "updatedAt": "2026-07-28T02:12:04.000Z",
+              "uid": "35240-71c4860b-63b9-4002-b1c3-2e67c91dfb60"
+            }
+          ],
+          "id": "3453ea71-4a99-414a-994d-46112aadbd1c",
+          "createdAt": "2026-07-28T02:12:04.000Z",
+          "updatedAt": "2026-07-28T02:12:04.000Z",
+          "uid": "35240-3453ea71-4a99-414a-994d-46112aadbd1c"
+        }
+      ],
+      "id": "fe1dac0b-3518-497d-a79d-4d98b6ff31d0",
+      "createdAt": "2026-07-28T02:12:04.000Z",
+      "updatedAt": "2026-07-28T02:12:04.000Z",
+      "uid": "35240-fe1dac0b-3518-497d-a79d-4d98b6ff31d0"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

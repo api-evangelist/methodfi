@@ -1,0 +1,3263 @@
+{
+  "info": {
+    "_postman_id": "dc07e8e5-54de-438a-96dc-706dda649204",
+    "name": "Method Account Attributes Entity Connects API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:11:57.000Z",
+    "updatedAt": "2026-07-28T02:11:57.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-dc07e8e5-54de-438a-96dc-706dda649204"
+  },
+  "item": [
+    {
+      "name": "entities",
+      "item": [
+        {
+          "name": "{entityId}",
+          "item": [
+            {
+              "name": "connect",
+              "item": [
+                {
+                  "name": "{cxnId}",
+                  "item": [
+                    {
+                      "name": "Retrieve an entity connect session",
+                      "id": "126368cc-d83c-4415-aaf7-d1b702ebccd7",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect/:cxnId?expand=accounts.payoff&expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect",
+                            ":cxnId"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.payoff"
+                            },
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "83dee609-0f28-4f66-bf1b-5bbc70f4266f",
+                              "key": "entityId",
+                              "value": "ent_HGLpH",
+                              "description": "(Required) Unique identifier for the entity."
+                            },
+                            {
+                              "id": "a4008c86-525a-4e6e-9770-7c7e81b0dbb6",
+                              "key": "cxnId",
+                              "value": "cxn_211Fk11p27",
+                              "description": "(Required) Unique identifier for the entity connect session."
+                            }
+                          ]
+                        },
+                        "description": "Returns a single entity connect session by its identifier."
+                      },
+                      "response": [
+                        {
+                          "id": "1574f918-f152-4bfb-b4d8-34051f7e8a39",
+                          "name": "The requested entity connect session.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/connect/:cxnId?expand=accounts.liability.mch_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "connect",
+                                ":cxnId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                                  "key": "expand",
+                                  "value": "accounts.liability.mch_id"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "cxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"completed\",\n    \"accounts\": [\n      \"acc_7M5E\",\n      \"acc_8hm__kFn\"\n    ],\n    \"requested_products\": null,\n    \"requested_subscriptions\": null,\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-1574f918-f152-4bfb-b4d8-34051f7e8a39"
+                        },
+                        {
+                          "id": "df01e4f9-035c-40fe-9e5c-d09f6a48577c",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/connect/:cxnId?expand=accounts.liability.mch_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "connect",
+                                ":cxnId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                                  "key": "expand",
+                                  "value": "accounts.liability.mch_id"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "cxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-df01e4f9-035c-40fe-9e5c-d09f6a48577c"
+                        },
+                        {
+                          "id": "6434e2cf-31b5-457c-8dd1-1e426b02a0ae",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/connect/:cxnId?expand=accounts.liability.mch_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "connect",
+                                ":cxnId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                                  "key": "expand",
+                                  "value": "accounts.liability.mch_id"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "cxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-6434e2cf-31b5-457c-8dd1-1e426b02a0ae"
+                        },
+                        {
+                          "id": "600d9a35-2192-4e2e-bef8-8e05e66d4d89",
+                          "name": "Forbidden - insufficient permissions for this operation.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/connect/:cxnId?expand=accounts.liability.mch_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "connect",
+                                ":cxnId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                                  "key": "expand",
+                                  "value": "accounts.liability.mch_id"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "cxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-600d9a35-2192-4e2e-bef8-8e05e66d4d89"
+                        },
+                        {
+                          "id": "bc9452ab-0f07-48d6-bb61-9dd3dd1e3820",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/connect/:cxnId?expand=accounts.liability.mch_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "connect",
+                                ":cxnId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                                  "key": "expand",
+                                  "value": "accounts.liability.mch_id"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "cxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-bc9452ab-0f07-48d6-bb61-9dd3dd1e3820"
+                        },
+                        {
+                          "id": "3f8d44d2-8972-4b90-b588-7ba5f43a2eb8",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/connect/:cxnId?expand=accounts.liability.mch_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "connect",
+                                ":cxnId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                                  "key": "expand",
+                                  "value": "accounts.liability.mch_id"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "cxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-3f8d44d2-8972-4b90-b588-7ba5f43a2eb8"
+                        },
+                        {
+                          "id": "600d482e-9176-4371-974f-03750d80fbf1",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/connect/:cxnId?expand=accounts.liability.mch_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "connect",
+                                ":cxnId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                                  "key": "expand",
+                                  "value": "accounts.liability.mch_id"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "cxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-600d482e-9176-4371-974f-03750d80fbf1"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-126368cc-d83c-4415-aaf7-d1b702ebccd7"
+                    }
+                  ],
+                  "id": "1ea41f02-00ec-41ce-a336-5450149916b3",
+                  "createdAt": "2026-07-28T02:11:58.000Z",
+                  "updatedAt": "2026-07-28T02:11:58.000Z",
+                  "uid": "35240-1ea41f02-00ec-41ce-a336-5450149916b3"
+                },
+                {
+                  "name": "List all entity connect sessions",
+                  "id": "ba672ed0-aaf9-45ee-b424-cbfb78e0033d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId/connect?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&expand=accounts.payoff&expand=accounts.liability.mch_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId",
+                        "connect"
+                      ],
+                      "query": [
+                        {
+                          "description": "Page number for pagination (1-indexed).",
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Number of items per page.",
+                          "key": "page_limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                          "key": "page_cursor",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                          "key": "from_date",
+                          "value": "<date>"
+                        },
+                        {
+                          "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                          "key": "to_date",
+                          "value": "<date>"
+                        },
+                        {
+                          "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                          "key": "expand",
+                          "value": "accounts.payoff"
+                        },
+                        {
+                          "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                          "key": "expand",
+                          "value": "accounts.liability.mch_id"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "25331f94-a81c-4a1d-8a20-312571ca81a6",
+                          "key": "entityId",
+                          "value": "ent_HGLpH",
+                          "description": "(Required) Unique identifier for the entity."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of connect sessions for the specified entity."
+                  },
+                  "response": [
+                    {
+                      "id": "536943bb-ba2f-4742-8e03-635ff61dc0a1",
+                      "name": "A list of entity connect sessions.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Current page number.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Total number of pages.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Count",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of items per page.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Total number of items across all pages.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Total-Count",
+                          "value": "<integer>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Cursor for the previous page, if available.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Prev",
+                          "value": "<string,null>"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Cursor for the next page, if available.",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Next",
+                          "value": "<string,null>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"entity_id\": \"<string>\",\n      \"status\": \"in_progress\",\n      \"accounts\": [\n        \"acc_v_lW7a\",\n        \"acc_KpK9U1YmT\"\n      ],\n      \"requested_products\": null,\n      \"requested_subscriptions\": null,\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"error\": {\n        \"type\": \"CONNECT_FAILED\",\n        \"code\": 26001,\n        \"sub_type\": \"CONNECT_FAILED_CREDIT_FREEZE\",\n        \"message\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"entity_id\": \"<string>\",\n      \"status\": \"completed\",\n      \"accounts\": [\n        \"acc_TIOlbdU\",\n        \"acc_qgpaQ1HVIcl\"\n      ],\n      \"requested_products\": null,\n      \"requested_subscriptions\": null,\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"error\": {\n        \"type\": \"CONNECT_FAILED\",\n        \"code\": 26002,\n        \"sub_type\": \"CONNECT_FAILED_THIN_CREDIT_FILE\",\n        \"message\": \"<string>\"\n      }\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-536943bb-ba2f-4742-8e03-635ff61dc0a1"
+                    },
+                    {
+                      "id": "738630db-907c-4c3f-9972-e6deb915cdfb",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-738630db-907c-4c3f-9972-e6deb915cdfb"
+                    },
+                    {
+                      "id": "45e48837-1057-4af2-83f3-8c2210d56b56",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-45e48837-1057-4af2-83f3-8c2210d56b56"
+                    },
+                    {
+                      "id": "3b35023f-3b71-4687-b772-a8e443724103",
+                      "name": "Forbidden - insufficient permissions for this operation.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-3b35023f-3b71-4687-b772-a8e443724103"
+                    },
+                    {
+                      "id": "6544feba-c802-4836-8f01-c3aa84b386f2",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-6544feba-c802-4836-8f01-c3aa84b386f2"
+                    },
+                    {
+                      "id": "30d316ac-2b57-4891-8ba8-5e4634223d4a",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-30d316ac-2b57-4891-8ba8-5e4634223d4a"
+                    },
+                    {
+                      "id": "9ee46bc7-21b8-4830-a8c9-a50006315b1f",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                              "key": "from_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                              "key": "to_date",
+                              "value": "<date>"
+                            },
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-9ee46bc7-21b8-4830-a8c9-a50006315b1f"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:11:58.000Z",
+                  "updatedAt": "2026-07-28T02:11:58.000Z",
+                  "uid": "35240-ba672ed0-aaf9-45ee-b424-cbfb78e0033d"
+                },
+                {
+                  "name": "Create an entity connect session",
+                  "id": "620a938c-10e7-4163-bed0-a9c6f47d93b8",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.payoff&expand=accounts.liability.mch_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId",
+                        "connect"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                          "key": "expand",
+                          "value": "accounts.payoff"
+                        },
+                        {
+                          "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                          "key": "expand",
+                          "value": "accounts.liability.mch_id"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "531a4b3e-2fcf-486d-89a4-d4f75ffaaab8",
+                          "key": "entityId",
+                          "value": "ent_HGLpH",
+                          "description": "(Required) Unique identifier for the entity."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new connect session for the specified entity."
+                  },
+                  "response": [
+                    {
+                      "id": "7baf1a52-6081-471b-a38b-257747f2fbcb",
+                      "name": "The created entity connect session.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"completed\",\n    \"accounts\": [\n      \"acc_7M5E\",\n      \"acc_8hm__kFn\"\n    ],\n    \"requested_products\": null,\n    \"requested_subscriptions\": null,\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-7baf1a52-6081-471b-a38b-257747f2fbcb"
+                    },
+                    {
+                      "id": "3a2e212c-28e1-471e-b533-883e564c0b4d",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-3a2e212c-28e1-471e-b533-883e564c0b4d"
+                    },
+                    {
+                      "id": "ae0cfa0e-8b22-4c80-9e6b-b38e3ca929df",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-ae0cfa0e-8b22-4c80-9e6b-b38e3ca929df"
+                    },
+                    {
+                      "id": "eeeef7bb-11aa-48fc-b822-7929b58e7fb5",
+                      "name": "Forbidden - insufficient permissions for this operation.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-eeeef7bb-11aa-48fc-b822-7929b58e7fb5"
+                    },
+                    {
+                      "id": "71f94493-b782-430e-81e7-5871902e62b7",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-71f94493-b782-430e-81e7-5871902e62b7"
+                    },
+                    {
+                      "id": "ba6f3159-9e28-4e29-9dab-f4bc90c01914",
+                      "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-ba6f3159-9e28-4e29-9dab-f4bc90c01914"
+                    },
+                    {
+                      "id": "eb93a678-4cb7-4934-a661-e085b4e4bede",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-eb93a678-4cb7-4934-a661-e085b4e4bede"
+                    },
+                    {
+                      "id": "fc65dcac-c0ef-45e9-952c-cca45a76dc06",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"products\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"subscriptions\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/connect?expand=accounts.liability.mch_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "connect"
+                          ],
+                          "query": [
+                            {
+                              "description": "Expand connected accounts inline on entity connect resources.\nSupports expanding the account list itself or one level of account fields.\n",
+                              "key": "expand",
+                              "value": "accounts.liability.mch_id"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-fc65dcac-c0ef-45e9-952c-cca45a76dc06"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:11:58.000Z",
+                  "updatedAt": "2026-07-28T02:11:58.000Z",
+                  "uid": "35240-620a938c-10e7-4163-bed0-a9c6f47d93b8"
+                }
+              ],
+              "id": "efd0f57c-5a3d-4839-ba73-918afcee23c9",
+              "createdAt": "2026-07-28T02:11:58.000Z",
+              "updatedAt": "2026-07-28T02:11:58.000Z",
+              "uid": "35240-efd0f57c-5a3d-4839-ba73-918afcee23c9"
+            },
+            {
+              "name": "manual_connect",
+              "item": [
+                {
+                  "name": "{mcxnId}",
+                  "item": [
+                    {
+                      "name": "Retrieve an entity manual connect session",
+                      "id": "32c17b48-7baa-4a7c-b856-ccd5f0d7be2b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect/:mcxnId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect",
+                            ":mcxnId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "e7997a57-2e73-41df-b70a-7f08c054ec9f",
+                              "key": "entityId",
+                              "value": "ent_HGLpH",
+                              "description": "(Required) Unique identifier for the entity."
+                            },
+                            {
+                              "id": "cc88eb39-af70-4f85-8aff-e8e370654416",
+                              "key": "mcxnId",
+                              "value": "mcxn_IXZhc1d",
+                              "description": "(Required) Unique identifier for the entity manual connect session."
+                            }
+                          ]
+                        },
+                        "description": "Returns a single entity manual connect session by its identifier."
+                      },
+                      "response": [
+                        {
+                          "id": "948cb49c-69f5-4ed3-a69a-1e04a284246b",
+                          "name": "The requested entity manual connect session.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/manual_connect/:mcxnId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "manual_connect",
+                                ":mcxnId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "mcxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"completed\",\n    \"accounts\": [\n      \"acc_7M5E\",\n      \"acc_8hm__kFn\"\n    ],\n    \"requested_products\": null,\n    \"requested_subscriptions\": null,\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-948cb49c-69f5-4ed3-a69a-1e04a284246b"
+                        },
+                        {
+                          "id": "d911cab9-1a5f-49ee-b8c1-970b4dbda78b",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/manual_connect/:mcxnId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "manual_connect",
+                                ":mcxnId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "mcxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-d911cab9-1a5f-49ee-b8c1-970b4dbda78b"
+                        },
+                        {
+                          "id": "8b799228-2204-4df9-a658-5ce3dd123b03",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/manual_connect/:mcxnId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "manual_connect",
+                                ":mcxnId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "mcxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-8b799228-2204-4df9-a658-5ce3dd123b03"
+                        },
+                        {
+                          "id": "4acccdda-a8aa-4827-b56b-df93d04b2e53",
+                          "name": "Forbidden - insufficient permissions for this operation.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/manual_connect/:mcxnId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "manual_connect",
+                                ":mcxnId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "mcxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-4acccdda-a8aa-4827-b56b-df93d04b2e53"
+                        },
+                        {
+                          "id": "c956bfdb-788b-48ea-80d6-83134aa01419",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/manual_connect/:mcxnId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "manual_connect",
+                                ":mcxnId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "mcxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-c956bfdb-788b-48ea-80d6-83134aa01419"
+                        },
+                        {
+                          "id": "380b5f7a-16fa-4672-958e-cce3a6746e23",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/manual_connect/:mcxnId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "manual_connect",
+                                ":mcxnId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "mcxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-380b5f7a-16fa-4672-958e-cce3a6746e23"
+                        },
+                        {
+                          "id": "9b03dd4b-caf6-4ed1-9a3c-34458903c37a",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/entities/:entityId/manual_connect/:mcxnId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "entities",
+                                ":entityId",
+                                "manual_connect",
+                                ":mcxnId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entityId"
+                                },
+                                {
+                                  "key": "mcxnId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:11:58.000Z",
+                          "updatedAt": "2026-07-28T02:11:58.000Z",
+                          "uid": "35240-9b03dd4b-caf6-4ed1-9a3c-34458903c37a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-32c17b48-7baa-4a7c-b856-ccd5f0d7be2b"
+                    }
+                  ],
+                  "id": "f5e816f8-99d5-4b66-8257-b51efe04ed8a",
+                  "createdAt": "2026-07-28T02:11:58.000Z",
+                  "updatedAt": "2026-07-28T02:11:58.000Z",
+                  "uid": "35240-f5e816f8-99d5-4b66-8257-b51efe04ed8a"
+                },
+                {
+                  "name": "Create an entity manual connect session",
+                  "id": "6bef0dc4-21cf-40ef-831e-a0c8e1a49312",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId",
+                        "manual_connect"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3fda707b-2b9b-45fa-ad53-97876de05aad",
+                          "key": "entityId",
+                          "value": "ent_HGLpH",
+                          "description": "(Required) Unique identifier for the entity."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new manual connect session for the specified entity."
+                  },
+                  "response": [
+                    {
+                      "id": "7cf9e2bb-f567-4b76-837d-1ca9ccfdecb0",
+                      "name": "The created entity manual connect session.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"completed\",\n    \"accounts\": [\n      \"acc_7M5E\",\n      \"acc_8hm__kFn\"\n    ],\n    \"requested_products\": null,\n    \"requested_subscriptions\": null,\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-7cf9e2bb-f567-4b76-837d-1ca9ccfdecb0"
+                    },
+                    {
+                      "id": "aa1d7c54-fbfb-412f-a037-1294d981d6ff",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-aa1d7c54-fbfb-412f-a037-1294d981d6ff"
+                    },
+                    {
+                      "id": "b677464f-551a-436a-940b-d7fcb0fb8043",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-b677464f-551a-436a-940b-d7fcb0fb8043"
+                    },
+                    {
+                      "id": "86fa57e2-85fb-4a2d-aafe-264719bfc0ad",
+                      "name": "Forbidden - insufficient permissions for this operation.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-86fa57e2-85fb-4a2d-aafe-264719bfc0ad"
+                    },
+                    {
+                      "id": "91284ee4-e392-4987-a24c-7ac1a014ea98",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-91284ee4-e392-4987-a24c-7ac1a014ea98"
+                    },
+                    {
+                      "id": "42064235-7d23-421a-b4ab-259526d9aa77",
+                      "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-42064235-7d23-421a-b4ab-259526d9aa77"
+                    },
+                    {
+                      "id": "4a5776da-8831-4ab9-a7f8-e8ec17ab1f19",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-4a5776da-8831-4ab9-a7f8-e8ec17ab1f19"
+                    },
+                    {
+                      "id": "53738ee0-1fb6-49da-8964-10e2b72d1107",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"bureau\": \"equifax\",\n  \"tradelines\": [\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    },\n    {\n      \"type_code\": \"<string,null>\",\n      \"portfolio_type_code\": \"<string,null>\",\n      \"designator_code\": \"<string,null>\",\n      \"number\": \"<string,null>\",\n      \"creditor_name\": \"<string,null>\",\n      \"creditor_code\": \"<string,null>\",\n      \"balance\": \"<number,null>\",\n      \"highest_balance\": \"<number,null>\",\n      \"credit_limit\": \"<number,null>\",\n      \"term\": \"<number,null>\",\n      \"next_payment_minimum_amount\": \"<number,null>\",\n      \"last_payment_amount\": \"<number,null>\",\n      \"payment_history\": null,\n      \"past_due_amount\": \"<number,null>\",\n      \"delinquency_charge_off_amount\": \"<number,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"last_activity_date\": \"<string,null-date>\",\n      \"reported_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"delinquency_first_start_date\": \"<string,null-date>\",\n      \"narrative_codes\": null,\n      \"external_id\": \"<string,null>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/entities/:entityId/manual_connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "entities",
+                            ":entityId",
+                            "manual_connect"
+                          ],
+                          "variable": [
+                            {
+                              "key": "entityId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:11:58.000Z",
+                      "updatedAt": "2026-07-28T02:11:58.000Z",
+                      "uid": "35240-53738ee0-1fb6-49da-8964-10e2b72d1107"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:11:58.000Z",
+                  "updatedAt": "2026-07-28T02:11:58.000Z",
+                  "uid": "35240-6bef0dc4-21cf-40ef-831e-a0c8e1a49312"
+                }
+              ],
+              "id": "084e9f7f-effc-406a-a1a5-34cd78ae9b54",
+              "createdAt": "2026-07-28T02:11:58.000Z",
+              "updatedAt": "2026-07-28T02:11:58.000Z",
+              "uid": "35240-084e9f7f-effc-406a-a1a5-34cd78ae9b54"
+            }
+          ],
+          "id": "02d281ea-9870-4f57-ae61-3eb989273b3e",
+          "createdAt": "2026-07-28T02:11:58.000Z",
+          "updatedAt": "2026-07-28T02:11:58.000Z",
+          "uid": "35240-02d281ea-9870-4f57-ae61-3eb989273b3e"
+        }
+      ],
+      "id": "c478bee5-5f7a-4e7e-ba5a-d9a0a5a4224b",
+      "createdAt": "2026-07-28T02:11:58.000Z",
+      "updatedAt": "2026-07-28T02:11:58.000Z",
+      "uid": "35240-c478bee5-5f7a-4e7e-ba5a-d9a0a5a4224b"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

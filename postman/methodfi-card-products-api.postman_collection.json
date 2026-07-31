@@ -1,0 +1,430 @@
+{
+  "info": {
+    "_postman_id": "bc23b1fe-21d3-4251-b16c-0eb7c9900493",
+    "name": "Method Account Attributes Card Products API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:11:38.000Z",
+    "updatedAt": "2026-07-28T02:11:38.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-bc23b1fe-21d3-4251-b16c-0eb7c9900493"
+  },
+  "item": [
+    {
+      "name": "card_products",
+      "item": [
+        {
+          "name": "{product_id}",
+          "item": [
+            {
+              "name": "Retrieve a card product",
+              "id": "2a8fbdf7-b367-4b41-b1fa-bbf1f8741271",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/card_products/:product_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "card_products",
+                    ":product_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "6893fdee-1eaf-41b7-b9bc-3f2d01cde346",
+                      "key": "product_id",
+                      "value": "<string>",
+                      "description": "(Required) Unique identifier for the card product."
+                    }
+                  ]
+                },
+                "description": "Returns a single card product by its identifier. Card products describe specific card programs from networks and issuers."
+              },
+              "response": [
+                {
+                  "id": "ce93729a-fb59-4a0b-a9d3-286895284653",
+                  "name": "The requested card product.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/card_products/:product_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "card_products",
+                        ":product_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"network\": \"<string,null>\",\n    \"issuer\": \"<string,null>\",\n    \"name\": \"<string,null>\",\n    \"type\": \"generic\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"brands\": null,\n    \"error\": {\n      \"type\": \"<string>\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string,null>\"\n}",
+                  "createdAt": "2026-07-28T02:11:38.000Z",
+                  "updatedAt": "2026-07-28T02:11:38.000Z",
+                  "uid": "35240-ce93729a-fb59-4a0b-a9d3-286895284653"
+                },
+                {
+                  "id": "26613f63-b3b4-473a-9e54-1c8210652aae",
+                  "name": "Bad request - invalid parameters or request body.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/card_products/:product_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "card_products",
+                        ":product_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:38.000Z",
+                  "updatedAt": "2026-07-28T02:11:38.000Z",
+                  "uid": "35240-26613f63-b3b4-473a-9e54-1c8210652aae"
+                },
+                {
+                  "id": "76dce882-21b6-4670-addb-b520f001a855",
+                  "name": "Unauthorized - missing or invalid authentication token.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/card_products/:product_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "card_products",
+                        ":product_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:38.000Z",
+                  "updatedAt": "2026-07-28T02:11:38.000Z",
+                  "uid": "35240-76dce882-21b6-4670-addb-b520f001a855"
+                },
+                {
+                  "id": "96bb2939-0db7-4481-9cfd-d7c3f0180472",
+                  "name": "Not found - the requested resource does not exist.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/card_products/:product_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "card_products",
+                        ":product_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:38.000Z",
+                  "updatedAt": "2026-07-28T02:11:38.000Z",
+                  "uid": "35240-96bb2939-0db7-4481-9cfd-d7c3f0180472"
+                },
+                {
+                  "id": "080d7554-b2dd-44c3-adf9-086bce73a581",
+                  "name": "Too many requests - rate limit exceeded.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/card_products/:product_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "card_products",
+                        ":product_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of seconds to wait before retrying.",
+                        "type": "text/plain"
+                      },
+                      "key": "Retry-After",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:38.000Z",
+                  "updatedAt": "2026-07-28T02:11:38.000Z",
+                  "uid": "35240-080d7554-b2dd-44c3-adf9-086bce73a581"
+                },
+                {
+                  "id": "f3161282-ba4d-42d7-b204-b903c4b2a0bc",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/card_products/:product_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "card_products",
+                        ":product_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "product_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:38.000Z",
+                  "updatedAt": "2026-07-28T02:11:38.000Z",
+                  "uid": "35240-f3161282-ba4d-42d7-b204-b903c4b2a0bc"
+                }
+              ],
+              "createdAt": "2026-07-28T02:11:38.000Z",
+              "updatedAt": "2026-07-28T02:11:38.000Z",
+              "uid": "35240-2a8fbdf7-b367-4b41-b1fa-bbf1f8741271"
+            }
+          ],
+          "id": "278788ae-55b8-4688-933f-745c99a63ecd",
+          "createdAt": "2026-07-28T02:11:38.000Z",
+          "updatedAt": "2026-07-28T02:11:38.000Z",
+          "uid": "35240-278788ae-55b8-4688-933f-745c99a63ecd"
+        }
+      ],
+      "id": "c24b749d-29d9-4227-a58d-67219e8d0cd5",
+      "createdAt": "2026-07-28T02:11:38.000Z",
+      "updatedAt": "2026-07-28T02:11:38.000Z",
+      "uid": "35240-c24b749d-29d9-4227-a58d-67219e8d0cd5"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

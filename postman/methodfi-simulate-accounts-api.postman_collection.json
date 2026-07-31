@@ -1,0 +1,1215 @@
+{
+  "info": {
+    "_postman_id": "153bd0b2-1d7a-4b10-beaa-22263e11af0d",
+    "name": "Method Account Attributes Simulate Accounts API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:12:43.000Z",
+    "updatedAt": "2026-07-28T02:12:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-153bd0b2-1d7a-4b10-beaa-22263e11af0d"
+  },
+  "item": [
+    {
+      "name": "simulate",
+      "item": [
+        {
+          "name": "accounts",
+          "item": [
+            {
+              "name": "{accountId}",
+              "item": [
+                {
+                  "name": "verification_sessions",
+                  "item": [
+                    {
+                      "name": "{avfId}",
+                      "item": [
+                        {
+                          "name": "amounts",
+                          "item": [
+                            {
+                              "name": "Retrieve micro-deposit verification amounts",
+                              "id": "49a5c3a2-88bc-4cec-ba30-b02460cf64bb",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "bearer",
+                                  "bearer": [
+                                    {
+                                      "key": "token",
+                                      "value": "{{bearerToken}}",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/simulate/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "simulate",
+                                    "accounts",
+                                    ":accountId",
+                                    "verification_sessions",
+                                    ":avfId",
+                                    "amounts"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "eebcccb2-80c2-4f14-b19d-2f21999ab97d",
+                                      "key": "accountId",
+                                      "value": "acc_9",
+                                      "description": "(Required) Unique identifier for the account."
+                                    },
+                                    {
+                                      "id": "ccaf4a18-b91e-4a8c-bf75-ec8121f2be6e",
+                                      "key": "avfId",
+                                      "value": "avf_GKwcj6KbW",
+                                      "description": "(Required) Unique identifier for the verification session."
+                                    }
+                                  ]
+                                },
+                                "description": "Returns the micro-deposit amounts for a verification session in the sandbox environment.\nUse this to retrieve the test amounts needed to complete micro-deposit verification during development.\n\n**Development only** - This endpoint is only available in the sandbox environment.\n"
+                              },
+                              "response": [
+                                {
+                                  "id": "2bc1b8fe-51f3-4ad6-b941-68b351d99a31",
+                                  "name": "The micro-deposit amounts for the verification session.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                        "key": "Method-Version",
+                                        "value": "2025-12-01"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/simulate/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "simulate",
+                                        "accounts",
+                                        ":accountId",
+                                        "verification_sessions",
+                                        ":avfId",
+                                        "amounts"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "accountId"
+                                        },
+                                        {
+                                          "key": "avfId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"message\": \"<string,null>\"\n}",
+                                  "createdAt": "2026-07-28T02:12:44.000Z",
+                                  "updatedAt": "2026-07-28T02:12:44.000Z",
+                                  "uid": "35240-2bc1b8fe-51f3-4ad6-b941-68b351d99a31"
+                                },
+                                {
+                                  "id": "1fa9983a-6221-4cbf-a6cc-e344d3b59ab3",
+                                  "name": "Bad request - invalid parameters or request body.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                        "key": "Method-Version",
+                                        "value": "2025-12-01"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/simulate/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "simulate",
+                                        "accounts",
+                                        ":accountId",
+                                        "verification_sessions",
+                                        ":avfId",
+                                        "amounts"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "accountId"
+                                        },
+                                        {
+                                          "key": "avfId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T02:12:44.000Z",
+                                  "updatedAt": "2026-07-28T02:12:44.000Z",
+                                  "uid": "35240-1fa9983a-6221-4cbf-a6cc-e344d3b59ab3"
+                                },
+                                {
+                                  "id": "7d9e3a07-1b2f-41d1-84b1-d6a29cae17e7",
+                                  "name": "Unauthorized - missing or invalid authentication token.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                        "key": "Method-Version",
+                                        "value": "2025-12-01"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/simulate/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "simulate",
+                                        "accounts",
+                                        ":accountId",
+                                        "verification_sessions",
+                                        ":avfId",
+                                        "amounts"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "accountId"
+                                        },
+                                        {
+                                          "key": "avfId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T02:12:44.000Z",
+                                  "updatedAt": "2026-07-28T02:12:44.000Z",
+                                  "uid": "35240-7d9e3a07-1b2f-41d1-84b1-d6a29cae17e7"
+                                },
+                                {
+                                  "id": "7df6ebfa-9deb-4470-bab7-8393adc0c481",
+                                  "name": "Not found - the requested resource does not exist.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                        "key": "Method-Version",
+                                        "value": "2025-12-01"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/simulate/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "simulate",
+                                        "accounts",
+                                        ":accountId",
+                                        "verification_sessions",
+                                        ":avfId",
+                                        "amounts"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "accountId"
+                                        },
+                                        {
+                                          "key": "avfId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Not Found",
+                                  "code": 404,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T02:12:44.000Z",
+                                  "updatedAt": "2026-07-28T02:12:44.000Z",
+                                  "uid": "35240-7df6ebfa-9deb-4470-bab7-8393adc0c481"
+                                },
+                                {
+                                  "id": "d05f48c3-a1f0-4911-a0cb-6e8eaa7be4c7",
+                                  "name": "Internal server error.",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                        "key": "Method-Version",
+                                        "value": "2025-12-01"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/simulate/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "simulate",
+                                        "accounts",
+                                        ":accountId",
+                                        "verification_sessions",
+                                        ":avfId",
+                                        "amounts"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "accountId"
+                                        },
+                                        {
+                                          "key": "avfId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T02:12:44.000Z",
+                                  "updatedAt": "2026-07-28T02:12:44.000Z",
+                                  "uid": "35240-d05f48c3-a1f0-4911-a0cb-6e8eaa7be4c7"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T02:12:44.000Z",
+                              "updatedAt": "2026-07-28T02:12:44.000Z",
+                              "uid": "35240-49a5c3a2-88bc-4cec-ba30-b02460cf64bb"
+                            }
+                          ],
+                          "id": "f1ca55f8-fb55-4698-b48a-3569339aa2b1",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-f1ca55f8-fb55-4698-b48a-3569339aa2b1"
+                        }
+                      ],
+                      "id": "820c8a08-58a7-4eb2-85f9-f1aca3346e55",
+                      "createdAt": "2026-07-28T02:12:44.000Z",
+                      "updatedAt": "2026-07-28T02:12:44.000Z",
+                      "uid": "35240-820c8a08-58a7-4eb2-85f9-f1aca3346e55"
+                    }
+                  ],
+                  "id": "3bf1c0bc-2495-4628-bacc-1f46f64f1a48",
+                  "createdAt": "2026-07-28T02:12:44.000Z",
+                  "updatedAt": "2026-07-28T02:12:44.000Z",
+                  "uid": "35240-3bf1c0bc-2495-4628-bacc-1f46f64f1a48"
+                },
+                {
+                  "name": "transactions",
+                  "item": [
+                    {
+                      "name": "Simulate a transaction",
+                      "id": "b348fd71-d44a-4de9-9e49-3f8c3b1762dc",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": \"<integer>\",\n  \"type\": \"<string>\",\n  \"merchant_name\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/simulate/accounts/:accountId/transactions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "simulate",
+                            "accounts",
+                            ":accountId",
+                            "transactions"
+                          ],
+                          "variable": [
+                            {
+                              "id": "8e893fd6-1096-462e-9e9b-bb36e04b2fd8",
+                              "key": "accountId",
+                              "value": "acc_9",
+                              "description": "(Required) Unique identifier for the account."
+                            }
+                          ]
+                        },
+                        "description": "Creates a simulated transaction on an account in the sandbox environment.\nUse this to test transaction-related flows during development.\n\n**Development only** - This endpoint is only available in the sandbox environment.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "55096cca-03d1-4107-be3d-d0dd27200b7c",
+                          "name": "The simulated transaction.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"amount\": \"<integer>\",\n  \"type\": \"<string>\",\n  \"merchant_name\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/transactions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "transactions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"txn_warZ4p4\",\n    \"account_id\": \"<string>\",\n    \"merchant\": null,\n    \"amount\": \"<number,null>\",\n    \"auth_amount\": \"<number,null>\",\n    \"currency_code\": \"<string,null>\",\n    \"transaction_amount\": \"<number,null>\",\n    \"transaction_auth_amount\": \"<number,null>\",\n    \"transaction_currency_code\": \"<string,null>\",\n    \"status\": \"posted\",\n    \"descriptor\": \"<string,null>\",\n    \"transacted_at\": \"<string,null-date-time>\",\n    \"posted_at\": \"<string,null-date-time>\",\n    \"voided_at\": \"<string,null-date-time>\",\n    \"original_txn_id\": \"<string,null>\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-55096cca-03d1-4107-be3d-d0dd27200b7c"
+                        },
+                        {
+                          "id": "42a6fb9d-77a1-41f4-9e0c-733919858945",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"amount\": \"<integer>\",\n  \"type\": \"<string>\",\n  \"merchant_name\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/transactions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "transactions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-42a6fb9d-77a1-41f4-9e0c-733919858945"
+                        },
+                        {
+                          "id": "0e43e4c9-b191-4e46-b086-1a84e05c4eae",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"amount\": \"<integer>\",\n  \"type\": \"<string>\",\n  \"merchant_name\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/transactions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "transactions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-0e43e4c9-b191-4e46-b086-1a84e05c4eae"
+                        },
+                        {
+                          "id": "861bae10-e0d6-4469-b079-259010c9082b",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"amount\": \"<integer>\",\n  \"type\": \"<string>\",\n  \"merchant_name\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/transactions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "transactions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-861bae10-e0d6-4469-b079-259010c9082b"
+                        },
+                        {
+                          "id": "c57b9e19-747c-490e-b73c-534d149c8ac6",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"amount\": \"<integer>\",\n  \"type\": \"<string>\",\n  \"merchant_name\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/transactions",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "transactions"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-c57b9e19-747c-490e-b73c-534d149c8ac6"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:12:44.000Z",
+                      "updatedAt": "2026-07-28T02:12:44.000Z",
+                      "uid": "35240-b348fd71-d44a-4de9-9e49-3f8c3b1762dc"
+                    }
+                  ],
+                  "id": "2edc89f9-ffbf-4a14-9614-d632d9985740",
+                  "createdAt": "2026-07-28T02:12:44.000Z",
+                  "updatedAt": "2026-07-28T02:12:44.000Z",
+                  "uid": "35240-2edc89f9-ffbf-4a14-9614-d632d9985740"
+                },
+                {
+                  "name": "card_brands",
+                  "item": [
+                    {
+                      "name": "Simulate a card brand",
+                      "id": "6b26dc3c-8d27-4079-a1e5-96aac2a453a7",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/simulate/accounts/:accountId/card_brands",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "simulate",
+                            "accounts",
+                            ":accountId",
+                            "card_brands"
+                          ],
+                          "variable": [
+                            {
+                              "id": "060c6708-2ce6-4fc3-ae23-b84383131c1a",
+                              "key": "accountId",
+                              "value": "acc_9",
+                              "description": "(Required) Unique identifier for the account."
+                            }
+                          ]
+                        },
+                        "description": "Creates a simulated card brand result for an account in the sandbox environment.\nUse this to test card brand retrieval flows during development.\n\n**Development only** - This endpoint is only available in the sandbox environment.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "53ddb39d-ea72-4da5-9987-37288910ca20",
+                          "name": "The simulated card brand result.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/card_brands",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "card_brands"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"cbrd_99y4JO0cx19\",\n    \"account_id\": \"acc_jkZde11P4v\",\n    \"status\": \"completed\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"brands\": [\n      {\n        \"id\": \"<string>\",\n        \"card_product_id\": \"<string,null>\",\n        \"description\": \"<string>\",\n        \"name\": \"<string>\",\n        \"issuer\": \"<string>\",\n        \"network\": \"<string>\",\n        \"network_tier\": \"<string>\",\n        \"type\": \"<string,null>\",\n        \"url\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"card_product_id\": \"<string,null>\",\n        \"description\": \"<string>\",\n        \"name\": \"<string>\",\n        \"issuer\": \"<string>\",\n        \"network\": \"<string>\",\n        \"network_tier\": \"<string>\",\n        \"type\": \"<string,null>\",\n        \"url\": \"<string>\"\n      }\n    ],\n    \"source\": \"network\",\n    \"shared\": \"<boolean>\",\n    \"network\": null,\n    \"issuer\": \"<string,null>\",\n    \"last4\": \"<string,null>\",\n    \"error\": {\n      \"type\": \"<string>\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-53ddb39d-ea72-4da5-9987-37288910ca20"
+                        },
+                        {
+                          "id": "c08a2a00-c14e-4f0e-ad31-87ec8f67f287",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/card_brands",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "card_brands"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-c08a2a00-c14e-4f0e-ad31-87ec8f67f287"
+                        },
+                        {
+                          "id": "3ad3fde5-4bb1-4d8f-b8bb-7f683412e6a8",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/card_brands",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "card_brands"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-3ad3fde5-4bb1-4d8f-b8bb-7f683412e6a8"
+                        },
+                        {
+                          "id": "bcc92ddb-6a10-42aa-8341-4cdbc464a509",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/card_brands",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "card_brands"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-bcc92ddb-6a10-42aa-8341-4cdbc464a509"
+                        },
+                        {
+                          "id": "f4508a43-34fb-4ef3-9744-60bfe2191dd6",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/accounts/:accountId/card_brands",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "accounts",
+                                ":accountId",
+                                "card_brands"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:44.000Z",
+                          "updatedAt": "2026-07-28T02:12:44.000Z",
+                          "uid": "35240-f4508a43-34fb-4ef3-9744-60bfe2191dd6"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:12:44.000Z",
+                      "updatedAt": "2026-07-28T02:12:44.000Z",
+                      "uid": "35240-6b26dc3c-8d27-4079-a1e5-96aac2a453a7"
+                    }
+                  ],
+                  "id": "c9eed909-9be6-4869-8b41-931e6bc48808",
+                  "createdAt": "2026-07-28T02:12:44.000Z",
+                  "updatedAt": "2026-07-28T02:12:44.000Z",
+                  "uid": "35240-c9eed909-9be6-4869-8b41-931e6bc48808"
+                }
+              ],
+              "id": "341a2d83-c358-49c5-b0e1-ebe19d9d2112",
+              "createdAt": "2026-07-28T02:12:44.000Z",
+              "updatedAt": "2026-07-28T02:12:44.000Z",
+              "uid": "35240-341a2d83-c358-49c5-b0e1-ebe19d9d2112"
+            }
+          ],
+          "id": "47b6251a-49a8-46ec-bd70-197794d3b022",
+          "createdAt": "2026-07-28T02:12:44.000Z",
+          "updatedAt": "2026-07-28T02:12:44.000Z",
+          "uid": "35240-47b6251a-49a8-46ec-bd70-197794d3b022"
+        }
+      ],
+      "id": "9b27fd0b-fe69-4c62-9f84-ab6f014a6295",
+      "createdAt": "2026-07-28T02:12:44.000Z",
+      "updatedAt": "2026-07-28T02:12:44.000Z",
+      "uid": "35240-9b27fd0b-fe69-4c62-9f84-ab6f014a6295"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

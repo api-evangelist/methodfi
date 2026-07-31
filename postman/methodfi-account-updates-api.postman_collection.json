@@ -1,0 +1,1531 @@
+{
+  "info": {
+    "_postman_id": "5361df98-12b1-4f68-b372-925a11d315aa",
+    "name": "Method Account Attributes Account Updates API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:09:43.000Z",
+    "updatedAt": "2026-07-28T02:09:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5361df98-12b1-4f68-b372-925a11d315aa"
+  },
+  "item": [
+    {
+      "name": "accounts",
+      "item": [
+        {
+          "name": "{accountId}",
+          "item": [
+            {
+              "name": "updates",
+              "item": [
+                {
+                  "name": "{updateId}",
+                  "item": [
+                    {
+                      "name": "Retrieve an account update",
+                      "id": "e145375b-4081-4670-ada2-b95a6baf9e8d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates/:updateId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates",
+                            ":updateId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "964359de-831c-4789-8ff0-d1fde1ee397d",
+                              "key": "accountId",
+                              "value": "acc_vrvDtlzDwNC",
+                              "description": "(Required) Unique identifier for the account."
+                            },
+                            {
+                              "id": "0851bc38-1d4e-478b-b71e-196b2f74cea6",
+                              "key": "updateId",
+                              "value": "upd_IY95UT",
+                              "description": "(Required) Unique identifier for the account update."
+                            }
+                          ]
+                        },
+                        "description": "Retrieves an account update by its unique identifier."
+                      },
+                      "response": [
+                        {
+                          "id": "7b03d725-d827-46f8-a2b2-05fa851e52c0",
+                          "name": "The requested account update.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/updates/:updateId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "updates",
+                                ":updateId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "updateId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"upd_2\",\n    \"account_id\": \"acc_E_WW\",\n    \"status\": \"completed\",\n    \"type\": \"auto_loan\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"source\": \"direct\",\n    \"data_as_of\": \"<string,null-date-time>\",\n    \"credit_card\": {\n      \"sub_type\": \"<string,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"balance\": \"<integer,null>\",\n      \"last_payment_amount\": \"<integer,null>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"next_payment_minimum_amount\": \"<integer,null>\",\n      \"interest_rate_type\": \"<string,null>\",\n      \"interest_rate_percentage_max\": \"<number,null>\",\n      \"interest_rate_percentage_min\": \"<number,null>\",\n      \"available_credit\": \"<integer,null>\",\n      \"credit_limit\": \"<integer,null>\",\n      \"usage_pattern\": \"<string,null>\"\n    },\n    \"auto_loan\": null,\n    \"mortgage\": {\n      \"sub_type\": \"<string,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"balance\": \"<integer,null>\",\n      \"last_payment_amount\": \"<integer,null>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"next_payment_minimum_amount\": \"<integer,null>\",\n      \"interest_rate_type\": \"<string,null>\",\n      \"expected_payoff_date\": \"<string,null-date>\",\n      \"original_loan_amount\": \"<integer,null>\",\n      \"term_length\": \"<integer,null>\",\n      \"interest_rate_percentage\": \"<number,null>\",\n      \"interest_rate_source\": \"<string,null>\"\n    },\n    \"personal_loan\": null,\n    \"student_loan\": {\n      \"sub_type\": \"<string,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"balance\": \"<integer,null>\",\n      \"last_payment_amount\": \"<integer,null>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"next_payment_minimum_amount\": \"<integer,null>\",\n      \"interest_rate_type\": \"<string,null>\",\n      \"expected_payoff_date\": \"<string,null-date>\",\n      \"original_loan_amount\": \"<integer,null>\",\n      \"term_length\": \"<integer,null>\",\n      \"interest_rate_percentage\": \"<number,null>\",\n      \"interest_rate_source\": \"<string,null>\"\n    },\n    \"student_loans\": null,\n    \"bnpl\": null,\n    \"fintech\": null,\n    \"error\": {\n      \"type\": \"UPDATE_FAILED\",\n      \"code\": 21001,\n      \"sub_type\": \"UPDATE_TEMPORARILY_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    }\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:09:43.000Z",
+                          "updatedAt": "2026-07-28T02:09:43.000Z",
+                          "uid": "35240-7b03d725-d827-46f8-a2b2-05fa851e52c0"
+                        },
+                        {
+                          "id": "d10a4e31-5143-405b-94ea-2d5d04b1af38",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/updates/:updateId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "updates",
+                                ":updateId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "updateId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:43.000Z",
+                          "updatedAt": "2026-07-28T02:09:43.000Z",
+                          "uid": "35240-d10a4e31-5143-405b-94ea-2d5d04b1af38"
+                        },
+                        {
+                          "id": "d8d30569-bbc7-4e11-aef6-a2c154c8188e",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/updates/:updateId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "updates",
+                                ":updateId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "updateId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:43.000Z",
+                          "updatedAt": "2026-07-28T02:09:43.000Z",
+                          "uid": "35240-d8d30569-bbc7-4e11-aef6-a2c154c8188e"
+                        },
+                        {
+                          "id": "9153f56d-d84e-4570-baeb-6a0a9bf1d4ec",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/updates/:updateId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "updates",
+                                ":updateId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "updateId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:43.000Z",
+                          "updatedAt": "2026-07-28T02:09:43.000Z",
+                          "uid": "35240-9153f56d-d84e-4570-baeb-6a0a9bf1d4ec"
+                        },
+                        {
+                          "id": "eaedee34-c62f-4604-83da-c3c3690d3af3",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/updates/:updateId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "updates",
+                                ":updateId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "updateId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:43.000Z",
+                          "updatedAt": "2026-07-28T02:09:43.000Z",
+                          "uid": "35240-eaedee34-c62f-4604-83da-c3c3690d3af3"
+                        },
+                        {
+                          "id": "bc2fc10b-d767-440d-a5c6-714c93e27a17",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/updates/:updateId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "updates",
+                                ":updateId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "updateId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:43.000Z",
+                          "updatedAt": "2026-07-28T02:09:43.000Z",
+                          "uid": "35240-bc2fc10b-d767-440d-a5c6-714c93e27a17"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-e145375b-4081-4670-ada2-b95a6baf9e8d"
+                    }
+                  ],
+                  "id": "44616817-dee0-41c6-bf32-e7115b864ac2",
+                  "createdAt": "2026-07-28T02:09:43.000Z",
+                  "updatedAt": "2026-07-28T02:09:43.000Z",
+                  "uid": "35240-44616817-dee0-41c6-bf32-e7115b864ac2"
+                },
+                {
+                  "name": "List all account updates",
+                  "id": "6b499233-8984-4df6-be9d-d7d82ba7ba7a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId/updates?page=1&page_limit=10&page_cursor=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId",
+                        "updates"
+                      ],
+                      "query": [
+                        {
+                          "description": "Page number for pagination (1-indexed).",
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Number of items per page.",
+                          "key": "page_limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                          "key": "page_cursor",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "7caf4956-8ccc-4aaa-b8fc-742356515019",
+                          "key": "accountId",
+                          "value": "acc_vrvDtlzDwNC",
+                          "description": "(Required) Unique identifier for the account."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of update records for the specified account."
+                  },
+                  "response": [
+                    {
+                      "id": "f715d8bb-97ec-493b-b688-a5211bd74046",
+                      "name": "A paginated list of account updates.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Count",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Limit",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Total-Count",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Prev",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Next",
+                          "value": ""
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"id\": \"upd_2f4_m\",\n      \"account_id\": \"acc_zZ8d1J4SCLA\",\n      \"status\": \"completed\",\n      \"type\": \"fintech\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"source\": \"direct\",\n      \"data_as_of\": \"<string,null-date-time>\",\n      \"credit_card\": {\n        \"sub_type\": \"<string,null>\",\n        \"opened_at\": \"<string,null-date>\",\n        \"closed_at\": \"<string,null-date>\",\n        \"balance\": \"<integer,null>\",\n        \"last_payment_amount\": \"<integer,null>\",\n        \"last_payment_date\": \"<string,null-date>\",\n        \"next_payment_due_date\": \"<string,null-date>\",\n        \"next_payment_minimum_amount\": \"<integer,null>\",\n        \"interest_rate_type\": \"<string,null>\",\n        \"interest_rate_percentage_max\": \"<number,null>\",\n        \"interest_rate_percentage_min\": \"<number,null>\",\n        \"available_credit\": \"<integer,null>\",\n        \"credit_limit\": \"<integer,null>\",\n        \"usage_pattern\": \"<string,null>\"\n      },\n      \"auto_loan\": {\n        \"sub_type\": \"<string,null>\",\n        \"opened_at\": \"<string,null-date>\",\n        \"closed_at\": \"<string,null-date>\",\n        \"balance\": \"<integer,null>\",\n        \"last_payment_amount\": \"<integer,null>\",\n        \"last_payment_date\": \"<string,null-date>\",\n        \"next_payment_due_date\": \"<string,null-date>\",\n        \"next_payment_minimum_amount\": \"<integer,null>\",\n        \"interest_rate_type\": \"<string,null>\",\n        \"expected_payoff_date\": \"<string,null-date>\",\n        \"original_loan_amount\": \"<integer,null>\",\n        \"term_length\": \"<integer,null>\",\n        \"interest_rate_percentage\": \"<number,null>\",\n        \"interest_rate_source\": \"<string,null>\"\n      },\n      \"mortgage\": null,\n      \"personal_loan\": null,\n      \"student_loan\": {\n        \"sub_type\": \"<string,null>\",\n        \"opened_at\": \"<string,null-date>\",\n        \"closed_at\": \"<string,null-date>\",\n        \"balance\": \"<integer,null>\",\n        \"last_payment_amount\": \"<integer,null>\",\n        \"last_payment_date\": \"<string,null-date>\",\n        \"next_payment_due_date\": \"<string,null-date>\",\n        \"next_payment_minimum_amount\": \"<integer,null>\",\n        \"interest_rate_type\": \"<string,null>\",\n        \"expected_payoff_date\": \"<string,null-date>\",\n        \"original_loan_amount\": \"<integer,null>\",\n        \"term_length\": \"<integer,null>\",\n        \"interest_rate_percentage\": \"<number,null>\",\n        \"interest_rate_source\": \"<string,null>\"\n      },\n      \"student_loans\": {\n        \"sub_type\": \"<string,null>\",\n        \"opened_at\": \"<string,null-date>\",\n        \"closed_at\": \"<string,null-date>\",\n        \"balance\": \"<integer,null>\",\n        \"last_payment_amount\": \"<integer,null>\",\n        \"last_payment_date\": \"<string,null-date>\",\n        \"next_payment_due_date\": \"<string,null-date>\",\n        \"next_payment_minimum_amount\": \"<integer,null>\",\n        \"interest_rate_type\": \"<string,null>\",\n        \"disbursements\": null,\n        \"original_loan_amount\": \"<integer,null>\",\n        \"interest_rate_percentage\": \"<number,null>\",\n        \"interest_rate_source\": \"<string,null>\"\n      },\n      \"bnpl\": null,\n      \"fintech\": null,\n      \"error\": {\n        \"type\": \"UPDATE_FAILED\",\n        \"code\": 21001,\n        \"sub_type\": \"UPDATE_TEMPORARILY_UNAVAILABLE\",\n        \"message\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"upd_3rO4\",\n      \"account_id\": \"acc_xVaUNG1P\",\n      \"status\": \"pending\",\n      \"type\": \"student_loan\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"source\": \"snapshot\",\n      \"data_as_of\": \"<string,null-date-time>\",\n      \"credit_card\": {\n        \"sub_type\": \"<string,null>\",\n        \"opened_at\": \"<string,null-date>\",\n        \"closed_at\": \"<string,null-date>\",\n        \"balance\": \"<integer,null>\",\n        \"last_payment_amount\": \"<integer,null>\",\n        \"last_payment_date\": \"<string,null-date>\",\n        \"next_payment_due_date\": \"<string,null-date>\",\n        \"next_payment_minimum_amount\": \"<integer,null>\",\n        \"interest_rate_type\": \"<string,null>\",\n        \"interest_rate_percentage_max\": \"<number,null>\",\n        \"interest_rate_percentage_min\": \"<number,null>\",\n        \"available_credit\": \"<integer,null>\",\n        \"credit_limit\": \"<integer,null>\",\n        \"usage_pattern\": \"<string,null>\"\n      },\n      \"auto_loan\": {\n        \"sub_type\": \"<string,null>\",\n        \"opened_at\": \"<string,null-date>\",\n        \"closed_at\": \"<string,null-date>\",\n        \"balance\": \"<integer,null>\",\n        \"last_payment_amount\": \"<integer,null>\",\n        \"last_payment_date\": \"<string,null-date>\",\n        \"next_payment_due_date\": \"<string,null-date>\",\n        \"next_payment_minimum_amount\": \"<integer,null>\",\n        \"interest_rate_type\": \"<string,null>\",\n        \"expected_payoff_date\": \"<string,null-date>\",\n        \"original_loan_amount\": \"<integer,null>\",\n        \"term_length\": \"<integer,null>\",\n        \"interest_rate_percentage\": \"<number,null>\",\n        \"interest_rate_source\": \"<string,null>\"\n      },\n      \"mortgage\": null,\n      \"personal_loan\": {\n        \"sub_type\": \"<string,null>\",\n        \"opened_at\": \"<string,null-date>\",\n        \"closed_at\": \"<string,null-date>\",\n        \"balance\": \"<integer,null>\",\n        \"last_payment_amount\": \"<integer,null>\",\n        \"last_payment_date\": \"<string,null-date>\",\n        \"next_payment_due_date\": \"<string,null-date>\",\n        \"next_payment_minimum_amount\": \"<integer,null>\",\n        \"interest_rate_type\": \"<string,null>\",\n        \"available_credit\": \"<integer,null>\",\n        \"original_loan_amount\": \"<integer,null>\",\n        \"term_length\": \"<integer,null>\",\n        \"interest_rate_percentage\": \"<number,null>\",\n        \"interest_rate_source\": \"<string,null>\"\n      },\n      \"student_loan\": null,\n      \"student_loans\": null,\n      \"bnpl\": {\n        \"balance\": \"<integer,null>\",\n        \"opened_at\": \"<string,null-date>\",\n        \"closed_at\": \"<string,null-date>\"\n      },\n      \"fintech\": null,\n      \"error\": {\n        \"type\": \"UPDATE_FAILED\",\n        \"code\": 21001,\n        \"sub_type\": \"UPDATE_TEMPORARILY_UNAVAILABLE\",\n        \"message\": \"<string>\"\n      }\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-f715d8bb-97ec-493b-b688-a5211bd74046"
+                    },
+                    {
+                      "id": "7b0bae66-b56e-43a4-acea-39bd71c8a073",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-7b0bae66-b56e-43a4-acea-39bd71c8a073"
+                    },
+                    {
+                      "id": "2c16ab4d-8b60-4540-be6a-52db85a8f76c",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-2c16ab4d-8b60-4540-be6a-52db85a8f76c"
+                    },
+                    {
+                      "id": "b35afaec-07bb-4e24-b020-c764872da28e",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-b35afaec-07bb-4e24-b020-c764872da28e"
+                    },
+                    {
+                      "id": "7ffbaf92-5d34-4f93-9606-4b2cc0eea88c",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-7ffbaf92-5d34-4f93-9606-4b2cc0eea88c"
+                    },
+                    {
+                      "id": "fa25c02d-e1dd-4238-a74b-0d136c3067c8",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-fa25c02d-e1dd-4238-a74b-0d136c3067c8"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:09:43.000Z",
+                  "updatedAt": "2026-07-28T02:09:43.000Z",
+                  "uid": "35240-6b499233-8984-4df6-be9d-d7d82ba7ba7a"
+                },
+                {
+                  "name": "Create an account update",
+                  "id": "a793d815-71c2-4fb0-a64a-6ea5408b3737",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId/updates",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId",
+                        "updates"
+                      ],
+                      "variable": [
+                        {
+                          "id": "146d0521-2519-485f-ac3c-a249cf96ca60",
+                          "key": "accountId",
+                          "value": "acc_vrvDtlzDwNC",
+                          "description": "(Required) Unique identifier for the account."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new update request for the specified account."
+                  },
+                  "response": [
+                    {
+                      "id": "b87dec47-9a76-4678-a259-3b66fd814719",
+                      "name": "The newly created account update.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"upd_2\",\n    \"account_id\": \"acc_E_WW\",\n    \"status\": \"completed\",\n    \"type\": \"auto_loan\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"source\": \"direct\",\n    \"data_as_of\": \"<string,null-date-time>\",\n    \"credit_card\": {\n      \"sub_type\": \"<string,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"balance\": \"<integer,null>\",\n      \"last_payment_amount\": \"<integer,null>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"next_payment_minimum_amount\": \"<integer,null>\",\n      \"interest_rate_type\": \"<string,null>\",\n      \"interest_rate_percentage_max\": \"<number,null>\",\n      \"interest_rate_percentage_min\": \"<number,null>\",\n      \"available_credit\": \"<integer,null>\",\n      \"credit_limit\": \"<integer,null>\",\n      \"usage_pattern\": \"<string,null>\"\n    },\n    \"auto_loan\": null,\n    \"mortgage\": {\n      \"sub_type\": \"<string,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"balance\": \"<integer,null>\",\n      \"last_payment_amount\": \"<integer,null>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"next_payment_minimum_amount\": \"<integer,null>\",\n      \"interest_rate_type\": \"<string,null>\",\n      \"expected_payoff_date\": \"<string,null-date>\",\n      \"original_loan_amount\": \"<integer,null>\",\n      \"term_length\": \"<integer,null>\",\n      \"interest_rate_percentage\": \"<number,null>\",\n      \"interest_rate_source\": \"<string,null>\"\n    },\n    \"personal_loan\": null,\n    \"student_loan\": {\n      \"sub_type\": \"<string,null>\",\n      \"opened_at\": \"<string,null-date>\",\n      \"closed_at\": \"<string,null-date>\",\n      \"balance\": \"<integer,null>\",\n      \"last_payment_amount\": \"<integer,null>\",\n      \"last_payment_date\": \"<string,null-date>\",\n      \"next_payment_due_date\": \"<string,null-date>\",\n      \"next_payment_minimum_amount\": \"<integer,null>\",\n      \"interest_rate_type\": \"<string,null>\",\n      \"expected_payoff_date\": \"<string,null-date>\",\n      \"original_loan_amount\": \"<integer,null>\",\n      \"term_length\": \"<integer,null>\",\n      \"interest_rate_percentage\": \"<number,null>\",\n      \"interest_rate_source\": \"<string,null>\"\n    },\n    \"student_loans\": null,\n    \"bnpl\": null,\n    \"fintech\": null,\n    \"error\": {\n      \"type\": \"UPDATE_FAILED\",\n      \"code\": 21001,\n      \"sub_type\": \"UPDATE_TEMPORARILY_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    }\n  },\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-b87dec47-9a76-4678-a259-3b66fd814719"
+                    },
+                    {
+                      "id": "ec519bcb-de66-43ce-817b-cad386f42a0b",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-ec519bcb-de66-43ce-817b-cad386f42a0b"
+                    },
+                    {
+                      "id": "a0101ff7-9634-42a9-a510-751d739aa687",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-a0101ff7-9634-42a9-a510-751d739aa687"
+                    },
+                    {
+                      "id": "a14d64e4-0d7d-40ab-a083-dc2963f9d880",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-a14d64e4-0d7d-40ab-a083-dc2963f9d880"
+                    },
+                    {
+                      "id": "17de89c4-d815-42cc-8adf-01011cd8972b",
+                      "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-17de89c4-d815-42cc-8adf-01011cd8972b"
+                    },
+                    {
+                      "id": "933fd27e-3745-4323-88b8-81a017eca147",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-933fd27e-3745-4323-88b8-81a017eca147"
+                    },
+                    {
+                      "id": "bfc8bad8-f45c-4616-b075-396b30bcf710",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/updates",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "updates"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:43.000Z",
+                      "updatedAt": "2026-07-28T02:09:43.000Z",
+                      "uid": "35240-bfc8bad8-f45c-4616-b075-396b30bcf710"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:09:43.000Z",
+                  "updatedAt": "2026-07-28T02:09:43.000Z",
+                  "uid": "35240-a793d815-71c2-4fb0-a64a-6ea5408b3737"
+                }
+              ],
+              "id": "b53dc753-da3c-4478-9aa6-199a9a47b53c",
+              "createdAt": "2026-07-28T02:09:43.000Z",
+              "updatedAt": "2026-07-28T02:09:43.000Z",
+              "uid": "35240-b53dc753-da3c-4478-9aa6-199a9a47b53c"
+            }
+          ],
+          "id": "1a1826e4-e7c1-4f7e-b52b-41fdaba6ebaa",
+          "createdAt": "2026-07-28T02:09:43.000Z",
+          "updatedAt": "2026-07-28T02:09:43.000Z",
+          "uid": "35240-1a1826e4-e7c1-4f7e-b52b-41fdaba6ebaa"
+        }
+      ],
+      "id": "53c5f31d-cca2-4160-8ef1-83d9a084bad2",
+      "createdAt": "2026-07-28T02:09:43.000Z",
+      "updatedAt": "2026-07-28T02:09:43.000Z",
+      "uid": "35240-53c5f31d-cca2-4160-8ef1-83d9a084bad2"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

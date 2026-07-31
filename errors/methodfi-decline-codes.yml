@@ -1,0 +1,126 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.methodfi.com/2026-03-30/reference/errors/payment-errors
+description: >-
+  Money-movement failure codes surfaced on the `error` property of Payment,
+  PaymentReversal, Account, and Entity resources when an ACH paydown or related
+  process fails. These are the Method equivalent of card decline / ACH return codes.
+  They complement (do not replace) the API-level request errors in
+  errors/methodfi-problem-types.yml.
+envelope_field: error
+envelope_shape: '{ type, code, sub_type, message }'
+masking: >-
+  Resource error messages are developer-facing (returned on the API resource); Method
+  does not publish a separate buyer-masked subset. Present them to end users with
+  human-friendly copy rather than raw sub_types.
+payment_failures:
+- code: 10001
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_INSUFFICIENT_FUNDS
+  meaning: Source account had insufficient funds.
+  action: Retry after funding the source or notify the payer.
+- code: 10002
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_UNAUTHORIZED
+  meaning: Payment reported unauthorized by the source or destination account holder.
+  action: Do not retry; re-collect authorization.
+- code: 10003
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_INVALID_ACCOUNT
+  meaning: Invalid source or destination account (inactive or nonexistent).
+  action: Re-verify account before retry.
+- code: 10004
+  type: PAYMENT_CANCELED
+  sub_type: PAYMENT_INSUFFICIENT_FUNDS
+  meaning: Payment canceled due to insufficient funds from the source account.
+  action: Recreate payment after funding.
+- code: 10005
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_UNAUTHORIZED_SOURCE
+  meaning: Source account holder reported the payment unauthorized.
+  action: Do not retry; re-collect source authorization.
+- code: 10006
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_UNAUTHORIZED_DESTINATION
+  meaning: Destination account holder reported the payment unauthorized.
+  action: Do not retry; confirm destination.
+- code: 10007
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_INVALID_SOURCE_ACCOUNT
+  meaning: Source account invalid (inactive or nonexistent).
+  action: Re-verify source account.
+- code: 10008
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_INVALID_DESTINATION_ACCOUNT
+  meaning: Destination account invalid (inactive or nonexistent).
+  action: Re-verify destination account.
+- code: 10009
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_REJECTED_BY_DESTINATION_INSTITUTION
+  meaning: Payment rejected by the destination account's financial institution.
+  action: Contact destination FI / try alternate destination.
+- code: 10010
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_REJECTED_INVALID_AMOUNT
+  meaning: Destination FI rejected the payment amount.
+  action: Adjust amount and retry.
+- code: 10011
+  type: PAYMENT_FAILED
+  sub_type: PAYMENT_STOPPED_BY_REQUEST
+  meaning: Payment stopped by request before completion.
+  action: Recreate if still required.
+payment_reversal_failures:
+- code: 14001
+  type: PAYMENT_REVERSAL_FAILED
+  sub_type: PAYMENT_REVERSAL_INSUFFICIENT_FUNDS
+  meaning: Reversal failed due to insufficient funds on the account.
+- code: 14002
+  type: PAYMENT_REVERSAL_FAILED
+  sub_type: PAYMENT_REVERSAL_UNAUTHORIZED
+  meaning: Reversal reported unauthorized by the account holder.
+- code: 14003
+  type: PAYMENT_REVERSAL_FAILED
+  sub_type: PAYMENT_REVERSAL_INVALID_ACCOUNT
+  meaning: Reversal failed due to an invalid account.
+account_disable_failures:
+- code: 11001
+  type: ACCOUNT_DISABLED
+  sub_type: ACCOUNT_INVALID_DETAILS
+  meaning: FI reported invalid account details (wrong account/routing number).
+- code: 11002
+  type: ACCOUNT_DISABLED
+  sub_type: ACCOUNT_CLOSED
+  meaning: Underlying bank account is closed.
+- code: 11003
+  type: ACCOUNT_DISABLED
+  sub_type: ACCOUNT_UNAUTHORIZED_PAYMENT
+  meaning: Account holder reported a payment as unauthorized.
+- code: 11004
+  type: ACCOUNT_DISABLED
+  sub_type: ACCOUNT_DISABLED_CONSENT_WITHDRAWN
+  meaning: Account consent was withdrawn.
+- code: 11005
+  type: ACCOUNT_DISABLED
+  sub_type: ACCOUNT_DISABLED_INVALID_STATE
+  meaning: Underlying liability is in an invalid state.
+entity_disable_failures:
+- code: 12001
+  type: ENTITY_DISABLED
+  sub_type: ENTITY_UNAUTHORIZED_PAYMENT
+  meaning: Entity disabled after FI-reported unauthorized payment (ACH returns R07/R10/R14/R29).
+- code: 12002
+  type: ENTITY_DISABLED
+  sub_type: ENTITY_INVALID_DETAILS
+  meaning: One or more PII values were invalid.
+- code: 12003
+  type: ENTITY_DISABLED
+  sub_type: ENTITY_PENDING_KYC_REVIEW
+  meaning: Entity flagged for KYC review by Method's provider.
+- code: 12004
+  type: ENTITY_DISABLED
+  sub_type: ENTITY_SSN_MISMATCH
+  meaning: Provided PII does not match the identity the SSN belongs to.
+- code: 12005
+  type: ENTITY_DISABLED
+  sub_type: ENTITY_CONSENT_WITHDRAWN
+  meaning: Entity consent was withdrawn.

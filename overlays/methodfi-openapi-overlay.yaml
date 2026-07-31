@@ -1,0 +1,28 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Method API
+  version: 1.0.0
+extends: openapi/methodfi-openapi-original.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-07-20'
+    x-apievangelist-provider: methodfi
+    x-apievangelist-category: [fintech, liability-data, payments, lending, personal-finance]
+    x-apievangelist-conventions: conventions/methodfi-conventions.yml
+    x-apievangelist-authentication: authentication/methodfi-authentication.yml
+    x-apievangelist-errors: errors/methodfi-problem-types.yml
+    x-apievangelist-decline-codes: errors/methodfi-decline-codes.yml
+    x-apievangelist-lifecycle: lifecycle/methodfi-lifecycle.yml
+    x-apievangelist-webhooks: asyncapi/methodfi-webhooks.yml
+    x-apievangelist-data-model: data-model/methodfi-data-model.yml
+- target: $.info
+  update:
+    x-idempotency:
+      supported: true
+      header: Idempotency-Key
+      scope: all POST requests
+    x-rate-limiting:
+      window: 60s rolling, per API key
+      signal: HTTP 429 sub_type TOO_MANY_REQUESTS
+    x-status-page: https://methodfi.statuspage.io

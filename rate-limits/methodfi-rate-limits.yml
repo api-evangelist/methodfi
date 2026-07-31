@@ -1,0 +1,38 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.methodfi.com/2026-03-30/reference/rate-limiting
+scope: per API key
+window: 60-second rolling window
+signal: HTTP 429 with body sub_type TOO_MANY_REQUESTS
+block_duration: 60 seconds
+applies_to_environments: [development, sandbox, production]
+tiers:
+- name: Payment creation
+  limit_count: 120
+  unit: requests/minute
+  scope: POST /payments
+- name: Critical operations
+  limit_count: 60
+  unit: requests/minute
+  scope: payment deletion and report generation
+- name: Standard writes
+  limit_count: 6000
+  unit: requests/minute
+  scope: entity and account operations (create, update, connect, subscriptions); independent buckets per resource
+- name: Other writes
+  limit_count: 1800
+  unit: requests/minute
+  scope: all other write operations
+- name: Reads
+  limit_count: 6000
+  unit: requests/minute
+  scope: all GET requests
+- name: Unauthenticated
+  limit_count: 60
+  unit: requests/minute
+  scope: per IP address, requests without an API key
+handling:
+  - Wait at least 60 seconds before retrying.
+  - Use exponential backoff with jitter.
+  - Combine with Idempotency-Key on POSTs so retried requests are not processed twice.
+enterprise_overrides: Custom rate limits available via Method CSM.

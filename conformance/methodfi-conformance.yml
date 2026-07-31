@@ -1,0 +1,47 @@
+generated: '2026-07-20'
+method: searched
+source: https://methodfi.com/security
+docs: https://methodfi.com/security
+standards:
+- id: pci-dss
+  conforms: true
+  evidence: >-
+    methodfi.com/security states Method "meets and exceeds bank-level security
+    standards. KYC, AML, PCI, identity verification and more."
+- id: nacha-ach
+  conforms: true
+  evidence: >-
+    Money movement is ACH-based; payment/entity resource errors map to NACHA ACH
+    return codes (R07, R10, R14, R29) in the error reference.
+- id: kyc
+  conforms: true
+  evidence: methodfi.com/security cites KYC; entity verification sessions (KBA/SMS/SNA/KYC) implement it.
+- id: aml
+  conforms: true
+  evidence: methodfi.com/security cites AML.
+- id: encryption-in-transit
+  conforms: true
+  evidence: TLS on all API hosts (probed TLSv1.2); security page states data encrypted in transit.
+- id: encryption-at-rest
+  conforms: true
+  evidence: methodfi.com/security states all data encrypted at rest.
+- id: message-level-encryption
+  conforms: true
+  evidence: >-
+    Optional end-to-end MLE with JWKS key discovery documented at
+    docs.methodfi.com/2026-03-30/reference/message-level-encryption.
+- id: idempotency
+  conforms: true
+  evidence: Idempotency-Key header supported on all POST requests.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use a proprietary envelope { success, data.error{ type, code, sub_type,
+    message }, message }, not application/problem+json.
+- id: oauth2
+  conforms: false
+  evidence: Authentication is bearer API key (sk_/pk_) plus Opal session tokens; no OAuth2/OIDC.
+compliance_note: >-
+  Method publishes a security/compliance posture page (bank-level standards, KYC, AML,
+  PCI, encryption at rest and in transit) but does not name a SOC 2 / ISO 27001 report
+  or a public trust center; no named third-party audit certification was found.

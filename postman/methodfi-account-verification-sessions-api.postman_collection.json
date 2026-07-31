@@ -1,0 +1,2709 @@
+{
+  "info": {
+    "_postman_id": "554cb609-3f70-4256-ac4a-c073566ed39f",
+    "name": "Method Account Attributes Account Verification Sessions API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:09:44.000Z",
+    "updatedAt": "2026-07-28T02:09:44.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-554cb609-3f70-4256-ac4a-c073566ed39f"
+  },
+  "item": [
+    {
+      "name": "accounts",
+      "item": [
+        {
+          "name": "{accountId}",
+          "item": [
+            {
+              "name": "verification_sessions",
+              "item": [
+                {
+                  "name": "{avfId}",
+                  "item": [
+                    {
+                      "name": "amounts",
+                      "item": [
+                        {
+                          "name": "Retrieve verification session amounts",
+                          "id": "e877a499-b29b-42c6-a0ad-3056260bb713",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "bearer",
+                              "bearer": [
+                                {
+                                  "key": "token",
+                                  "value": "{{bearerToken}}",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId/amounts",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId",
+                                "amounts"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "0836b45b-aa89-49e1-9827-0272e7a14a75",
+                                  "key": "accountId",
+                                  "value": "acc_aZD4Qa",
+                                  "description": "(Required) Unique identifier for the account."
+                                },
+                                {
+                                  "id": "ce41b56f-3ded-4f6a-88d9-42735b822463",
+                                  "key": "avfId",
+                                  "value": "avf_S2q3KTB9IhS",
+                                  "description": "(Required) Unique identifier for the account verification session."
+                                }
+                              ]
+                            },
+                            "description": "Retrieves the micro deposit amounts for a verification session."
+                          },
+                          "response": [
+                            {
+                              "id": "8f59adda-36f1-4e93-acb6-1498fbcb394d",
+                              "name": "The verification session amounts.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "accounts",
+                                    ":accountId",
+                                    "verification_sessions",
+                                    ":avfId",
+                                    "amounts"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "accountId"
+                                    },
+                                    {
+                                      "key": "avfId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"message\": \"<string,null>\"\n}",
+                              "createdAt": "2026-07-28T02:09:44.000Z",
+                              "updatedAt": "2026-07-28T02:09:44.000Z",
+                              "uid": "35240-8f59adda-36f1-4e93-acb6-1498fbcb394d"
+                            },
+                            {
+                              "id": "51870da6-9b5d-454a-ac83-13d18bff61c0",
+                              "name": "Bad request - invalid parameters or request body.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "accounts",
+                                    ":accountId",
+                                    "verification_sessions",
+                                    ":avfId",
+                                    "amounts"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "accountId"
+                                    },
+                                    {
+                                      "key": "avfId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:09:44.000Z",
+                              "updatedAt": "2026-07-28T02:09:44.000Z",
+                              "uid": "35240-51870da6-9b5d-454a-ac83-13d18bff61c0"
+                            },
+                            {
+                              "id": "be64a20b-3200-4d39-9332-b66f7f4e6bb7",
+                              "name": "Unauthorized - missing or invalid authentication token.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "accounts",
+                                    ":accountId",
+                                    "verification_sessions",
+                                    ":avfId",
+                                    "amounts"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "accountId"
+                                    },
+                                    {
+                                      "key": "avfId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:09:44.000Z",
+                              "updatedAt": "2026-07-28T02:09:44.000Z",
+                              "uid": "35240-be64a20b-3200-4d39-9332-b66f7f4e6bb7"
+                            },
+                            {
+                              "id": "761f83da-1970-4062-9af7-2df58f094685",
+                              "name": "Not found - the requested resource does not exist.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "accounts",
+                                    ":accountId",
+                                    "verification_sessions",
+                                    ":avfId",
+                                    "amounts"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "accountId"
+                                    },
+                                    {
+                                      "key": "avfId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:09:44.000Z",
+                              "updatedAt": "2026-07-28T02:09:44.000Z",
+                              "uid": "35240-761f83da-1970-4062-9af7-2df58f094685"
+                            },
+                            {
+                              "id": "2040d236-a808-44bb-a811-509bf4cfe00f",
+                              "name": "Too many requests - rate limit exceeded.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "accounts",
+                                    ":accountId",
+                                    "verification_sessions",
+                                    ":avfId",
+                                    "amounts"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "accountId"
+                                    },
+                                    {
+                                      "key": "avfId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Too Many Requests",
+                              "code": 429,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "Number of seconds to wait before retrying.",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Retry-After",
+                                  "value": "<integer>"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:09:44.000Z",
+                              "updatedAt": "2026-07-28T02:09:44.000Z",
+                              "uid": "35240-2040d236-a808-44bb-a811-509bf4cfe00f"
+                            },
+                            {
+                              "id": "74c46c86-184d-4361-b9d7-5bb464f1580d",
+                              "name": "Internal server error.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId/amounts",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "accounts",
+                                    ":accountId",
+                                    "verification_sessions",
+                                    ":avfId",
+                                    "amounts"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "accountId"
+                                    },
+                                    {
+                                      "key": "avfId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:09:44.000Z",
+                              "updatedAt": "2026-07-28T02:09:44.000Z",
+                              "uid": "35240-74c46c86-184d-4361-b9d7-5bb464f1580d"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-e877a499-b29b-42c6-a0ad-3056260bb713"
+                        }
+                      ],
+                      "id": "e59a99f3-8842-4ea8-aa5e-fc9a958b7fb8",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-e59a99f3-8842-4ea8-aa5e-fc9a958b7fb8"
+                    },
+                    {
+                      "name": "Retrieve an account verification session",
+                      "id": "91802fff-806c-4a47-96d3-ed74bd16039e",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions",
+                            ":avfId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "4157f5a3-ea1d-44c1-992f-461d55ace03a",
+                              "key": "accountId",
+                              "value": "acc_aZD4Qa",
+                              "description": "(Required) Unique identifier for the account."
+                            },
+                            {
+                              "id": "6b461672-b0f4-4891-828f-a0c8caa01fa8",
+                              "key": "avfId",
+                              "value": "avf_S2q3KTB9IhS",
+                              "description": "(Required) Unique identifier for the account verification session."
+                            }
+                          ]
+                        },
+                        "description": "Retrieves an account verification session by its unique identifier."
+                      },
+                      "response": [
+                        {
+                          "id": "013fd201-20de-40b0-a255-2f3e5a9386d0",
+                          "name": "The requested account verification session.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"avf_KyO1bunGKRP\",\n    \"account_id\": \"acc_kYVpT\",\n    \"status\": \"verified\",\n    \"type\": \"mx\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"micro_deposits\": {\n      \"amounts\": [\n        \"<integer>\",\n        \"<integer>\"\n      ]\n    },\n    \"plaid\": {\n      \"balances\": {}\n    },\n    \"mx\": {\n      \"account\": {}\n    },\n    \"teller\": null,\n    \"auto_verify\": null,\n    \"trusted_provisioner\": null,\n    \"standard\": {\n      \"number\": \"<string,null>\"\n    },\n    \"pre_auth\": null,\n    \"network\": {\n      \"number\": \"<string,null>\",\n      \"exp_month\": \"<string,null>\",\n      \"exp_year\": \"<string,null>\",\n      \"exp_check\": \"fail\",\n      \"cvv\": \"<string,null>\",\n      \"cvv_check\": \"unavailable\",\n      \"billing_zip_code\": \"<string,null>\",\n      \"billing_zip_code_check\": \"pass\",\n      \"network_check\": \"pass\"\n    },\n    \"instant\": {\n      \"number\": \"<string,null>\",\n      \"exp_month\": \"<string,null>\",\n      \"exp_year\": \"<string,null>\",\n      \"exp_check\": \"fail\"\n    },\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-013fd201-20de-40b0-a255-2f3e5a9386d0"
+                        },
+                        {
+                          "id": "f056f97a-f07d-49c6-a012-e6b622de259e",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-f056f97a-f07d-49c6-a012-e6b622de259e"
+                        },
+                        {
+                          "id": "49feefe9-6f4e-4a3c-a74b-a22b2acfa3fb",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-49feefe9-6f4e-4a3c-a74b-a22b2acfa3fb"
+                        },
+                        {
+                          "id": "baa1a130-994c-4e56-b079-7a3c577245d2",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-baa1a130-994c-4e56-b079-7a3c577245d2"
+                        },
+                        {
+                          "id": "214b7c6f-ce81-4007-8e61-8678a861eaf8",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-214b7c6f-ce81-4007-8e61-8678a861eaf8"
+                        },
+                        {
+                          "id": "9372eed8-ac66-4cb7-b5be-997579fb9327",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-9372eed8-ac66-4cb7-b5be-997579fb9327"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-91802fff-806c-4a47-96d3-ed74bd16039e"
+                    },
+                    {
+                      "name": "Update an account verification session",
+                      "id": "75067145-c808-48a0-bf8d-4b3341f08ae5",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"micro_deposits\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"plaid\": {\n    \"balances\": {}\n  },\n  \"mx\": {\n    \"account\": {}\n  },\n  \"teller\": {\n    \"balances\": {}\n  },\n  \"standard\": {\n    \"number\": \"<string>\"\n  },\n  \"pre_auth\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"network\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"instant\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions",
+                            ":avfId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "d77a9abc-2cac-47b7-a941-f534acc48ff6",
+                              "key": "accountId",
+                              "value": "acc_aZD4Qa",
+                              "description": "(Required) Unique identifier for the account."
+                            },
+                            {
+                              "id": "47d6d3ad-7a97-4093-b460-b23cda8d22b4",
+                              "key": "avfId",
+                              "value": "avf_S2q3KTB9IhS",
+                              "description": "(Required) Unique identifier for the account verification session."
+                            }
+                          ]
+                        },
+                        "description": "Updates an account verification session, typically to submit micro deposit amounts for verification."
+                      },
+                      "response": [
+                        {
+                          "id": "f395880f-c497-4c8b-ba74-f040287442bd",
+                          "name": "The updated account verification session.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"micro_deposits\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"plaid\": {\n    \"balances\": {}\n  },\n  \"mx\": {\n    \"account\": {}\n  },\n  \"teller\": {\n    \"balances\": {}\n  },\n  \"standard\": {\n    \"number\": \"<string>\"\n  },\n  \"pre_auth\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"network\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"instant\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"avf_KyO1bunGKRP\",\n    \"account_id\": \"acc_kYVpT\",\n    \"status\": \"verified\",\n    \"type\": \"mx\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"micro_deposits\": {\n      \"amounts\": [\n        \"<integer>\",\n        \"<integer>\"\n      ]\n    },\n    \"plaid\": {\n      \"balances\": {}\n    },\n    \"mx\": {\n      \"account\": {}\n    },\n    \"teller\": null,\n    \"auto_verify\": null,\n    \"trusted_provisioner\": null,\n    \"standard\": {\n      \"number\": \"<string,null>\"\n    },\n    \"pre_auth\": null,\n    \"network\": {\n      \"number\": \"<string,null>\",\n      \"exp_month\": \"<string,null>\",\n      \"exp_year\": \"<string,null>\",\n      \"exp_check\": \"fail\",\n      \"cvv\": \"<string,null>\",\n      \"cvv_check\": \"unavailable\",\n      \"billing_zip_code\": \"<string,null>\",\n      \"billing_zip_code_check\": \"pass\",\n      \"network_check\": \"pass\"\n    },\n    \"instant\": {\n      \"number\": \"<string,null>\",\n      \"exp_month\": \"<string,null>\",\n      \"exp_year\": \"<string,null>\",\n      \"exp_check\": \"fail\"\n    },\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-f395880f-c497-4c8b-ba74-f040287442bd"
+                        },
+                        {
+                          "id": "ce6ac10f-4053-4ec4-874e-318b0c1c649f",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"micro_deposits\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"plaid\": {\n    \"balances\": {}\n  },\n  \"mx\": {\n    \"account\": {}\n  },\n  \"teller\": {\n    \"balances\": {}\n  },\n  \"standard\": {\n    \"number\": \"<string>\"\n  },\n  \"pre_auth\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"network\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"instant\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-ce6ac10f-4053-4ec4-874e-318b0c1c649f"
+                        },
+                        {
+                          "id": "7eb59118-51ae-40d1-bf2c-3648a3849080",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"micro_deposits\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"plaid\": {\n    \"balances\": {}\n  },\n  \"mx\": {\n    \"account\": {}\n  },\n  \"teller\": {\n    \"balances\": {}\n  },\n  \"standard\": {\n    \"number\": \"<string>\"\n  },\n  \"pre_auth\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"network\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"instant\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-7eb59118-51ae-40d1-bf2c-3648a3849080"
+                        },
+                        {
+                          "id": "65db6248-d6ca-43b5-8559-8cd2af4f058e",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"micro_deposits\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"plaid\": {\n    \"balances\": {}\n  },\n  \"mx\": {\n    \"account\": {}\n  },\n  \"teller\": {\n    \"balances\": {}\n  },\n  \"standard\": {\n    \"number\": \"<string>\"\n  },\n  \"pre_auth\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"network\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"instant\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-65db6248-d6ca-43b5-8559-8cd2af4f058e"
+                        },
+                        {
+                          "id": "efea91f5-6c7c-4380-ae15-5ffb082ab1db",
+                          "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"micro_deposits\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"plaid\": {\n    \"balances\": {}\n  },\n  \"mx\": {\n    \"account\": {}\n  },\n  \"teller\": {\n    \"balances\": {}\n  },\n  \"standard\": {\n    \"number\": \"<string>\"\n  },\n  \"pre_auth\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"network\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"instant\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                          "code": 422,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-efea91f5-6c7c-4380-ae15-5ffb082ab1db"
+                        },
+                        {
+                          "id": "225c8f8f-f0a4-4d29-a6dc-fc37bd4f3ce0",
+                          "name": "Too many requests - rate limit exceeded.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"micro_deposits\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"plaid\": {\n    \"balances\": {}\n  },\n  \"mx\": {\n    \"account\": {}\n  },\n  \"teller\": {\n    \"balances\": {}\n  },\n  \"standard\": {\n    \"number\": \"<string>\"\n  },\n  \"pre_auth\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"network\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"instant\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "Number of seconds to wait before retrying.",
+                                "type": "text/plain"
+                              },
+                              "key": "Retry-After",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-225c8f8f-f0a4-4d29-a6dc-fc37bd4f3ce0"
+                        },
+                        {
+                          "id": "5d7e29c3-815b-49d9-b531-cedc5ed59a9d",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                                "key": "Idempotency-Key",
+                                "value": "<uuid>"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"micro_deposits\": {\n    \"amounts\": [\n      \"<integer>\",\n      \"<integer>\"\n    ]\n  },\n  \"plaid\": {\n    \"balances\": {}\n  },\n  \"mx\": {\n    \"account\": {}\n  },\n  \"teller\": {\n    \"balances\": {}\n  },\n  \"standard\": {\n    \"number\": \"<string>\"\n  },\n  \"pre_auth\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"network\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\",\n    \"cvv\": \"<string>\"\n  },\n  \"instant\": {\n    \"number\": \"<string>\",\n    \"exp_month\": \"<string>\",\n    \"exp_year\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions/:avfId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "accounts",
+                                ":accountId",
+                                "verification_sessions",
+                                ":avfId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "accountId"
+                                },
+                                {
+                                  "key": "avfId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:09:44.000Z",
+                          "updatedAt": "2026-07-28T02:09:44.000Z",
+                          "uid": "35240-5d7e29c3-815b-49d9-b531-cedc5ed59a9d"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-75067145-c808-48a0-bf8d-4b3341f08ae5"
+                    }
+                  ],
+                  "id": "2be6fd32-bbe0-4c44-9de4-7129a1934964",
+                  "createdAt": "2026-07-28T02:09:44.000Z",
+                  "updatedAt": "2026-07-28T02:09:44.000Z",
+                  "uid": "35240-2be6fd32-bbe0-4c44-9de4-7129a1934964"
+                },
+                {
+                  "name": "List all account verification sessions",
+                  "id": "d2c957a0-b35e-43b8-b3dc-ee941b5ddcff",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions?page=1&page_limit=10&page_cursor=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId",
+                        "verification_sessions"
+                      ],
+                      "query": [
+                        {
+                          "description": "Page number for pagination (1-indexed).",
+                          "key": "page",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Number of items per page.",
+                          "key": "page_limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                          "key": "page_cursor",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "170229c6-3800-43c7-b0a2-6c35f1b4bf61",
+                          "key": "accountId",
+                          "value": "acc_aZD4Qa",
+                          "description": "(Required) Unique identifier for the account."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of verification sessions for the specified account."
+                  },
+                  "response": [
+                    {
+                      "id": "aff39ee1-f24e-49e5-9cde-178e974a912f",
+                      "name": "A paginated list of account verification sessions.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Count",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Limit",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Total-Count",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Prev",
+                          "value": ""
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Pagination-Page-Cursor-Next",
+                          "value": ""
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"id\": \"avf_A3UuGw\",\n      \"account_id\": \"acc_nQRChqt\",\n      \"status\": \"failed\",\n      \"type\": \"trusted_provisioner\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"micro_deposits\": {\n        \"amounts\": [\n          \"<integer>\",\n          \"<integer>\"\n        ]\n      },\n      \"plaid\": null,\n      \"mx\": {\n        \"account\": {}\n      },\n      \"teller\": null,\n      \"auto_verify\": {},\n      \"trusted_provisioner\": null,\n      \"standard\": {\n        \"number\": \"<string,null>\"\n      },\n      \"pre_auth\": null,\n      \"network\": {\n        \"number\": \"<string,null>\",\n        \"exp_month\": \"<string,null>\",\n        \"exp_year\": \"<string,null>\",\n        \"exp_check\": \"fail\",\n        \"cvv\": \"<string,null>\",\n        \"cvv_check\": \"fail\",\n        \"billing_zip_code\": \"<string,null>\",\n        \"billing_zip_code_check\": \"unavailable\",\n        \"network_check\": \"pass\"\n      },\n      \"instant\": {\n        \"number\": \"<string,null>\",\n        \"exp_month\": \"<string,null>\",\n        \"exp_year\": \"<string,null>\",\n        \"exp_check\": \"pass\"\n      },\n      \"error\": null\n    },\n    {\n      \"id\": \"avf__\",\n      \"account_id\": \"acc_6W\",\n      \"status\": \"failed\",\n      \"type\": \"teller\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"micro_deposits\": {\n        \"amounts\": [\n          \"<integer>\",\n          \"<integer>\"\n        ]\n      },\n      \"plaid\": null,\n      \"mx\": null,\n      \"teller\": {\n        \"balances\": {}\n      },\n      \"auto_verify\": {},\n      \"trusted_provisioner\": {},\n      \"standard\": null,\n      \"pre_auth\": null,\n      \"network\": null,\n      \"instant\": null,\n      \"error\": null\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-aff39ee1-f24e-49e5-9cde-178e974a912f"
+                    },
+                    {
+                      "id": "be19a3ae-faaf-4c49-9e45-e71c5a95379b",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-be19a3ae-faaf-4c49-9e45-e71c5a95379b"
+                    },
+                    {
+                      "id": "5d8703e4-241b-4eab-93ba-48332998f6ec",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-5d8703e4-241b-4eab-93ba-48332998f6ec"
+                    },
+                    {
+                      "id": "564c50c1-8810-4944-ad88-1c4451b32cf7",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-564c50c1-8810-4944-ad88-1c4451b32cf7"
+                    },
+                    {
+                      "id": "fee8dc3d-a1ab-4eda-b0d0-1c85e1a20225",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-fee8dc3d-a1ab-4eda-b0d0-1c85e1a20225"
+                    },
+                    {
+                      "id": "628ea369-826c-4309-a8b8-3bee948430dd",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions?page=1&page_limit=10&page_cursor=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "query": [
+                            {
+                              "description": "Page number for pagination (1-indexed).",
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "description": "Number of items per page.",
+                              "key": "page_limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                              "key": "page_cursor",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-628ea369-826c-4309-a8b8-3bee948430dd"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:09:44.000Z",
+                  "updatedAt": "2026-07-28T02:09:44.000Z",
+                  "uid": "35240-d2c957a0-b35e-43b8-b3dc-ee941b5ddcff"
+                },
+                {
+                  "name": "Create an account verification session",
+                  "id": "5be7c212-2540-4122-bd68-74ad9f388330",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"type\": \"pre_auth\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId",
+                        "verification_sessions"
+                      ],
+                      "variable": [
+                        {
+                          "id": "ef990ccc-929a-402f-97ed-4307abdc55e7",
+                          "key": "accountId",
+                          "value": "acc_aZD4Qa",
+                          "description": "(Required) Unique identifier for the account."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new verification session for the specified account."
+                  },
+                  "response": [
+                    {
+                      "id": "72723080-bb7c-4f7c-ad33-81d1ddcf4c14",
+                      "name": "The newly created account verification session.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"pre_auth\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"avf_KyO1bunGKRP\",\n    \"account_id\": \"acc_kYVpT\",\n    \"status\": \"verified\",\n    \"type\": \"mx\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"micro_deposits\": {\n      \"amounts\": [\n        \"<integer>\",\n        \"<integer>\"\n      ]\n    },\n    \"plaid\": {\n      \"balances\": {}\n    },\n    \"mx\": {\n      \"account\": {}\n    },\n    \"teller\": null,\n    \"auto_verify\": null,\n    \"trusted_provisioner\": null,\n    \"standard\": {\n      \"number\": \"<string,null>\"\n    },\n    \"pre_auth\": null,\n    \"network\": {\n      \"number\": \"<string,null>\",\n      \"exp_month\": \"<string,null>\",\n      \"exp_year\": \"<string,null>\",\n      \"exp_check\": \"fail\",\n      \"cvv\": \"<string,null>\",\n      \"cvv_check\": \"unavailable\",\n      \"billing_zip_code\": \"<string,null>\",\n      \"billing_zip_code_check\": \"pass\",\n      \"network_check\": \"pass\"\n    },\n    \"instant\": {\n      \"number\": \"<string,null>\",\n      \"exp_month\": \"<string,null>\",\n      \"exp_year\": \"<string,null>\",\n      \"exp_check\": \"fail\"\n    },\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-72723080-bb7c-4f7c-ad33-81d1ddcf4c14"
+                    },
+                    {
+                      "id": "dc9d7f82-5a62-4780-b054-4a3e8bfce4c7",
+                      "name": "Bad request - invalid parameters or request body.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"pre_auth\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-dc9d7f82-5a62-4780-b054-4a3e8bfce4c7"
+                    },
+                    {
+                      "id": "f0ca9eb8-5272-44dc-9edc-2487c9a2f67d",
+                      "name": "Unauthorized - missing or invalid authentication token.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"pre_auth\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-f0ca9eb8-5272-44dc-9edc-2487c9a2f67d"
+                    },
+                    {
+                      "id": "2995eaee-a97c-4a60-8c08-a38c6a3f623c",
+                      "name": "Not found - the requested resource does not exist.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"pre_auth\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-2995eaee-a97c-4a60-8c08-a38c6a3f623c"
+                    },
+                    {
+                      "id": "468ca04f-57ca-4096-bb4b-c9069fe103c9",
+                      "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"pre_auth\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                      "code": 422,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-468ca04f-57ca-4096-bb4b-c9069fe103c9"
+                    },
+                    {
+                      "id": "61d507b9-f708-492b-a0aa-3f72acf58fe7",
+                      "name": "Too many requests - rate limit exceeded.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"pre_auth\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Number of seconds to wait before retrying.",
+                            "type": "text/plain"
+                          },
+                          "key": "Retry-After",
+                          "value": "<integer>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-61d507b9-f708-492b-a0aa-3f72acf58fe7"
+                    },
+                    {
+                      "id": "922977fb-cbff-4ca8-884d-ae825eae0ce4",
+                      "name": "Internal server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                            "key": "Idempotency-Key",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"type\": \"pre_auth\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/accounts/:accountId/verification_sessions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "accounts",
+                            ":accountId",
+                            "verification_sessions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "accountId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"invalid_request\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:09:44.000Z",
+                      "updatedAt": "2026-07-28T02:09:44.000Z",
+                      "uid": "35240-922977fb-cbff-4ca8-884d-ae825eae0ce4"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:09:44.000Z",
+                  "updatedAt": "2026-07-28T02:09:44.000Z",
+                  "uid": "35240-5be7c212-2540-4122-bd68-74ad9f388330"
+                }
+              ],
+              "id": "836d5008-40dc-47fe-9ad8-b6b792d7d600",
+              "createdAt": "2026-07-28T02:09:44.000Z",
+              "updatedAt": "2026-07-28T02:09:44.000Z",
+              "uid": "35240-836d5008-40dc-47fe-9ad8-b6b792d7d600"
+            }
+          ],
+          "id": "a6cd5d0e-60b3-44c4-bec1-7b475d0f233f",
+          "createdAt": "2026-07-28T02:09:44.000Z",
+          "updatedAt": "2026-07-28T02:09:44.000Z",
+          "uid": "35240-a6cd5d0e-60b3-44c4-bec1-7b475d0f233f"
+        }
+      ],
+      "id": "a7b21ed9-820b-4bf3-8997-bd132950cd53",
+      "createdAt": "2026-07-28T02:09:44.000Z",
+      "updatedAt": "2026-07-28T02:09:44.000Z",
+      "uid": "35240-a7b21ed9-820b-4bf3-8997-bd132950cd53"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

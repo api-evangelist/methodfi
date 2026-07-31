@@ -1,0 +1,58 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.methodfi.com/2026-03-30/reference/webhooks/overview
+spec_type: Webhooks
+description: >-
+  Method delivers asynchronous notifications via registered Webhooks. Events track
+  literal changes (a specific field/status transition on a resource) and computed
+  changes (a meaningful interpretation derived across resources). Method does not
+  publish an AsyncAPI document; this catalog captures the documented webhook/event
+  surface derived from the Events reference and OpenAPI event enums.
+management:
+  register: createWebhook        # POST /webhooks
+  list: listWebhooks
+  retrieve: retrieveWebhook
+  update: updateWebhook          # enable/disable
+  delete: deleteWebhook
+  events_api:
+    list: listEvents
+    retrieve: retrieveEvent
+  docs: https://docs.methodfi.com/2026-03-30/reference/events/overview
+event_naming: '<resource>.<action>  (literal) or <resource>.<signal>.<direction> (computed)'
+event_categories:
+- category: account
+  examples: [account.opened, account.closed, account.update, account.number.update]
+- category: account_verification
+  examples: [account_verification.update, account_verification_session.update]
+- category: balance
+  examples: [balance.update]
+- category: card_brand
+  examples: [card_brand.update]
+- category: connect
+  examples: [connect.update, connection.update]
+- category: credit_score
+  examples: [credit_score.update, credit_score.increased, credit_score.decreased]
+- category: entity
+  examples: [entity.update, entities.created.previous_day]
+- category: attribute
+  examples:
+    - attribute.update
+    - attribute.credit_health_credit_age.increased
+    - attribute.credit_health_credit_age.decreased
+    - attribute.credit_health_credit_card_usage.increased
+    - attribute.credit_health_derogatory_marks.increased
+    - attribute.credit_health_hard_inquiries.increased
+    - attribute.credit_health_open_accounts.increased
+    - attribute.credit_health_payment_history.increased
+    - attribute.credit_health_total_accounts.increased
+- category: entity_attribute
+  examples:
+    - entity_attribute.credit_health_credit_card_usage_value.increased
+    - entity_attribute.credit_health_hard_inquiries_value.increased
+    - entity_attribute.credit_health_open_accounts_value.increased
+    - entity_attribute.credit_health_soft_inquiries_value.increased
+delivery_notes: >-
+  Webhook payloads follow the versioning policy (additive properties are backwards
+  compatible). Integrations should gracefully handle unfamiliar event types, as new
+  event types are added as backwards-compatible changes. Webhook processing errors use
+  the 25XXX resource error code range.

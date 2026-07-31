@@ -1,0 +1,429 @@
+{
+  "info": {
+    "_postman_id": "5cc7016d-b199-4f84-8e67-a6f5f6149198",
+    "name": "Method Account Attributes Public Keys API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:12:38.000Z",
+    "updatedAt": "2026-07-28T02:12:38.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5cc7016d-b199-4f84-8e67-a6f5f6149198"
+  },
+  "item": [
+    {
+      "name": ".well-known",
+      "item": [
+        {
+          "name": "jwks.json",
+          "item": [
+            {
+              "name": "List public JWKs",
+              "id": "42a47cd8-d614-4498-8995-df1ba430cf4e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/.well-known/jwks.json",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ".well-known",
+                    "jwks.json"
+                  ]
+                },
+                "description": "Returns the currently active Method public keys for Message-Level Encryption."
+              },
+              "response": [
+                {
+                  "id": "e75bc889-6aa8-40a4-a88a-fad6a7d1549e",
+                  "name": "Public JWK set for Method encryption.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/.well-known/jwks.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ".well-known",
+                        "jwks.json"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Caching directive for the public JWK set.",
+                        "type": "text/plain"
+                      },
+                      "key": "Cache-Control",
+                      "value": "<string>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"keys\": [\n    {\n      \"kid\": \"<string>\",\n      \"kty\": \"<string>\",\n      \"alg\": \"<string>\",\n      \"use\": \"<string>\",\n      \"n\": \"<string>\",\n      \"e\": \"<string>\"\n    },\n    {\n      \"kid\": \"<string>\",\n      \"kty\": \"<string>\",\n      \"alg\": \"<string>\",\n      \"use\": \"<string>\",\n      \"n\": \"<string>\",\n      \"e\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T02:12:39.000Z",
+                  "updatedAt": "2026-07-28T02:12:39.000Z",
+                  "uid": "35240-e75bc889-6aa8-40a4-a88a-fad6a7d1549e"
+                },
+                {
+                  "id": "c9182155-f715-45e1-badc-de941e39ca7b",
+                  "name": "Bad request - invalid parameters or request body.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/.well-known/jwks.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ".well-known",
+                        "jwks.json"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:39.000Z",
+                  "updatedAt": "2026-07-28T02:12:39.000Z",
+                  "uid": "35240-c9182155-f715-45e1-badc-de941e39ca7b"
+                },
+                {
+                  "id": "6cf1b1e3-26b9-45d5-a704-001599130928",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/.well-known/jwks.json",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ".well-known",
+                        "jwks.json"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:39.000Z",
+                  "updatedAt": "2026-07-28T02:12:39.000Z",
+                  "uid": "35240-6cf1b1e3-26b9-45d5-a704-001599130928"
+                }
+              ],
+              "createdAt": "2026-07-28T02:12:39.000Z",
+              "updatedAt": "2026-07-28T02:12:39.000Z",
+              "uid": "35240-42a47cd8-d614-4498-8995-df1ba430cf4e"
+            }
+          ],
+          "id": "387372c1-d06f-4898-a6df-6ce48122fd7e",
+          "createdAt": "2026-07-28T02:12:39.000Z",
+          "updatedAt": "2026-07-28T02:12:39.000Z",
+          "uid": "35240-387372c1-d06f-4898-a6df-6ce48122fd7e"
+        }
+      ],
+      "id": "0955617f-134f-45a8-9b5d-2f104b544ac9",
+      "createdAt": "2026-07-28T02:12:39.000Z",
+      "updatedAt": "2026-07-28T02:12:39.000Z",
+      "uid": "35240-0955617f-134f-45a8-9b5d-2f104b544ac9"
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "{jwk_id}",
+          "item": [
+            {
+              "name": "Retrieve a public JWK",
+              "id": "1620bbe3-2801-4e3e-89e7-361cd6359a50",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/:jwk_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    ":jwk_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "fef923be-5e62-45b6-90f2-9f4bf3bcf3ca",
+                      "key": "jwk_id",
+                      "value": "mthd_jwk_l",
+                      "description": "(Required) Unique identifier for the Method public JWK."
+                    }
+                  ]
+                },
+                "description": "Returns a single Method public key by identifier for Message-Level Encryption."
+              },
+              "response": [
+                {
+                  "id": "6696d1b8-41a1-49b0-9aee-5c15e67b2f55",
+                  "name": "The requested public JWK.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/:jwk_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        ":jwk_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jwk_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Caching directive for the public JWK.",
+                        "type": "text/plain"
+                      },
+                      "key": "Cache-Control",
+                      "value": "<string>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"mthd_jwk_p_ntQ\",\n    \"jwk\": {\n      \"kid\": \"<string>\",\n      \"kty\": \"<string>\",\n      \"alg\": \"<string>\",\n      \"use\": \"<string>\",\n      \"n\": \"<string>\",\n      \"e\": \"<string>\"\n    },\n    \"jwk_thumbprint\": \"<string>\",\n    \"status\": \"disabled\",\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                  "createdAt": "2026-07-28T02:12:39.000Z",
+                  "updatedAt": "2026-07-28T02:12:39.000Z",
+                  "uid": "35240-6696d1b8-41a1-49b0-9aee-5c15e67b2f55"
+                },
+                {
+                  "id": "b4c0418e-fdde-407b-bc8d-9eb90597495c",
+                  "name": "Not found - the requested resource does not exist.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/:jwk_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        ":jwk_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jwk_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:39.000Z",
+                  "updatedAt": "2026-07-28T02:12:39.000Z",
+                  "uid": "35240-b4c0418e-fdde-407b-bc8d-9eb90597495c"
+                },
+                {
+                  "id": "9a5cdeab-f5c1-487a-b0f0-7564749243d8",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/:jwk_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        ":jwk_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "jwk_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:39.000Z",
+                  "updatedAt": "2026-07-28T02:12:39.000Z",
+                  "uid": "35240-9a5cdeab-f5c1-487a-b0f0-7564749243d8"
+                }
+              ],
+              "createdAt": "2026-07-28T02:12:39.000Z",
+              "updatedAt": "2026-07-28T02:12:39.000Z",
+              "uid": "35240-1620bbe3-2801-4e3e-89e7-361cd6359a50"
+            }
+          ],
+          "id": "4cd69067-c8cc-42b1-81c1-43f718cc3912",
+          "createdAt": "2026-07-28T02:12:39.000Z",
+          "updatedAt": "2026-07-28T02:12:39.000Z",
+          "uid": "35240-4cd69067-c8cc-42b1-81c1-43f718cc3912"
+        }
+      ],
+      "id": "f5c671b7-c620-45bf-8951-b658de7bfa63",
+      "createdAt": "2026-07-28T02:12:39.000Z",
+      "updatedAt": "2026-07-28T02:12:39.000Z",
+      "uid": "35240-f5c671b7-c620-45bf-8951-b658de7bfa63"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.methodfi.com/2026-03-30/reference/environments
+description: >-
+  Method exposes three environments (Development, Sandbox, Production) with separate
+  API keys per environment. Development fully mocks data and money movement; Sandbox
+  runs live data/money against a whitelisted set of entities with capped payment
+  volume; Production is billed and unlimited. Test behaviors are driven through the
+  /simulate endpoints rather than through magic account numbers.
+environments:
+- name: development
+  host: https://dev.methodfi.com
+  billed: false
+  description: All data and payments are mocked. Recommended for initial integration.
+- name: sandbox
+  host: https://sandbox.methodfi.com
+  billed: true
+  description: >-
+    Live data and money movement against a pre-defined entity whitelist (set by your
+    Method CSM). Payments capped at 20 transactions/month and $1/transaction.
+- name: production
+  host: https://production.methodfi.com
+  billed: true
+  description: Unlimited live payments; all requests are billed.
+key_separation:
+  scheme: per-environment keys
+  prefixes:
+    secret: sk_        # sk_test_ prefix used in development/sandbox examples
+    public: pk_
+    opal_token: otkn_
+  note: Keys are managed under the Keys section of the Method Dashboard.
+simulation:
+  docs: https://docs.methodfi.com/2026-03-30/reference/simulations/overview
+  description: >-
+    Development testing is driven by the /simulate endpoints, which queue behaviors
+    consumed the next time a product runs for an entity/account.
+  operations:
+  - simulateEntityConnect
+  - simulateEntityAttributes
+  - simulateEntityCreditScore
+  - simulateCreateAccountCardBrand
+  - simulateCreateAccountTransaction
+  - simulateUpdatePaymentStatus
+  - simulatePostPaymentViaPaymentInstrument
+  - simulateCreateEvent
+  - simulateRetrieveVerificationAmounts
+  connect_behaviors:
+    endpoint: POST https://dev.methodfi.com/simulate/entities/{entity_id}/connect
+    max_per_entity: 5
+    values:
+    - new_credit_card_account
+    - new_auto_loan_account
+    - new_mortgage_account
+    - new_student_loan_account
+    - new_personal_loan_account
+    docs: https://docs.methodfi.com/guides/connect/testing
+    note: >-
+      Simulated accounts carry no real institution data; use them to exercise
+      integration flow (webhooks, UI, product execution), not data accuracy.

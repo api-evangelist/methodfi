@@ -1,0 +1,26 @@
+generated: '2026-07-20'
+method: searched
+source: live probes of Method hosts
+description: >-
+  Probed the standard /.well-known/ discovery surface on the Method web and API hosts.
+  No public discovery documents are served: the API hosts require authentication (401)
+  and the marketing/docs hosts return 404. Recorded as honest negative results — no
+  raw documents were saved.
+probed:
+- host: https://methodfi.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+- host: https://production.methodfi.com
+  documents:
+  - {path: /.well-known/security.txt, status: 401}
+  - {path: /.well-known/openid-configuration, status: 401}
+  - {path: /.well-known/oauth-authorization-server, status: 401}
+  - {path: /.well-known/api-catalog, status: 401}
+- host: https://docs.methodfi.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+found: []

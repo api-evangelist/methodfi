@@ -1,0 +1,1098 @@
+{
+  "info": {
+    "_postman_id": "f40069dd-a500-4a62-9430-7ada58a70491",
+    "name": "Method Account Attributes Events API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:12:08.000Z",
+    "updatedAt": "2026-07-28T02:12:08.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f40069dd-a500-4a62-9430-7ada58a70491"
+  },
+  "item": [
+    {
+      "name": "events",
+      "item": [
+        {
+          "name": "{evtId}",
+          "item": [
+            {
+              "name": "Retrieve an event",
+              "id": "bbdc3129-b5ee-4ea1-87bb-a765ac3c2296",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/:evtId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    ":evtId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "9cd04017-67a8-475e-ad81-b17a4fd1ea56",
+                      "key": "evtId",
+                      "value": "evt_Uz1W",
+                      "description": "(Required) Unique identifier for the event."
+                    }
+                  ]
+                },
+                "description": "Returns a single event by its identifier."
+              },
+              "response": [
+                {
+                  "id": "790c08d2-d9e2-4fdf-a521-b850e2406ab4",
+                  "name": "The requested event.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/events/:evtId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "events",
+                        ":evtId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "evtId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"type\": \"attribute.credit_health_credit_card_usage.decreased\",\n    \"resource_id\": \"<string>\",\n    \"resource_type\": \"<string>\",\n    \"related_ids\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"data\": {\n      \"minim_68_\": 1050068.4723609835,\n      \"ad_8c\": true\n    },\n    \"diff\": {\n      \"exercitationf\": -8809009\n    },\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                  "createdAt": "2026-07-28T02:12:08.000Z",
+                  "updatedAt": "2026-07-28T02:12:08.000Z",
+                  "uid": "35240-790c08d2-d9e2-4fdf-a521-b850e2406ab4"
+                },
+                {
+                  "id": "6474c1e6-ae27-4911-960d-8981179bdce4",
+                  "name": "Bad request - invalid parameters or request body.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/events/:evtId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "events",
+                        ":evtId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "evtId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:08.000Z",
+                  "updatedAt": "2026-07-28T02:12:08.000Z",
+                  "uid": "35240-6474c1e6-ae27-4911-960d-8981179bdce4"
+                },
+                {
+                  "id": "39f6e78e-7a03-4901-b6e6-4f5da9141957",
+                  "name": "Unauthorized - missing or invalid authentication token.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/events/:evtId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "events",
+                        ":evtId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "evtId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:08.000Z",
+                  "updatedAt": "2026-07-28T02:12:08.000Z",
+                  "uid": "35240-39f6e78e-7a03-4901-b6e6-4f5da9141957"
+                },
+                {
+                  "id": "203d3102-f213-40ce-a6ea-c3647006d870",
+                  "name": "Forbidden - insufficient permissions for this operation.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/events/:evtId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "events",
+                        ":evtId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "evtId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:08.000Z",
+                  "updatedAt": "2026-07-28T02:12:08.000Z",
+                  "uid": "35240-203d3102-f213-40ce-a6ea-c3647006d870"
+                },
+                {
+                  "id": "dc1b0b0b-a6a7-4d73-ae47-6ea2a25cb18d",
+                  "name": "Not found - the requested resource does not exist.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/events/:evtId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "events",
+                        ":evtId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "evtId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:08.000Z",
+                  "updatedAt": "2026-07-28T02:12:08.000Z",
+                  "uid": "35240-dc1b0b0b-a6a7-4d73-ae47-6ea2a25cb18d"
+                },
+                {
+                  "id": "e6db906f-df35-442a-8973-2ab29f4a7b9e",
+                  "name": "Too many requests - rate limit exceeded.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/events/:evtId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "events",
+                        ":evtId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "evtId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of seconds to wait before retrying.",
+                        "type": "text/plain"
+                      },
+                      "key": "Retry-After",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:08.000Z",
+                  "updatedAt": "2026-07-28T02:12:08.000Z",
+                  "uid": "35240-e6db906f-df35-442a-8973-2ab29f4a7b9e"
+                },
+                {
+                  "id": "541afa2d-5faf-4f6c-beff-4f181f6cad3e",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/events/:evtId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "events",
+                        ":evtId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "evtId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:12:08.000Z",
+                  "updatedAt": "2026-07-28T02:12:08.000Z",
+                  "uid": "35240-541afa2d-5faf-4f6c-beff-4f181f6cad3e"
+                }
+              ],
+              "createdAt": "2026-07-28T02:12:08.000Z",
+              "updatedAt": "2026-07-28T02:12:08.000Z",
+              "uid": "35240-bbdc3129-b5ee-4ea1-87bb-a765ac3c2296"
+            }
+          ],
+          "id": "66230f33-1a94-4098-98c4-bd4010765eea",
+          "createdAt": "2026-07-28T02:12:08.000Z",
+          "updatedAt": "2026-07-28T02:12:08.000Z",
+          "uid": "35240-66230f33-1a94-4098-98c4-bd4010765eea"
+        },
+        {
+          "name": "List all events",
+          "id": "3d2df646-5302-4772-ac25-0be412f9d392",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                "key": "Method-Version",
+                "value": "2025-12-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/events?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&type=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events"
+              ],
+              "query": [
+                {
+                  "description": "Page number for pagination (1-indexed).",
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "description": "Number of items per page.",
+                  "key": "page_limit",
+                  "value": "10"
+                },
+                {
+                  "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                  "key": "page_cursor",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                  "key": "from_date",
+                  "value": "<date>"
+                },
+                {
+                  "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                  "key": "to_date",
+                  "value": "<date>"
+                },
+                {
+                  "description": "Filter events by event type.",
+                  "key": "type",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of webhook event records."
+          },
+          "response": [
+            {
+              "id": "7920fe48-579d-49ba-aad5-7aeb06d196a9",
+              "name": "A list of events.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&type=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter events by event type.",
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Current page number.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Total number of pages.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Count",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of items per page.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Total number of items across all pages.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Total-Count",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Cursor for the previous page, if available.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Cursor-Prev",
+                  "value": "<string,null>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Cursor for the next page, if available.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Cursor-Next",
+                  "value": "<string,null>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"attribute.credit_health_total_accounts.increased\",\n      \"resource_id\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"related_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"data\": {\n        \"non13a\": -14142151,\n        \"eiusmod_05\": \"cupidatat elit\",\n        \"anim07\": -93965166.01425016,\n        \"dolor_0_3\": 71031436.64948851\n      },\n      \"diff\": {\n        \"sunt_56b\": 32565518.44413504,\n        \"consectetur_fe3\": 61549234\n      },\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"credit_score.create\",\n      \"resource_id\": \"<string>\",\n      \"resource_type\": \"<string>\",\n      \"related_ids\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"data\": {\n        \"in_a\": 35326448.10694757,\n        \"occaecat9\": \"dolore in amet sed\",\n        \"sit045\": \"officia culpa\",\n        \"officia__\": \"aliqua exercitation non\"\n      },\n      \"diff\": {\n        \"ea6\": false\n      },\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\"\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+              "createdAt": "2026-07-28T02:12:08.000Z",
+              "updatedAt": "2026-07-28T02:12:08.000Z",
+              "uid": "35240-7920fe48-579d-49ba-aad5-7aeb06d196a9"
+            },
+            {
+              "id": "f6c6d65f-cb95-42ac-8101-1fe77ee8ea92",
+              "name": "Bad request - invalid parameters or request body.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&type=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter events by event type.",
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:08.000Z",
+              "updatedAt": "2026-07-28T02:12:08.000Z",
+              "uid": "35240-f6c6d65f-cb95-42ac-8101-1fe77ee8ea92"
+            },
+            {
+              "id": "17277141-3f2d-4f82-b15b-b903ee3ef5af",
+              "name": "Unauthorized - missing or invalid authentication token.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&type=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter events by event type.",
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:08.000Z",
+              "updatedAt": "2026-07-28T02:12:08.000Z",
+              "uid": "35240-17277141-3f2d-4f82-b15b-b903ee3ef5af"
+            },
+            {
+              "id": "704a00a3-5bfc-4bc1-ab02-2ac105d74d90",
+              "name": "Forbidden - insufficient permissions for this operation.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&type=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter events by event type.",
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:08.000Z",
+              "updatedAt": "2026-07-28T02:12:08.000Z",
+              "uid": "35240-704a00a3-5bfc-4bc1-ab02-2ac105d74d90"
+            },
+            {
+              "id": "ecf387ec-f6e5-4fd8-aa50-0ecba3da153e",
+              "name": "Too many requests - rate limit exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&type=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter events by event type.",
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of seconds to wait before retrying.",
+                    "type": "text/plain"
+                  },
+                  "key": "Retry-After",
+                  "value": "<integer>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:08.000Z",
+              "updatedAt": "2026-07-28T02:12:08.000Z",
+              "uid": "35240-ecf387ec-f6e5-4fd8-aa50-0ecba3da153e"
+            },
+            {
+              "id": "b3adf438-4038-4bda-84d1-6562a3508308",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&type=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter events by event type.",
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:12:08.000Z",
+              "updatedAt": "2026-07-28T02:12:08.000Z",
+              "uid": "35240-b3adf438-4038-4bda-84d1-6562a3508308"
+            }
+          ],
+          "createdAt": "2026-07-28T02:12:08.000Z",
+          "updatedAt": "2026-07-28T02:12:08.000Z",
+          "uid": "35240-3d2df646-5302-4772-ac25-0be412f9d392"
+        }
+      ],
+      "id": "3757a127-be27-47d8-a799-226de98c6a48",
+      "createdAt": "2026-07-28T02:12:08.000Z",
+      "updatedAt": "2026-07-28T02:12:08.000Z",
+      "uid": "35240-3757a127-be27-47d8-a799-226de98c6a48"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

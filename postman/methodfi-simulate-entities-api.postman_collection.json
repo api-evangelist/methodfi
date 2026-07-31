@@ -1,0 +1,1200 @@
+{
+  "info": {
+    "_postman_id": "56179ad9-ec1a-449b-abf2-317cb5b66b02",
+    "name": "Method Account Attributes Simulate Entities API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:12:45.000Z",
+    "updatedAt": "2026-07-28T02:12:45.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-56179ad9-ec1a-449b-abf2-317cb5b66b02"
+  },
+  "item": [
+    {
+      "name": "simulate",
+      "item": [
+        {
+          "name": "entities",
+          "item": [
+            {
+              "name": "{entity_id}",
+              "item": [
+                {
+                  "name": "credit_scores",
+                  "item": [
+                    {
+                      "name": "{crs_id}",
+                      "item": [
+                        {
+                          "name": "Simulate a credit score",
+                          "id": "bb85b8b1-6895-424c-9a70-e47ce6a78d6e",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "bearer",
+                              "bearer": [
+                                {
+                                  "key": "token",
+                                  "value": "{{bearerToken}}",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"score\": \"<integer>\",\n  \"status\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/credit_scores/:crs_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "credit_scores",
+                                ":crs_id"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "f40460ae-ca38-46c4-9f6a-6dfd26d74c67",
+                                  "key": "entity_id",
+                                  "value": "ent_JX",
+                                  "description": "(Required) Unique identifier for the entity."
+                                },
+                                {
+                                  "id": "61ff0f82-6185-4a0f-bc6c-765e3aad850b",
+                                  "key": "crs_id",
+                                  "value": "crs_ElFn3Hx",
+                                  "description": "(Required) Unique identifier for the credit score resource."
+                                }
+                              ]
+                            },
+                            "description": "Simulates a credit score result for an entity in the sandbox environment.\nUse this to test credit score retrieval flows during development.\n\n**Development only** - This endpoint is only available in the sandbox environment.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "3c623b4c-481d-4ec8-a022-839668448ba5",
+                              "name": "The simulated credit score result.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"score\": \"<integer>\",\n  \"status\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/simulate/entities/:entity_id/credit_scores/:crs_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "simulate",
+                                    "entities",
+                                    ":entity_id",
+                                    "credit_scores",
+                                    ":crs_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "entity_id"
+                                    },
+                                    {
+                                      "key": "crs_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"failed\",\n    \"scores\": [\n      {\n        \"score\": \"<integer,null>\",\n        \"source\": \"<string,null>\",\n        \"model\": \"<string,null>\",\n        \"factors\": [\n          {\n            \"code\": \"<string,null>\",\n            \"description\": \"<string,null>\"\n          },\n          {\n            \"code\": \"<string,null>\",\n            \"description\": \"<string,null>\"\n          }\n        ],\n        \"created_at\": \"<dateTime>\"\n      },\n      {\n        \"score\": \"<integer,null>\",\n        \"source\": \"<string,null>\",\n        \"model\": \"<string,null>\",\n        \"factors\": null,\n        \"created_at\": \"<dateTime>\"\n      }\n    ],\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                              "createdAt": "2026-07-28T02:12:45.000Z",
+                              "updatedAt": "2026-07-28T02:12:45.000Z",
+                              "uid": "35240-3c623b4c-481d-4ec8-a022-839668448ba5"
+                            },
+                            {
+                              "id": "e888d405-1fe6-4daf-b8bf-1b0991c116a9",
+                              "name": "Bad request - invalid parameters or request body.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"score\": \"<integer>\",\n  \"status\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/simulate/entities/:entity_id/credit_scores/:crs_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "simulate",
+                                    "entities",
+                                    ":entity_id",
+                                    "credit_scores",
+                                    ":crs_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "entity_id"
+                                    },
+                                    {
+                                      "key": "crs_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:12:45.000Z",
+                              "updatedAt": "2026-07-28T02:12:45.000Z",
+                              "uid": "35240-e888d405-1fe6-4daf-b8bf-1b0991c116a9"
+                            },
+                            {
+                              "id": "f8b458e8-a2e9-4bc8-8e6f-0f1e85de8fd3",
+                              "name": "Unauthorized - missing or invalid authentication token.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"score\": \"<integer>\",\n  \"status\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/simulate/entities/:entity_id/credit_scores/:crs_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "simulate",
+                                    "entities",
+                                    ":entity_id",
+                                    "credit_scores",
+                                    ":crs_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "entity_id"
+                                    },
+                                    {
+                                      "key": "crs_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:12:45.000Z",
+                              "updatedAt": "2026-07-28T02:12:45.000Z",
+                              "uid": "35240-f8b458e8-a2e9-4bc8-8e6f-0f1e85de8fd3"
+                            },
+                            {
+                              "id": "7c892722-477f-49db-a474-4369287084ef",
+                              "name": "Not found - the requested resource does not exist.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"score\": \"<integer>\",\n  \"status\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/simulate/entities/:entity_id/credit_scores/:crs_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "simulate",
+                                    "entities",
+                                    ":entity_id",
+                                    "credit_scores",
+                                    ":crs_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "entity_id"
+                                    },
+                                    {
+                                      "key": "crs_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:12:45.000Z",
+                              "updatedAt": "2026-07-28T02:12:45.000Z",
+                              "uid": "35240-7c892722-477f-49db-a474-4369287084ef"
+                            },
+                            {
+                              "id": "ee536906-010c-4f80-a6bf-bd51387f60c8",
+                              "name": "Internal server error.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                    "key": "Method-Version",
+                                    "value": "2025-12-01"
+                                  },
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: bearer",
+                                    "key": "Authorization",
+                                    "value": "Bearer <token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"score\": \"<integer>\",\n  \"status\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/simulate/entities/:entity_id/credit_scores/:crs_id",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "simulate",
+                                    "entities",
+                                    ":entity_id",
+                                    "credit_scores",
+                                    ":crs_id"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "entity_id"
+                                    },
+                                    {
+                                      "key": "crs_id"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:12:45.000Z",
+                              "updatedAt": "2026-07-28T02:12:45.000Z",
+                              "uid": "35240-ee536906-010c-4f80-a6bf-bd51387f60c8"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-bb85b8b1-6895-424c-9a70-e47ce6a78d6e"
+                        }
+                      ],
+                      "id": "a8b39bbb-a064-4b46-b613-c4ff766a61a5",
+                      "createdAt": "2026-07-28T02:12:45.000Z",
+                      "updatedAt": "2026-07-28T02:12:45.000Z",
+                      "uid": "35240-a8b39bbb-a064-4b46-b613-c4ff766a61a5"
+                    }
+                  ],
+                  "id": "b50fca48-c1b0-4c13-a72e-14fb6fd8e20c",
+                  "createdAt": "2026-07-28T02:12:45.000Z",
+                  "updatedAt": "2026-07-28T02:12:45.000Z",
+                  "uid": "35240-b50fca48-c1b0-4c13-a72e-14fb6fd8e20c"
+                },
+                {
+                  "name": "connect",
+                  "item": [
+                    {
+                      "name": "Simulate entity connect",
+                      "id": "8b13b99a-0b2d-4441-bc8b-a97e274c19d4",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/simulate/entities/:entity_id/connect",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "simulate",
+                            "entities",
+                            ":entity_id",
+                            "connect"
+                          ],
+                          "variable": [
+                            {
+                              "id": "2fa2016d-a9d6-4b7d-806b-89fc272ef48e",
+                              "key": "entity_id",
+                              "value": "ent_JX",
+                              "description": "(Required) Unique identifier for the entity."
+                            }
+                          ]
+                        },
+                        "description": "Simulates the entity connect flow in the sandbox environment.\nUse this to test account discovery and connection flows during development.\n\n**Development only** - This endpoint is only available in the sandbox environment.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "efba5ae7-2331-4503-a094-7148fbf6c615",
+                          "name": "The simulated connect result.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/connect",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "connect"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"failed\",\n    \"accounts\": [\n      \"acc_eysF\",\n      \"acc_JD06j\"\n    ],\n    \"requested_products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"requested_subscriptions\": null,\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": null\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-efba5ae7-2331-4503-a094-7148fbf6c615"
+                        },
+                        {
+                          "id": "ebb34fa6-1a3e-4ab1-b707-1339cac8af0b",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/connect",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "connect"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-ebb34fa6-1a3e-4ab1-b707-1339cac8af0b"
+                        },
+                        {
+                          "id": "2f06ace3-f21c-46cf-8f92-daea77c5657a",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/connect",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "connect"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-2f06ace3-f21c-46cf-8f92-daea77c5657a"
+                        },
+                        {
+                          "id": "bbe1d103-5073-4bde-a7a5-84b50833fe59",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/connect",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "connect"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-bbe1d103-5073-4bde-a7a5-84b50833fe59"
+                        },
+                        {
+                          "id": "c45753d6-67cc-44be-8c0c-bf109058b966",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/connect",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "connect"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-c45753d6-67cc-44be-8c0c-bf109058b966"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:12:45.000Z",
+                      "updatedAt": "2026-07-28T02:12:45.000Z",
+                      "uid": "35240-8b13b99a-0b2d-4441-bc8b-a97e274c19d4"
+                    }
+                  ],
+                  "id": "761f1bf3-24f1-476f-8d37-9b11e6ac4ca6",
+                  "createdAt": "2026-07-28T02:12:45.000Z",
+                  "updatedAt": "2026-07-28T02:12:45.000Z",
+                  "uid": "35240-761f1bf3-24f1-476f-8d37-9b11e6ac4ca6"
+                },
+                {
+                  "name": "attributes",
+                  "item": [
+                    {
+                      "name": "Simulate entity attributes",
+                      "id": "93bdc45b-8c0f-4f1e-b4d0-938e67b935be",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                            "key": "Method-Version",
+                            "value": "2025-12-01"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/simulate/entities/:entity_id/attributes",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "simulate",
+                            "entities",
+                            ":entity_id",
+                            "attributes"
+                          ],
+                          "variable": [
+                            {
+                              "id": "b3f37bfa-ac1e-470c-a190-641b99202542",
+                              "key": "entity_id",
+                              "value": "ent_JX",
+                              "description": "(Required) Unique identifier for the entity."
+                            }
+                          ]
+                        },
+                        "description": "Simulates attribute data for an entity in the sandbox environment.\nUse this to test attribute retrieval flows during development.\n\n**Development only** - This endpoint is only available in the sandbox environment.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "bcb32b98-4a06-45f5-9195-f600ff06d6c7",
+                          "name": "The simulated entity attributes.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/attributes",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "attributes"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"<string>\",\n    \"entity_id\": \"<string>\",\n    \"status\": \"pending\",\n    \"attributes\": {\n      \"credit_health_credit_card_usage\": {\n        \"value\": \"<number,null>\",\n        \"rating\": \"<string>\",\n        \"metadata\": null\n      },\n      \"credit_health_derogatory_marks\": {\n        \"value\": \"<number,null>\",\n        \"rating\": \"<string>\",\n        \"metadata\": null\n      },\n      \"credit_health_hard_inquiries\": {\n        \"value\": \"<number,null>\",\n        \"rating\": \"<string>\",\n        \"metadata\": null\n      },\n      \"credit_health_soft_inquiries\": {\n        \"value\": \"<number,null>\",\n        \"rating\": \"<string>\",\n        \"metadata\": {}\n      },\n      \"credit_health_total_accounts\": null,\n      \"credit_health_open_accounts\": null,\n      \"credit_health_credit_age\": null,\n      \"credit_health_payment_history\": {\n        \"value\": \"<number,null>\",\n        \"rating\": \"<string>\",\n        \"metadata\": {}\n      },\n      \"credit_health_entity_delinquent\": {\n        \"value\": \"<number,null>\",\n        \"rating\": \"<string>\",\n        \"metadata\": null\n      }\n    },\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"error\": {\n      \"type\": \"<string>\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string,null>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-bcb32b98-4a06-45f5-9195-f600ff06d6c7"
+                        },
+                        {
+                          "id": "96acc0ec-fc47-487d-9f7b-3d5e6fad7d17",
+                          "name": "Bad request - invalid parameters or request body.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/attributes",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "attributes"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-96acc0ec-fc47-487d-9f7b-3d5e6fad7d17"
+                        },
+                        {
+                          "id": "c734a591-ab4d-4f89-9c04-0942ef6d0809",
+                          "name": "Unauthorized - missing or invalid authentication token.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/attributes",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "attributes"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-c734a591-ab4d-4f89-9c04-0942ef6d0809"
+                        },
+                        {
+                          "id": "2e30a4de-954f-42ff-b827-3cb220b1de10",
+                          "name": "Not found - the requested resource does not exist.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/attributes",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "attributes"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-2e30a4de-954f-42ff-b827-3cb220b1de10"
+                        },
+                        {
+                          "id": "20e391b4-7968-4ebf-8847-42dc4c7880eb",
+                          "name": "Internal server error.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                                "key": "Method-Version",
+                                "value": "2025-12-01"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/simulate/entities/:entity_id/attributes",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "simulate",
+                                "entities",
+                                ":entity_id",
+                                "attributes"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "entity_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"api_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:12:45.000Z",
+                          "updatedAt": "2026-07-28T02:12:45.000Z",
+                          "uid": "35240-20e391b4-7968-4ebf-8847-42dc4c7880eb"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:12:45.000Z",
+                      "updatedAt": "2026-07-28T02:12:45.000Z",
+                      "uid": "35240-93bdc45b-8c0f-4f1e-b4d0-938e67b935be"
+                    }
+                  ],
+                  "id": "f0e87543-d50d-4319-8a06-b1a2aa469d38",
+                  "createdAt": "2026-07-28T02:12:45.000Z",
+                  "updatedAt": "2026-07-28T02:12:45.000Z",
+                  "uid": "35240-f0e87543-d50d-4319-8a06-b1a2aa469d38"
+                }
+              ],
+              "id": "c7ae107c-646c-4be3-98c4-4e0467d359e0",
+              "createdAt": "2026-07-28T02:12:45.000Z",
+              "updatedAt": "2026-07-28T02:12:45.000Z",
+              "uid": "35240-c7ae107c-646c-4be3-98c4-4e0467d359e0"
+            }
+          ],
+          "id": "c2596810-9dda-48c6-a17c-88810da648c0",
+          "createdAt": "2026-07-28T02:12:45.000Z",
+          "updatedAt": "2026-07-28T02:12:45.000Z",
+          "uid": "35240-c2596810-9dda-48c6-a17c-88810da648c0"
+        }
+      ],
+      "id": "c6d9c92c-ed62-4d47-8f5f-711a5e1dcc54",
+      "createdAt": "2026-07-28T02:12:45.000Z",
+      "updatedAt": "2026-07-28T02:12:45.000Z",
+      "uid": "35240-c6d9c92c-ed62-4d47-8f5f-711a5e1dcc54"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

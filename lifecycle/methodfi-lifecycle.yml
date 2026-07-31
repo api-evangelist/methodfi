@@ -1,0 +1,43 @@
+generated: '2026-07-20'
+method: searched
+source: https://docs.methodfi.com/2026-03-30/reference/versioning
+versioning:
+  scheme: dated-header
+  header: Method-Version
+  current: '2026-03-30'
+  known_versions:
+  - '2026-03-30'
+  - '2025-12-01'
+  - '2025-07-04'
+  - '2024-04-04'
+  - '2020-12-06'
+  docs: https://docs.methodfi.com/2026-03-30/reference/versioning
+  note: >-
+    Breaking (backwards-incompatible) changes ship as a new dated version selected via
+    the Method-Version header. Older versions remain callable but lack new features.
+    Once a team upgrades in the Dashboard it cannot revert.
+deprecation:
+  policy_url: https://docs.methodfi.com/2026-03-30/reference/versioning
+  backwards_compatible_changes:
+  - Adding new API resources
+  - Adding new properties to existing responses
+  - Adding new enum values in responses
+  - Adding new properties to webhook payloads
+  - Adding new event types
+  sunset_header: false
+  description: >-
+    Method publishes an explicit backwards-compatibility policy; new dated versions are
+    the deprecation mechanism. No RFC 8594 Sunset/Deprecation header support documented.
+sla:
+  url: null
+  uptime_target: null
+status_page: https://methodfi.statuspage.io
+changelog: https://docs.methodfi.com/changelog
+deprecated_operations: []
+library_version_locking:
+  description: Method server libraries are version-locked to a dated API version.
+  mapping:
+  - 'method-node/method-python v0.x -> 2020-12-06'
+  - 'method-node/method-python v1.x -> 2024-04-04'
+  - 'method-node/method-python v2.0.x -> 2025-07-04'
+  - 'method-node/method-python v2.1.0+ -> 2025-12-01'

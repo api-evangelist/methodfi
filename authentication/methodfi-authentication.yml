@@ -1,0 +1,57 @@
+generated: '2026-07-20'
+method: searched
+source: openapi/methodfi-openapi-original.yml
+docs: https://docs.methodfi.com/2026-03-30/reference/authentication
+summary:
+  types:
+  - http
+  http_schemes:
+  - bearer
+  token_prefixes:
+  - sk_    # secret key (server-side)
+  - pk_    # public key (client-side / Elements)
+  - otkn_  # Opal session token
+  notes: |
+    Method authenticates with API keys presented as HTTP Bearer tokens in the
+    Authorization header. Secret keys (sk_) authorize all server-side API calls;
+    public keys (pk_) are used for client-side Element/Opal requests; Opal session
+    tokens (otkn_) authorize Opal session endpoints. Every request must also send a
+    dated Method-Version header. Separate keys exist per environment (Development,
+    Sandbox, Production), managed in the Method Dashboard. No OAuth 2.0 / OIDC.
+schemes:
+- name: SecretKey
+  type: http
+  scheme: bearer
+  in: header
+  header: Authorization
+  format: 'Bearer sk_...'
+  description: |
+    Secret key authentication. Use your team's secret key (sk_...) as the Bearer
+    token. All authenticated API endpoints require this scheme unless otherwise noted.
+    This is the default/global security requirement across the OpenAPI.
+  sources:
+  - openapi/methodfi-openapi-original.yml
+- name: OpalToken
+  type: http
+  scheme: bearer
+  in: header
+  header: Authorization
+  format: 'Bearer otkn_...'
+  description: |
+    Opal token authentication for Opal session endpoints. Use an Opal token
+    (otkn_...) as the Bearer token. Created via POST /opal/token using a secret key.
+  sources:
+  - openapi/methodfi-openapi-original.yml
+extras:
+  version_header:
+    name: Method-Version
+    required: true
+    current: '2026-03-30'
+    example: '2026-03-30'
+  ip_whitelisting:
+    supported: true
+    docs: https://docs.methodfi.com/2026-03-30/reference/ip-whitelisting
+  message_level_encryption:
+    supported: true
+    docs: https://docs.methodfi.com/2026-03-30/reference/message-level-encryption
+    jwks: true

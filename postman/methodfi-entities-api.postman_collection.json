@@ -1,0 +1,2464 @@
+{
+  "info": {
+    "_postman_id": "17e4ef80-1c00-4a0a-88af-e9095be252d2",
+    "name": "Method Account Attributes Entities API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:11:52.000Z",
+    "updatedAt": "2026-07-28T02:11:53.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-17e4ef80-1c00-4a0a-88af-e9095be252d2"
+  },
+  "item": [
+    {
+      "name": "entities",
+      "item": [
+        {
+          "name": "{entityId}",
+          "item": [
+            {
+              "name": "Retrieve an entity",
+              "id": "2f667b13-f4ec-44ff-b43b-1d9a8471da50",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/entities/:entityId?expand=identity_latest_verification_session&expand=phone_latest_verification_session",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities",
+                    ":entityId"
+                  ],
+                  "query": [
+                    {
+                      "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "identity_latest_verification_session"
+                    },
+                    {
+                      "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "phone_latest_verification_session"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "bc449b10-3379-4f4e-85a9-aa1477531227",
+                      "key": "entityId",
+                      "value": "ent_Pcwg8ftwVR",
+                      "description": "(Required) Unique identifier for the entity."
+                    }
+                  ]
+                },
+                "description": "Returns a single entity by its identifier."
+              },
+              "response": [
+                {
+                  "id": "008a1f3b-7259-4a00-8baf-5016e89785ab",
+                  "name": "The requested entity.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId?expand=phone_latest_verification_session",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "phone_latest_verification_session"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"available_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"created_at\": \"<dateTime>\",\n    \"id\": \"ent_UzUwdeWY\",\n    \"products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"status\": \"incomplete\",\n    \"subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"type\": \"sole_proprietorship\",\n    \"updated_at\": \"<dateTime>\",\n    \"address\": {\n      \"line1\": \"<string,null>\",\n      \"line2\": \"<string,null>\",\n      \"city\": \"<string,null>\",\n      \"state\": \"<string,null>\",\n      \"zip\": \"<string,null>\"\n    },\n    \"error\": null,\n    \"metadata\": {\n      \"nulla_96\": \"nostrud consectetur\"\n    },\n    \"individual\": null,\n    \"verification\": null,\n    \"connect\": \"cxn_bdFKxaL7Bz\",\n    \"credit_score\": \"crs_6QUIizkKwU\",\n    \"attribute\": \"attr_yNA73NmA4Wj\",\n    \"vehicle\": \"vhl_p2X8\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-008a1f3b-7259-4a00-8baf-5016e89785ab"
+                },
+                {
+                  "id": "dc661986-15bb-4b9a-b39b-9ef3e3bda1d2",
+                  "name": "Bad request - invalid parameters or request body.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId?expand=phone_latest_verification_session",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "phone_latest_verification_session"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-dc661986-15bb-4b9a-b39b-9ef3e3bda1d2"
+                },
+                {
+                  "id": "bd270723-9196-49e1-b487-8868897ed431",
+                  "name": "Unauthorized - missing or invalid authentication token.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId?expand=phone_latest_verification_session",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "phone_latest_verification_session"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-bd270723-9196-49e1-b487-8868897ed431"
+                },
+                {
+                  "id": "a90c67ec-88d1-4aa3-b928-d5597ce06112",
+                  "name": "Forbidden - insufficient permissions for this operation.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId?expand=phone_latest_verification_session",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "phone_latest_verification_session"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-a90c67ec-88d1-4aa3-b928-d5597ce06112"
+                },
+                {
+                  "id": "0bb21a71-1f1a-4244-a1b9-ec3898527da8",
+                  "name": "Not found - the requested resource does not exist.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId?expand=phone_latest_verification_session",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "phone_latest_verification_session"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-0bb21a71-1f1a-4244-a1b9-ec3898527da8"
+                },
+                {
+                  "id": "642a7d74-7f77-4708-8fc4-d681f69eee8b",
+                  "name": "Too many requests - rate limit exceeded.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId?expand=phone_latest_verification_session",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "phone_latest_verification_session"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of seconds to wait before retrying.",
+                        "type": "text/plain"
+                      },
+                      "key": "Retry-After",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-642a7d74-7f77-4708-8fc4-d681f69eee8b"
+                },
+                {
+                  "id": "a2050292-024b-4424-bab1-286a1b4c88f6",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId?expand=phone_latest_verification_session",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "phone_latest_verification_session"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-a2050292-024b-4424-bab1-286a1b4c88f6"
+                }
+              ],
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-2f667b13-f4ec-44ff-b43b-1d9a8471da50"
+            },
+            {
+              "name": "Update an entity",
+              "id": "f23c035e-5782-4541-b365-287beea2438a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/entities/:entityId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities",
+                    ":entityId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "ca3dd716-bcca-469d-a56b-e24b9bf1b119",
+                      "key": "entityId",
+                      "value": "ent_Pcwg8ftwVR",
+                      "description": "(Required) Unique identifier for the entity."
+                    }
+                  ]
+                },
+                "description": "Updates an existing entity."
+              },
+              "response": [
+                {
+                  "id": "fc6e7102-69b8-494d-bdee-58c124a1994d",
+                  "name": "The updated entity.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"available_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"created_at\": \"<dateTime>\",\n    \"id\": \"ent_UzUwdeWY\",\n    \"products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"status\": \"incomplete\",\n    \"subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"type\": \"sole_proprietorship\",\n    \"updated_at\": \"<dateTime>\",\n    \"address\": {\n      \"line1\": \"<string,null>\",\n      \"line2\": \"<string,null>\",\n      \"city\": \"<string,null>\",\n      \"state\": \"<string,null>\",\n      \"zip\": \"<string,null>\"\n    },\n    \"error\": null,\n    \"metadata\": {\n      \"nulla_96\": \"nostrud consectetur\"\n    },\n    \"individual\": null,\n    \"verification\": null,\n    \"connect\": \"cxn_bdFKxaL7Bz\",\n    \"credit_score\": \"crs_6QUIizkKwU\",\n    \"attribute\": \"attr_yNA73NmA4Wj\",\n    \"vehicle\": \"vhl_p2X8\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-fc6e7102-69b8-494d-bdee-58c124a1994d"
+                },
+                {
+                  "id": "582760ab-f420-4be4-a46d-b9a0bed4cc09",
+                  "name": "Bad request - invalid parameters or request body.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-582760ab-f420-4be4-a46d-b9a0bed4cc09"
+                },
+                {
+                  "id": "036f7328-2841-4669-8a14-fa0ab512c991",
+                  "name": "Unauthorized - missing or invalid authentication token.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-036f7328-2841-4669-8a14-fa0ab512c991"
+                },
+                {
+                  "id": "41133c04-ce9e-440e-bd44-81165f6bab9d",
+                  "name": "Forbidden - insufficient permissions for this operation.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-41133c04-ce9e-440e-bd44-81165f6bab9d"
+                },
+                {
+                  "id": "09cb03d1-e1f0-4257-8736-ac7b75eba12d",
+                  "name": "Not found - the requested resource does not exist.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-09cb03d1-e1f0-4257-8736-ac7b75eba12d"
+                },
+                {
+                  "id": "658a6042-c1f2-48d9-9bf4-605325cabceb",
+                  "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-658a6042-c1f2-48d9-9bf4-605325cabceb"
+                },
+                {
+                  "id": "bc5cdca4-070c-45f9-b117-f19fe9177ba3",
+                  "name": "Too many requests - rate limit exceeded.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of seconds to wait before retrying.",
+                        "type": "text/plain"
+                      },
+                      "key": "Retry-After",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-bc5cdca4-070c-45f9-b117-f19fe9177ba3"
+                },
+                {
+                  "id": "bc0123ba-12cd-4aa0-abf5-1293387ec4d2",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+558805888311\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"386852723\",\n    \"ssn_4\": \"5906\"\n  },\n  \"corporation\": {\n    \"name\": \"<string>\",\n    \"dba\": \"<string>\",\n    \"ein\": \"<string>\",\n    \"owners\": [\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+352693614012234\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      },\n      {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"phone\": \"+30879214251\",\n        \"email\": \"<email>\",\n        \"dob\": \"<date>\",\n        \"address\": {\n          \"line1\": \"<string,null>\",\n          \"line2\": \"<string,null>\",\n          \"city\": \"<string,null>\",\n          \"state\": \"<string,null>\",\n          \"zip\": \"<string,null>\"\n        }\n      }\n    ]\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"mollit3ad\": true\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/entities/:entityId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "entities",
+                        ":entityId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "entityId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:11:53.000Z",
+                  "updatedAt": "2026-07-28T02:11:53.000Z",
+                  "uid": "35240-bc0123ba-12cd-4aa0-abf5-1293387ec4d2"
+                }
+              ],
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-f23c035e-5782-4541-b365-287beea2438a"
+            }
+          ],
+          "id": "d1fefc4f-25d5-4c0c-ba72-c184ac6b7265",
+          "createdAt": "2026-07-28T02:11:53.000Z",
+          "updatedAt": "2026-07-28T02:11:53.000Z",
+          "uid": "35240-d1fefc4f-25d5-4c0c-ba72-c184ac6b7265"
+        },
+        {
+          "name": "List all entities",
+          "id": "d55df894-0886-492c-b710-27a020da09d5",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                "key": "Method-Version",
+                "value": "2025-12-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/entities?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=incomplete&type=corporation&name=<string>&expand=identity_latest_verification_session&expand=phone_latest_verification_session",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "entities"
+              ],
+              "query": [
+                {
+                  "description": "Page number for pagination (1-indexed).",
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "description": "Number of items per page.",
+                  "key": "page_limit",
+                  "value": "10"
+                },
+                {
+                  "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                  "key": "page_cursor",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                  "key": "from_date",
+                  "value": "<date>"
+                },
+                {
+                  "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                  "key": "to_date",
+                  "value": "<date>"
+                },
+                {
+                  "description": "Filter entities by status.",
+                  "key": "status",
+                  "value": "incomplete"
+                },
+                {
+                  "description": "Filter entities by type.",
+                  "key": "type",
+                  "value": "corporation"
+                },
+                {
+                  "description": "Filter entities by their name.",
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                  "key": "expand",
+                  "value": "identity_latest_verification_session"
+                },
+                {
+                  "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                  "key": "expand",
+                  "value": "phone_latest_verification_session"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of entities."
+          },
+          "response": [
+            {
+              "id": "6433842d-3e51-4d03-b3f1-660ad57fb8cc",
+              "name": "A list of entities.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/entities?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=incomplete&type=corporation&name=<string>&expand=phone_latest_verification_session",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter entities by status.",
+                      "key": "status",
+                      "value": "incomplete"
+                    },
+                    {
+                      "description": "Filter entities by type.",
+                      "key": "type",
+                      "value": "corporation"
+                    },
+                    {
+                      "description": "Filter entities by their name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "phone_latest_verification_session"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Current page number.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Total number of pages.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Count",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of items per page.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Limit",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Total number of items across all pages.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Total-Count",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Cursor for the previous page, if available.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Cursor-Prev",
+                  "value": "<string,null>"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Cursor for the next page, if available.",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Cursor-Next",
+                  "value": "<string,null>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"available_subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"created_at\": \"<dateTime>\",\n      \"id\": \"ent_lbb\",\n      \"products\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"restricted_products\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"restricted_subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"status\": \"active\",\n      \"subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"type\": \"partnership\",\n      \"updated_at\": \"<dateTime>\",\n      \"address\": {\n        \"line1\": \"<string,null>\",\n        \"line2\": \"<string,null>\",\n        \"city\": \"<string,null>\",\n        \"state\": \"<string,null>\",\n        \"zip\": \"<string,null>\"\n      },\n      \"error\": {\n        \"type\": \"ENTITY_VERIFICATION_FAILED\",\n        \"code\": 12004,\n        \"sub_type\": \"ENTITY_CANNOT_PERFORM_ACTION\",\n        \"message\": \"<string>\"\n      },\n      \"metadata\": null,\n      \"individual\": {\n        \"first_name\": \"<string,null>\",\n        \"last_name\": \"<string,null>\",\n        \"phone\": \"+8460235545152\",\n        \"email\": \"<string,null-email>\",\n        \"dob\": \"<string,null-date>\",\n        \"ssn\": \"<string,null>\",\n        \"ssn_4\": \"<string,null>\"\n      },\n      \"verification\": null,\n      \"connect\": \"cxn_JaK3\",\n      \"credit_score\": \"crs_ZxJ9aEOS\",\n      \"attribute\": \"attr_hlZOl\",\n      \"vehicle\": \"vhl_DrjYo__c7\"\n    },\n    {\n      \"available_subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"created_at\": \"<dateTime>\",\n      \"id\": \"ent_UeVfIVZ8\",\n      \"products\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"restricted_products\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"restricted_subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"status\": \"active\",\n      \"subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"type\": \"sole_proprietorship\",\n      \"updated_at\": \"<dateTime>\",\n      \"address\": {\n        \"line1\": \"<string,null>\",\n        \"line2\": \"<string,null>\",\n        \"city\": \"<string,null>\",\n        \"state\": \"<string,null>\",\n        \"zip\": \"<string,null>\"\n      },\n      \"error\": {\n        \"type\": \"ENTITY_DISABLED\",\n        \"code\": 12007,\n        \"sub_type\": \"ENTITY_SSN_MISMATCH\",\n        \"message\": \"<string>\"\n      },\n      \"metadata\": null,\n      \"individual\": null,\n      \"verification\": null,\n      \"connect\": \"cxn_pLrO\",\n      \"credit_score\": \"crs_9vtuNRU\",\n      \"attribute\": \"attr_2fRViSJBudL\",\n      \"vehicle\": \"vhl_FZZ4y\"\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-6433842d-3e51-4d03-b3f1-660ad57fb8cc"
+            },
+            {
+              "id": "887c69d4-4534-412c-bbeb-eb5b1c789157",
+              "name": "Bad request - invalid parameters or request body.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/entities?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=incomplete&type=corporation&name=<string>&expand=phone_latest_verification_session",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter entities by status.",
+                      "key": "status",
+                      "value": "incomplete"
+                    },
+                    {
+                      "description": "Filter entities by type.",
+                      "key": "type",
+                      "value": "corporation"
+                    },
+                    {
+                      "description": "Filter entities by their name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "phone_latest_verification_session"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-887c69d4-4534-412c-bbeb-eb5b1c789157"
+            },
+            {
+              "id": "07d4c817-911a-48c9-a1b1-cf5722a66e77",
+              "name": "Unauthorized - missing or invalid authentication token.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/entities?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=incomplete&type=corporation&name=<string>&expand=phone_latest_verification_session",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter entities by status.",
+                      "key": "status",
+                      "value": "incomplete"
+                    },
+                    {
+                      "description": "Filter entities by type.",
+                      "key": "type",
+                      "value": "corporation"
+                    },
+                    {
+                      "description": "Filter entities by their name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "phone_latest_verification_session"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-07d4c817-911a-48c9-a1b1-cf5722a66e77"
+            },
+            {
+              "id": "5ffbd168-8d81-4d75-ab48-172f89e4954d",
+              "name": "Forbidden - insufficient permissions for this operation.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/entities?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=incomplete&type=corporation&name=<string>&expand=phone_latest_verification_session",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter entities by status.",
+                      "key": "status",
+                      "value": "incomplete"
+                    },
+                    {
+                      "description": "Filter entities by type.",
+                      "key": "type",
+                      "value": "corporation"
+                    },
+                    {
+                      "description": "Filter entities by their name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "phone_latest_verification_session"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-5ffbd168-8d81-4d75-ab48-172f89e4954d"
+            },
+            {
+              "id": "007716f6-c180-43f6-91f2-30d01830da59",
+              "name": "Too many requests - rate limit exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/entities?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=incomplete&type=corporation&name=<string>&expand=phone_latest_verification_session",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter entities by status.",
+                      "key": "status",
+                      "value": "incomplete"
+                    },
+                    {
+                      "description": "Filter entities by type.",
+                      "key": "type",
+                      "value": "corporation"
+                    },
+                    {
+                      "description": "Filter entities by their name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "phone_latest_verification_session"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of seconds to wait before retrying.",
+                    "type": "text/plain"
+                  },
+                  "key": "Retry-After",
+                  "value": "<integer>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-007716f6-c180-43f6-91f2-30d01830da59"
+            },
+            {
+              "id": "c8d69d27-3957-4059-9c60-9aa3f22dcef9",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/entities?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=incomplete&type=corporation&name=<string>&expand=phone_latest_verification_session",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter entities by status.",
+                      "key": "status",
+                      "value": "incomplete"
+                    },
+                    {
+                      "description": "Filter entities by type.",
+                      "key": "type",
+                      "value": "corporation"
+                    },
+                    {
+                      "description": "Filter entities by their name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Expand related entity resources inline. Supports the entity expandable fields\ndocumented by the API validator for entity list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "phone_latest_verification_session"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-c8d69d27-3957-4059-9c60-9aa3f22dcef9"
+            }
+          ],
+          "createdAt": "2026-07-28T02:11:53.000Z",
+          "updatedAt": "2026-07-28T02:11:53.000Z",
+          "uid": "35240-d55df894-0886-492c-b710-27a020da09d5"
+        },
+        {
+          "name": "Create an entity",
+          "id": "327b4be9-046b-4f7d-8dc3-dd1066e7f4ec",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                "key": "Method-Version",
+                "value": "2025-12-01"
+              },
+              {
+                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                "key": "Idempotency-Key",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+7329505347672\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"445197592\",\n    \"ssn_4\": \"8471\"\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"sint6\": 54762705\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/entities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "entities"
+              ]
+            },
+            "description": "Creates a new entity."
+          },
+          "response": [
+            {
+              "id": "67e05d87-b10a-4cac-ac08-fecdfeaa279b",
+              "name": "The created entity.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+7329505347672\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"445197592\",\n    \"ssn_4\": \"8471\"\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"sint6\": 54762705\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/entities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"available_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"created_at\": \"<dateTime>\",\n    \"id\": \"ent_UzUwdeWY\",\n    \"products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"status\": \"incomplete\",\n    \"subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"type\": \"sole_proprietorship\",\n    \"updated_at\": \"<dateTime>\",\n    \"address\": {\n      \"line1\": \"<string,null>\",\n      \"line2\": \"<string,null>\",\n      \"city\": \"<string,null>\",\n      \"state\": \"<string,null>\",\n      \"zip\": \"<string,null>\"\n    },\n    \"error\": null,\n    \"metadata\": {\n      \"nulla_96\": \"nostrud consectetur\"\n    },\n    \"individual\": null,\n    \"verification\": null,\n    \"connect\": \"cxn_bdFKxaL7Bz\",\n    \"credit_score\": \"crs_6QUIizkKwU\",\n    \"attribute\": \"attr_yNA73NmA4Wj\",\n    \"vehicle\": \"vhl_p2X8\"\n  },\n  \"message\": \"<string,null>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-67e05d87-b10a-4cac-ac08-fecdfeaa279b"
+            },
+            {
+              "id": "654f26c2-66e0-41a6-b39d-985c452d92f4",
+              "name": "Bad request - invalid parameters or request body.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+7329505347672\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"445197592\",\n    \"ssn_4\": \"8471\"\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"sint6\": 54762705\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/entities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-654f26c2-66e0-41a6-b39d-985c452d92f4"
+            },
+            {
+              "id": "6c6f11ac-fa8c-49f9-8bec-85f4b6c12d4d",
+              "name": "Unauthorized - missing or invalid authentication token.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+7329505347672\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"445197592\",\n    \"ssn_4\": \"8471\"\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"sint6\": 54762705\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/entities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-6c6f11ac-fa8c-49f9-8bec-85f4b6c12d4d"
+            },
+            {
+              "id": "b94a0630-23f9-4a3b-a7ff-8eee05f9f7ea",
+              "name": "Forbidden - insufficient permissions for this operation.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+7329505347672\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"445197592\",\n    \"ssn_4\": \"8471\"\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"sint6\": 54762705\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/entities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-b94a0630-23f9-4a3b-a7ff-8eee05f9f7ea"
+            },
+            {
+              "id": "77830f06-f5d9-4990-a3a0-a0dbf14d245c",
+              "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+7329505347672\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"445197592\",\n    \"ssn_4\": \"8471\"\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"sint6\": 54762705\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/entities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-77830f06-f5d9-4990-a3a0-a0dbf14d245c"
+            },
+            {
+              "id": "dffde52e-9414-4631-8342-71f1819b9ff4",
+              "name": "Too many requests - rate limit exceeded.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+7329505347672\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"445197592\",\n    \"ssn_4\": \"8471\"\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"sint6\": 54762705\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/entities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of seconds to wait before retrying.",
+                    "type": "text/plain"
+                  },
+                  "key": "Retry-After",
+                  "value": "<integer>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-dffde52e-9414-4631-8342-71f1819b9ff4"
+            },
+            {
+              "id": "5d13a4c1-5387-4f30-85e4-248e06848367",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"+7329505347672\",\n    \"email\": \"<email>\",\n    \"dob\": \"<date>\",\n    \"ssn\": \"445197592\",\n    \"ssn_4\": \"8471\"\n  },\n  \"address\": {\n    \"line1\": \"<string,null>\",\n    \"line2\": \"<string,null>\",\n    \"city\": \"<string,null>\",\n    \"state\": \"<string,null>\",\n    \"zip\": \"<string,null>\"\n  },\n  \"metadata\": {\n    \"sint6\": 54762705\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/entities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "entities"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:11:53.000Z",
+              "updatedAt": "2026-07-28T02:11:53.000Z",
+              "uid": "35240-5d13a4c1-5387-4f30-85e4-248e06848367"
+            }
+          ],
+          "createdAt": "2026-07-28T02:11:53.000Z",
+          "updatedAt": "2026-07-28T02:11:53.000Z",
+          "uid": "35240-327b4be9-046b-4f7d-8dc3-dd1066e7f4ec"
+        }
+      ],
+      "id": "ff6abbe7-336d-4fb5-9686-35051c30e778",
+      "createdAt": "2026-07-28T02:11:53.000Z",
+      "updatedAt": "2026-07-28T02:11:53.000Z",
+      "uid": "35240-ff6abbe7-336d-4fb5-9686-35051c30e778"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}

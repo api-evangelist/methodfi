@@ -1,0 +1,137 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/methodfi-openapi-original.yml
+docs: https://docs.methodfi.com/guides/concepts
+description: >-
+  Entity-relationship graph for the Method API, derived from the OpenAPI object graph
+  and id-reference fields. The Entity is the foundational object (an end user); Accounts
+  are the liability/funding objects held by an Entity; Payments move money between
+  Accounts. Ids are prefixed, resource-typed opaque strings.
+id_prefixes:
+  entity: ent_
+  account: acc_
+  payment: pmt_
+  payment_reversal: rev_
+  payment_instrument: pi_
+  attribute: attr_
+  balance: blnc_
+  payoff: pyf_
+  subscription: sub_
+  transaction: txn_
+  update: updt_
+  connect: cxn_
+  credit_score: crs_
+  identity: idn_
+  vehicle: vhc_
+  merchant: mch_
+  event: evt_
+  report: rpt_
+  secret: scrt_
+  forwarding_request: frq_
+  webhook: whk_
+  opal_token: otkn_
+entities:
+- name: Entity
+  prefix: ent_
+  description: An end user (individual or corporation). Root of every integration.
+- name: Account
+  prefix: acc_
+  description: A financial account held by an Entity — liability, ACH, clearing, or debit card.
+- name: Payment
+  prefix: pmt_
+  description: An electronic transfer pulling funds from a source Account to a destination Account.
+- name: PaymentReversal
+  prefix: rev_
+  description: A reversal of a completed/pending Payment.
+- name: PaymentInstrument
+  prefix: pi_
+  description: A reusable payment configuration for recurring/repeated payments.
+- name: Connect
+  prefix: cxn_
+  description: A liability-discovery run that surfaces an Entity's complete set of accounts.
+- name: CreditScore
+  prefix: crs_
+  description: A retrieved credit score for an Entity.
+- name: Attribute
+  prefix: attr_
+  description: Computed financial metrics for an Entity or Account.
+- name: VerificationSession
+  description: Identity/account verification session (KBA, SMS, SNA, KYC, micro-deposits, Plaid, MX, Teller).
+- name: Subscription
+  prefix: sub_
+  description: A monitoring subscription on an Entity or Account.
+- name: Webhook
+  prefix: whk_
+  description: A registered endpoint receiving event notifications.
+- name: Event
+  prefix: evt_
+  description: A literal or computed change to a resource.
+relationships:
+- from: Account
+  type: belongs_to
+  to: Entity
+  via: holder_id
+- from: Payment
+  type: belongs_to
+  to: Account
+  via: source
+- from: Payment
+  type: belongs_to
+  to: Account
+  via: destination
+- from: Payment
+  type: has_one
+  to: PaymentReversal
+  via: reversal_id
+- from: PaymentInstrument
+  type: belongs_to
+  to: Account
+  via: account_id
+- from: Connect
+  type: belongs_to
+  to: Entity
+  via: entity_id
+- from: Connect
+  type: has_many
+  to: Account
+  via: accounts
+- from: CreditScore
+  type: belongs_to
+  to: Entity
+  via: entity_id
+- from: Attribute
+  type: belongs_to
+  to: Entity
+  via: entity_id
+- from: Attribute
+  type: belongs_to
+  to: Account
+  via: account_id
+- from: Balance
+  type: belongs_to
+  to: Account
+  via: account_id
+- from: Payoff
+  type: belongs_to
+  to: Account
+  via: account_id
+- from: Transaction
+  type: belongs_to
+  to: Account
+  via: account_id
+- from: Update
+  type: belongs_to
+  to: Account
+  via: account_id
+- from: Subscription
+  type: belongs_to
+  to: Entity
+  via: entity_id
+- from: Account
+  type: has_one
+  to: CardBrand
+  via: card_brand
+- from: Account
+  type: belongs_to
+  to: Merchant
+  via: merchant_id

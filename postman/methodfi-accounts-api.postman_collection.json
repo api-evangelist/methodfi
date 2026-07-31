@@ -1,0 +1,2547 @@
+{
+  "info": {
+    "_postman_id": "d7c26d62-5e57-49fb-bcbe-cfcd8b258040",
+    "name": "Method Account Attributes Accounts API",
+    "description": "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n\n\nContact Support:\n Name: Method Financial\n Email: team@methodfi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:09:45.000Z",
+    "updatedAt": "2026-07-28T02:09:46.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d7c26d62-5e57-49fb-bcbe-cfcd8b258040"
+  },
+  "item": [
+    {
+      "name": "accounts",
+      "item": [
+        {
+          "name": "{accountId}",
+          "item": [
+            {
+              "name": "Retrieve an account",
+              "id": "655ac2f5-9eb5-4713-9fa5-d8ece7f9d130",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/accounts/:accountId?expand=transaction&expand=card_brand",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts",
+                    ":accountId"
+                  ],
+                  "query": [
+                    {
+                      "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "transaction"
+                    },
+                    {
+                      "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "card_brand"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "d9d93e12-c80e-428c-b2ce-97239d7af14f",
+                      "key": "accountId",
+                      "value": "acc_xQ24",
+                      "description": "(Required) Unique identifier for the account."
+                    }
+                  ]
+                },
+                "description": "Retrieves an account by its unique identifier."
+              },
+              "response": [
+                {
+                  "id": "0eae29ac-fb75-4d49-b072-8e28d55547a4",
+                  "name": "The requested account.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId?expand=card_brand",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "card_brand"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"acc_Ut\",\n    \"holder_id\": \"ent_I_Vv\",\n    \"type\": \"debit_card\",\n    \"status\": \"processing\",\n    \"consent_status\": \"approved\",\n    \"products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"ach\": {\n      \"routing\": \"<string>\",\n      \"number\": \"<string>\",\n      \"type\": \"checking\"\n    },\n    \"liability\": {\n      \"mch_id\": \"mch_uEg\",\n      \"mask\": \"<string,null>\",\n      \"ownership\": \"authorized\",\n      \"fingerprint\": \"<string,null>\",\n      \"type\": \"fintech\",\n      \"sub_type\": \"<string,null>\",\n      \"name\": \"<string,null>\"\n    },\n    \"clearing\": {\n      \"type\": \"multi_use\",\n      \"routing\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    \"debit_card\": null,\n    \"error\": {\n      \"type\": \"ACCOUNT_DISABLED\",\n      \"code\": 11005,\n      \"sub_type\": \"ACCOUNT_CONSENT_WITHDRAWN\",\n      \"message\": \"<string>\"\n    },\n    \"metadata\": null,\n    \"subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"available_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"latest_verification_session\": \"avf_b\",\n    \"balance\": \"bal_n\",\n    \"payoff\": \"pyf_NiDpj0O\",\n    \"payment_instrument\": \"pmt_inst_lSJ\",\n    \"card_brand\": \"cbrd_OI9\",\n    \"update\": \"upd_9HvKu1cXYh4\",\n    \"attribute\": \"acc_attr_3YsXffqcR5Q\",\n    \"sensitive\": \"astv_mI1Nbxh\"\n  },\n  \"message\": \"<string,null>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-0eae29ac-fb75-4d49-b072-8e28d55547a4"
+                },
+                {
+                  "id": "54f10fc2-ab4b-4d7d-9435-8849e864da5c",
+                  "name": "Bad request - invalid parameters or request body.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId?expand=card_brand",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "card_brand"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-54f10fc2-ab4b-4d7d-9435-8849e864da5c"
+                },
+                {
+                  "id": "d2645ec7-af02-4b9e-ba85-f1082be0cb4f",
+                  "name": "Unauthorized - missing or invalid authentication token.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId?expand=card_brand",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "card_brand"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-d2645ec7-af02-4b9e-ba85-f1082be0cb4f"
+                },
+                {
+                  "id": "3cf14b8c-b1f2-4861-8a72-34196cdb278c",
+                  "name": "Not found - the requested resource does not exist.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId?expand=card_brand",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "card_brand"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-3cf14b8c-b1f2-4861-8a72-34196cdb278c"
+                },
+                {
+                  "id": "f8381486-a820-4cd6-a3c2-91a7b95faba0",
+                  "name": "Too many requests - rate limit exceeded.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId?expand=card_brand",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "card_brand"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of seconds to wait before retrying.",
+                        "type": "text/plain"
+                      },
+                      "key": "Retry-After",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-f8381486-a820-4cd6-a3c2-91a7b95faba0"
+                },
+                {
+                  "id": "569dee9c-8c81-4137-8d5c-d76e59fdda25",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId?expand=card_brand",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                          "key": "expand",
+                          "value": "card_brand"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-569dee9c-8c81-4137-8d5c-d76e59fdda25"
+                }
+              ],
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-655ac2f5-9eb5-4713-9fa5-d8ece7f9d130"
+            },
+            {
+              "name": "Update an account",
+              "id": "af32fddb-8e01-4dff-aa38-14c85437e531",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"metadata\": {\n    \"voluptate26c\": 68204889.52311748,\n    \"in2b4\": \"a\"\n  },\n  \"liability\": {\n    \"mortgage\": {\n      \"address_street\": \"<string>\",\n      \"address_city\": \"<string>\",\n      \"address_state\": \"<string>\",\n      \"address_zip\": \"<string>\"\n    },\n    \"credit_card\": {\n      \"number\": \"<string>\",\n      \"expiration_month\": \"<string>\",\n      \"expiration_year\": \"<string>\",\n      \"cvv\": \"<string>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/accounts/:accountId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts",
+                    ":accountId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "d473a21f-4de6-4dc2-8fa6-d37e3d8c6a67",
+                      "key": "accountId",
+                      "value": "acc_xQ24",
+                      "description": "(Required) Unique identifier for the account."
+                    }
+                  ]
+                },
+                "description": "Updates an account's metadata or liability account number."
+              },
+              "response": [
+                {
+                  "id": "d341d515-c30e-4a01-b3ef-4c9b2c080012",
+                  "name": "Account updated successfully.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"metadata\": {\n    \"voluptate26c\": 68204889.52311748,\n    \"in2b4\": \"a\"\n  },\n  \"liability\": {\n    \"mortgage\": {\n      \"address_street\": \"<string>\",\n      \"address_city\": \"<string>\",\n      \"address_state\": \"<string>\",\n      \"address_zip\": \"<string>\"\n    },\n    \"credit_card\": {\n      \"number\": \"<string>\",\n      \"expiration_month\": \"<string>\",\n      \"expiration_year\": \"<string>\",\n      \"cvv\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": \"<null>\",\n  \"message\": \"<null,string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-d341d515-c30e-4a01-b3ef-4c9b2c080012"
+                },
+                {
+                  "id": "5780b0fd-11dd-4f47-b6cc-20601d878496",
+                  "name": "Bad request - invalid parameters or request body.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"metadata\": {\n    \"voluptate26c\": 68204889.52311748,\n    \"in2b4\": \"a\"\n  },\n  \"liability\": {\n    \"mortgage\": {\n      \"address_street\": \"<string>\",\n      \"address_city\": \"<string>\",\n      \"address_state\": \"<string>\",\n      \"address_zip\": \"<string>\"\n    },\n    \"credit_card\": {\n      \"number\": \"<string>\",\n      \"expiration_month\": \"<string>\",\n      \"expiration_year\": \"<string>\",\n      \"cvv\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-5780b0fd-11dd-4f47-b6cc-20601d878496"
+                },
+                {
+                  "id": "59b351c6-debd-4f47-9037-b8ffb911c245",
+                  "name": "Unauthorized - missing or invalid authentication token.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"metadata\": {\n    \"voluptate26c\": 68204889.52311748,\n    \"in2b4\": \"a\"\n  },\n  \"liability\": {\n    \"mortgage\": {\n      \"address_street\": \"<string>\",\n      \"address_city\": \"<string>\",\n      \"address_state\": \"<string>\",\n      \"address_zip\": \"<string>\"\n    },\n    \"credit_card\": {\n      \"number\": \"<string>\",\n      \"expiration_month\": \"<string>\",\n      \"expiration_year\": \"<string>\",\n      \"cvv\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-59b351c6-debd-4f47-9037-b8ffb911c245"
+                },
+                {
+                  "id": "cbd9a9c6-ac61-45e3-890d-199a89a804f0",
+                  "name": "Not found - the requested resource does not exist.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"metadata\": {\n    \"voluptate26c\": 68204889.52311748,\n    \"in2b4\": \"a\"\n  },\n  \"liability\": {\n    \"mortgage\": {\n      \"address_street\": \"<string>\",\n      \"address_city\": \"<string>\",\n      \"address_state\": \"<string>\",\n      \"address_zip\": \"<string>\"\n    },\n    \"credit_card\": {\n      \"number\": \"<string>\",\n      \"expiration_month\": \"<string>\",\n      \"expiration_year\": \"<string>\",\n      \"cvv\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-cbd9a9c6-ac61-45e3-890d-199a89a804f0"
+                },
+                {
+                  "id": "802470b9-118f-4f74-a2e2-79fb11859c4c",
+                  "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"metadata\": {\n    \"voluptate26c\": 68204889.52311748,\n    \"in2b4\": \"a\"\n  },\n  \"liability\": {\n    \"mortgage\": {\n      \"address_street\": \"<string>\",\n      \"address_city\": \"<string>\",\n      \"address_state\": \"<string>\",\n      \"address_zip\": \"<string>\"\n    },\n    \"credit_card\": {\n      \"number\": \"<string>\",\n      \"expiration_month\": \"<string>\",\n      \"expiration_year\": \"<string>\",\n      \"cvv\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-802470b9-118f-4f74-a2e2-79fb11859c4c"
+                },
+                {
+                  "id": "d4a3b7f1-7d92-4b8f-b6df-c96845a23ee0",
+                  "name": "Too many requests - rate limit exceeded.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"metadata\": {\n    \"voluptate26c\": 68204889.52311748,\n    \"in2b4\": \"a\"\n  },\n  \"liability\": {\n    \"mortgage\": {\n      \"address_street\": \"<string>\",\n      \"address_city\": \"<string>\",\n      \"address_state\": \"<string>\",\n      \"address_zip\": \"<string>\"\n    },\n    \"credit_card\": {\n      \"number\": \"<string>\",\n      \"expiration_month\": \"<string>\",\n      \"expiration_year\": \"<string>\",\n      \"cvv\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Number of seconds to wait before retrying.",
+                        "type": "text/plain"
+                      },
+                      "key": "Retry-After",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-d4a3b7f1-7d92-4b8f-b6df-c96845a23ee0"
+                },
+                {
+                  "id": "e901603c-1774-45f4-8de6-f1a1baa55ed5",
+                  "name": "Internal server error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                        "key": "Method-Version",
+                        "value": "2025-12-01"
+                      },
+                      {
+                        "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                        "key": "Idempotency-Key",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"metadata\": {\n    \"voluptate26c\": 68204889.52311748,\n    \"in2b4\": \"a\"\n  },\n  \"liability\": {\n    \"mortgage\": {\n      \"address_street\": \"<string>\",\n      \"address_city\": \"<string>\",\n      \"address_state\": \"<string>\",\n      \"address_zip\": \"<string>\"\n    },\n    \"credit_card\": {\n      \"number\": \"<string>\",\n      \"expiration_month\": \"<string>\",\n      \"expiration_year\": \"<string>\",\n      \"cvv\": \"<string>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/accounts/:accountId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "accounts",
+                        ":accountId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "accountId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:09:46.000Z",
+                  "updatedAt": "2026-07-28T02:09:46.000Z",
+                  "uid": "35240-e901603c-1774-45f4-8de6-f1a1baa55ed5"
+                }
+              ],
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-af32fddb-8e01-4dff-aa38-14c85437e531"
+            }
+          ],
+          "id": "1ea49e1e-9a63-4cce-9e8c-da576bfd55de",
+          "createdAt": "2026-07-28T02:09:46.000Z",
+          "updatedAt": "2026-07-28T02:09:46.000Z",
+          "uid": "35240-1ea49e1e-9a63-4cce-9e8c-da576bfd55de"
+        },
+        {
+          "name": "List all accounts",
+          "id": "307439e1-fd61-4b64-b432-f6edbe3419aa",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                "key": "Method-Version",
+                "value": "2025-12-01"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/accounts?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=active&type=liability&consent_status=approved&holder_id=ent_O0yKjn1nbv&holder_ids=ent_skZ&holder_ids=ent_iPZzbr&include_pending_consent=<boolean>&liability.mch_id=mch_UO&liability.type=student_loan&liability.ownership=primary&expand=transaction&expand=card_brand",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "accounts"
+              ],
+              "query": [
+                {
+                  "description": "Page number for pagination (1-indexed).",
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "description": "Number of items per page.",
+                  "key": "page_limit",
+                  "value": "10"
+                },
+                {
+                  "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                  "key": "page_cursor",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                  "key": "from_date",
+                  "value": "<date>"
+                },
+                {
+                  "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                  "key": "to_date",
+                  "value": "<date>"
+                },
+                {
+                  "description": "Filter accounts by status.",
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "description": "Filter accounts by type.",
+                  "key": "type",
+                  "value": "liability"
+                },
+                {
+                  "description": "Filter accounts by consent status.",
+                  "key": "consent_status",
+                  "value": "approved"
+                },
+                {
+                  "description": "Filter accounts by the entity ID that owns them.",
+                  "key": "holder_id",
+                  "value": "ent_O0yKjn1nbv"
+                },
+                {
+                  "description": "Filter accounts by one or more entity IDs.",
+                  "key": "holder_ids",
+                  "value": "ent_skZ"
+                },
+                {
+                  "description": "Filter accounts by one or more entity IDs.",
+                  "key": "holder_ids",
+                  "value": "ent_iPZzbr"
+                },
+                {
+                  "description": "Include accounts that are still pending consent.",
+                  "key": "include_pending_consent",
+                  "value": "<boolean>"
+                },
+                {
+                  "description": "Filter liability accounts by merchant ID.",
+                  "key": "liability.mch_id",
+                  "value": "mch_UO"
+                },
+                {
+                  "description": "Filter liability accounts by liability type.",
+                  "key": "liability.type",
+                  "value": "student_loan"
+                },
+                {
+                  "description": "Filter liability accounts by ownership type.",
+                  "key": "liability.ownership",
+                  "value": "primary"
+                },
+                {
+                  "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                  "key": "expand",
+                  "value": "transaction"
+                },
+                {
+                  "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                  "key": "expand",
+                  "value": "card_brand"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of accounts. Results can be filtered by status, type, holder, and date range."
+          },
+          "response": [
+            {
+              "id": "338a7906-567c-446f-ae61-e916cb66a08a",
+              "name": "A paginated list of accounts.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/accounts?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=active&type=liability&consent_status=approved&holder_id=ent_O0yKjn1nbv&holder_ids=ent_iPZzbr&include_pending_consent=<boolean>&liability.mch_id=mch_UO&liability.type=student_loan&liability.ownership=primary&expand=card_brand",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter accounts by status.",
+                      "key": "status",
+                      "value": "active"
+                    },
+                    {
+                      "description": "Filter accounts by type.",
+                      "key": "type",
+                      "value": "liability"
+                    },
+                    {
+                      "description": "Filter accounts by consent status.",
+                      "key": "consent_status",
+                      "value": "approved"
+                    },
+                    {
+                      "description": "Filter accounts by the entity ID that owns them.",
+                      "key": "holder_id",
+                      "value": "ent_O0yKjn1nbv"
+                    },
+                    {
+                      "description": "Filter accounts by one or more entity IDs.",
+                      "key": "holder_ids",
+                      "value": "ent_iPZzbr"
+                    },
+                    {
+                      "description": "Include accounts that are still pending consent.",
+                      "key": "include_pending_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "Filter liability accounts by merchant ID.",
+                      "key": "liability.mch_id",
+                      "value": "mch_UO"
+                    },
+                    {
+                      "description": "Filter liability accounts by liability type.",
+                      "key": "liability.type",
+                      "value": "student_loan"
+                    },
+                    {
+                      "description": "Filter liability accounts by ownership type.",
+                      "key": "liability.ownership",
+                      "value": "primary"
+                    },
+                    {
+                      "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "card_brand"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page",
+                  "value": ""
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Count",
+                  "value": ""
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Limit",
+                  "value": ""
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Total-Count",
+                  "value": ""
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Cursor-Prev",
+                  "value": ""
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Pagination-Page-Cursor-Next",
+                  "value": ""
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": [\n    {\n      \"id\": \"acc_DvC3up\",\n      \"holder_id\": \"ent_6U93KQ3\",\n      \"type\": \"debit_card\",\n      \"status\": \"pending_exchange\",\n      \"consent_status\": \"approved\",\n      \"products\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"restricted_products\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"ach\": {\n        \"routing\": \"<string>\",\n        \"number\": \"<string>\",\n        \"type\": \"savings\"\n      },\n      \"liability\": {\n        \"mch_id\": \"mch_weYp\",\n        \"mask\": \"<string,null>\",\n        \"ownership\": \"unknown\",\n        \"fingerprint\": \"<string,null>\",\n        \"type\": \"utility\",\n        \"sub_type\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      },\n      \"clearing\": null,\n      \"debit_card\": {\n        \"network\": \"<string>\",\n        \"mask\": \"<string>\",\n        \"issuer\": \"<string>\"\n      },\n      \"error\": null,\n      \"metadata\": null,\n      \"subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"available_subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"restricted_subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"latest_verification_session\": \"avf_kXSdjb\",\n      \"balance\": \"bal_cF3OiM\",\n      \"payoff\": \"pyf_A\",\n      \"payment_instrument\": \"pmt_inst_1EDSnpofm\",\n      \"card_brand\": \"cbrd_KFvnB6\",\n      \"update\": \"upd_NR_f\",\n      \"attribute\": \"acc_attr_6GfjCZ\",\n      \"sensitive\": \"astv_sB7FZIkBD\"\n    },\n    {\n      \"id\": \"acc_t6b\",\n      \"holder_id\": \"ent__\",\n      \"type\": null,\n      \"status\": \"closed\",\n      \"consent_status\": \"withdrawn\",\n      \"products\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"restricted_products\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"ach\": {\n        \"routing\": \"<string>\",\n        \"number\": \"<string>\",\n        \"type\": \"checking\"\n      },\n      \"liability\": {\n        \"mch_id\": \"mch_hFYXOpzhH\",\n        \"mask\": \"<string,null>\",\n        \"ownership\": null,\n        \"fingerprint\": \"<string,null>\",\n        \"type\": \"medical\",\n        \"sub_type\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      },\n      \"clearing\": {\n        \"type\": \"multi_use\",\n        \"routing\": \"<string>\",\n        \"number\": \"<string>\"\n      },\n      \"debit_card\": null,\n      \"error\": null,\n      \"metadata\": {\n        \"nisi_3\": \"et ullamco aute minim\",\n        \"deserunt_7d\": -41008543.48851217\n      },\n      \"subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"available_subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"restricted_subscriptions\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"latest_verification_session\": \"avf_Jn11Ku1Rtdj\",\n      \"balance\": \"bal_tgM4\",\n      \"payoff\": \"pyf_hqbd5b\",\n      \"payment_instrument\": \"pmt_inst_uRk\",\n      \"card_brand\": \"cbrd_Mgy\",\n      \"update\": \"upd_WBHr3l\",\n      \"attribute\": \"acc_attr_1H7kr\",\n      \"sensitive\": \"astv_7\"\n    }\n  ],\n  \"message\": \"<string,null>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-338a7906-567c-446f-ae61-e916cb66a08a"
+            },
+            {
+              "id": "c39134f0-0c6c-48b8-92a3-cdd5aba54ca8",
+              "name": "Bad request - invalid parameters or request body.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/accounts?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=active&type=liability&consent_status=approved&holder_id=ent_O0yKjn1nbv&holder_ids=ent_iPZzbr&include_pending_consent=<boolean>&liability.mch_id=mch_UO&liability.type=student_loan&liability.ownership=primary&expand=card_brand",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter accounts by status.",
+                      "key": "status",
+                      "value": "active"
+                    },
+                    {
+                      "description": "Filter accounts by type.",
+                      "key": "type",
+                      "value": "liability"
+                    },
+                    {
+                      "description": "Filter accounts by consent status.",
+                      "key": "consent_status",
+                      "value": "approved"
+                    },
+                    {
+                      "description": "Filter accounts by the entity ID that owns them.",
+                      "key": "holder_id",
+                      "value": "ent_O0yKjn1nbv"
+                    },
+                    {
+                      "description": "Filter accounts by one or more entity IDs.",
+                      "key": "holder_ids",
+                      "value": "ent_iPZzbr"
+                    },
+                    {
+                      "description": "Include accounts that are still pending consent.",
+                      "key": "include_pending_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "Filter liability accounts by merchant ID.",
+                      "key": "liability.mch_id",
+                      "value": "mch_UO"
+                    },
+                    {
+                      "description": "Filter liability accounts by liability type.",
+                      "key": "liability.type",
+                      "value": "student_loan"
+                    },
+                    {
+                      "description": "Filter liability accounts by ownership type.",
+                      "key": "liability.ownership",
+                      "value": "primary"
+                    },
+                    {
+                      "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "card_brand"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-c39134f0-0c6c-48b8-92a3-cdd5aba54ca8"
+            },
+            {
+              "id": "0b6db607-f203-4342-8093-040b0fc160bf",
+              "name": "Unauthorized - missing or invalid authentication token.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/accounts?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=active&type=liability&consent_status=approved&holder_id=ent_O0yKjn1nbv&holder_ids=ent_iPZzbr&include_pending_consent=<boolean>&liability.mch_id=mch_UO&liability.type=student_loan&liability.ownership=primary&expand=card_brand",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter accounts by status.",
+                      "key": "status",
+                      "value": "active"
+                    },
+                    {
+                      "description": "Filter accounts by type.",
+                      "key": "type",
+                      "value": "liability"
+                    },
+                    {
+                      "description": "Filter accounts by consent status.",
+                      "key": "consent_status",
+                      "value": "approved"
+                    },
+                    {
+                      "description": "Filter accounts by the entity ID that owns them.",
+                      "key": "holder_id",
+                      "value": "ent_O0yKjn1nbv"
+                    },
+                    {
+                      "description": "Filter accounts by one or more entity IDs.",
+                      "key": "holder_ids",
+                      "value": "ent_iPZzbr"
+                    },
+                    {
+                      "description": "Include accounts that are still pending consent.",
+                      "key": "include_pending_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "Filter liability accounts by merchant ID.",
+                      "key": "liability.mch_id",
+                      "value": "mch_UO"
+                    },
+                    {
+                      "description": "Filter liability accounts by liability type.",
+                      "key": "liability.type",
+                      "value": "student_loan"
+                    },
+                    {
+                      "description": "Filter liability accounts by ownership type.",
+                      "key": "liability.ownership",
+                      "value": "primary"
+                    },
+                    {
+                      "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "card_brand"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-0b6db607-f203-4342-8093-040b0fc160bf"
+            },
+            {
+              "id": "4be2eb46-e6a9-4bf6-8746-ddd9de57704c",
+              "name": "Not found - the requested resource does not exist.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/accounts?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=active&type=liability&consent_status=approved&holder_id=ent_O0yKjn1nbv&holder_ids=ent_iPZzbr&include_pending_consent=<boolean>&liability.mch_id=mch_UO&liability.type=student_loan&liability.ownership=primary&expand=card_brand",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter accounts by status.",
+                      "key": "status",
+                      "value": "active"
+                    },
+                    {
+                      "description": "Filter accounts by type.",
+                      "key": "type",
+                      "value": "liability"
+                    },
+                    {
+                      "description": "Filter accounts by consent status.",
+                      "key": "consent_status",
+                      "value": "approved"
+                    },
+                    {
+                      "description": "Filter accounts by the entity ID that owns them.",
+                      "key": "holder_id",
+                      "value": "ent_O0yKjn1nbv"
+                    },
+                    {
+                      "description": "Filter accounts by one or more entity IDs.",
+                      "key": "holder_ids",
+                      "value": "ent_iPZzbr"
+                    },
+                    {
+                      "description": "Include accounts that are still pending consent.",
+                      "key": "include_pending_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "Filter liability accounts by merchant ID.",
+                      "key": "liability.mch_id",
+                      "value": "mch_UO"
+                    },
+                    {
+                      "description": "Filter liability accounts by liability type.",
+                      "key": "liability.type",
+                      "value": "student_loan"
+                    },
+                    {
+                      "description": "Filter liability accounts by ownership type.",
+                      "key": "liability.ownership",
+                      "value": "primary"
+                    },
+                    {
+                      "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "card_brand"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-4be2eb46-e6a9-4bf6-8746-ddd9de57704c"
+            },
+            {
+              "id": "401819bb-010e-4e2f-92de-87111b7dbe02",
+              "name": "Too many requests - rate limit exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/accounts?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=active&type=liability&consent_status=approved&holder_id=ent_O0yKjn1nbv&holder_ids=ent_iPZzbr&include_pending_consent=<boolean>&liability.mch_id=mch_UO&liability.type=student_loan&liability.ownership=primary&expand=card_brand",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter accounts by status.",
+                      "key": "status",
+                      "value": "active"
+                    },
+                    {
+                      "description": "Filter accounts by type.",
+                      "key": "type",
+                      "value": "liability"
+                    },
+                    {
+                      "description": "Filter accounts by consent status.",
+                      "key": "consent_status",
+                      "value": "approved"
+                    },
+                    {
+                      "description": "Filter accounts by the entity ID that owns them.",
+                      "key": "holder_id",
+                      "value": "ent_O0yKjn1nbv"
+                    },
+                    {
+                      "description": "Filter accounts by one or more entity IDs.",
+                      "key": "holder_ids",
+                      "value": "ent_iPZzbr"
+                    },
+                    {
+                      "description": "Include accounts that are still pending consent.",
+                      "key": "include_pending_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "Filter liability accounts by merchant ID.",
+                      "key": "liability.mch_id",
+                      "value": "mch_UO"
+                    },
+                    {
+                      "description": "Filter liability accounts by liability type.",
+                      "key": "liability.type",
+                      "value": "student_loan"
+                    },
+                    {
+                      "description": "Filter liability accounts by ownership type.",
+                      "key": "liability.ownership",
+                      "value": "primary"
+                    },
+                    {
+                      "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "card_brand"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of seconds to wait before retrying.",
+                    "type": "text/plain"
+                  },
+                  "key": "Retry-After",
+                  "value": "<integer>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-401819bb-010e-4e2f-92de-87111b7dbe02"
+            },
+            {
+              "id": "8fb47342-cd08-46c0-bbd0-ac010030b3b4",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/accounts?page=1&page_limit=10&page_cursor=<string>&from_date=<date>&to_date=<date>&status=active&type=liability&consent_status=approved&holder_id=ent_O0yKjn1nbv&holder_ids=ent_iPZzbr&include_pending_consent=<boolean>&liability.mch_id=mch_UO&liability.type=student_loan&liability.ownership=primary&expand=card_brand",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ],
+                  "query": [
+                    {
+                      "description": "Page number for pagination (1-indexed).",
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Number of items per page.",
+                      "key": "page_limit",
+                      "value": "10"
+                    },
+                    {
+                      "description": "Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.",
+                      "key": "page_cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Filter results from this date (inclusive, YYYY-MM-DD format).",
+                      "key": "from_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter results to this date (inclusive, YYYY-MM-DD format).",
+                      "key": "to_date",
+                      "value": "<date>"
+                    },
+                    {
+                      "description": "Filter accounts by status.",
+                      "key": "status",
+                      "value": "active"
+                    },
+                    {
+                      "description": "Filter accounts by type.",
+                      "key": "type",
+                      "value": "liability"
+                    },
+                    {
+                      "description": "Filter accounts by consent status.",
+                      "key": "consent_status",
+                      "value": "approved"
+                    },
+                    {
+                      "description": "Filter accounts by the entity ID that owns them.",
+                      "key": "holder_id",
+                      "value": "ent_O0yKjn1nbv"
+                    },
+                    {
+                      "description": "Filter accounts by one or more entity IDs.",
+                      "key": "holder_ids",
+                      "value": "ent_iPZzbr"
+                    },
+                    {
+                      "description": "Include accounts that are still pending consent.",
+                      "key": "include_pending_consent",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "Filter liability accounts by merchant ID.",
+                      "key": "liability.mch_id",
+                      "value": "mch_UO"
+                    },
+                    {
+                      "description": "Filter liability accounts by liability type.",
+                      "key": "liability.type",
+                      "value": "student_loan"
+                    },
+                    {
+                      "description": "Filter liability accounts by ownership type.",
+                      "key": "liability.ownership",
+                      "value": "primary"
+                    },
+                    {
+                      "description": "Expand related account resources inline. Supports the account expandable fields\ndocumented by the API validator for account list and retrieve operations.\n",
+                      "key": "expand",
+                      "value": "card_brand"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-8fb47342-cd08-46c0-bbd0-ac010030b3b4"
+            }
+          ],
+          "createdAt": "2026-07-28T02:09:46.000Z",
+          "updatedAt": "2026-07-28T02:09:46.000Z",
+          "uid": "35240-307439e1-fd61-4b64-b432-f6edbe3419aa"
+        },
+        {
+          "name": "Create an account",
+          "id": "dc17876b-7a56-431b-a039-d91d368fdc14",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                "key": "Method-Version",
+                "value": "2025-12-01"
+              },
+              {
+                "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                "key": "Idempotency-Key",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"holder_id\": \"ent_feNtPALAAI\",\n  \"ach\": {\n    \"routing\": \"365862796\",\n    \"number\": \"07900\",\n    \"type\": \"checking\"\n  },\n  \"type\": \"ach\",\n  \"metadata\": {\n    \"Lorem_88\": true,\n    \"incididunt_c\": \"ut do irure est\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/accounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "accounts"
+              ]
+            },
+            "description": "Creates a new account for the specified entity. The request body must include exactly one of `ach`, `liability`, `clearing`, or `debit_card` to determine the account type."
+          },
+          "response": [
+            {
+              "id": "5fc29e48-bccc-46cd-91fe-ac54369e2a58",
+              "name": "The newly created account.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holder_id\": \"ent_feNtPALAAI\",\n  \"ach\": {\n    \"routing\": \"365862796\",\n    \"number\": \"07900\",\n    \"type\": \"checking\"\n  },\n  \"type\": \"ach\",\n  \"metadata\": {\n    \"Lorem_88\": true,\n    \"incididunt_c\": \"ut do irure est\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/accounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"id\": \"acc_Ut\",\n    \"holder_id\": \"ent_I_Vv\",\n    \"type\": \"debit_card\",\n    \"status\": \"processing\",\n    \"consent_status\": \"approved\",\n    \"products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_products\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"created_at\": \"<dateTime>\",\n    \"updated_at\": \"<dateTime>\",\n    \"ach\": {\n      \"routing\": \"<string>\",\n      \"number\": \"<string>\",\n      \"type\": \"checking\"\n    },\n    \"liability\": {\n      \"mch_id\": \"mch_uEg\",\n      \"mask\": \"<string,null>\",\n      \"ownership\": \"authorized\",\n      \"fingerprint\": \"<string,null>\",\n      \"type\": \"fintech\",\n      \"sub_type\": \"<string,null>\",\n      \"name\": \"<string,null>\"\n    },\n    \"clearing\": {\n      \"type\": \"multi_use\",\n      \"routing\": \"<string>\",\n      \"number\": \"<string>\"\n    },\n    \"debit_card\": null,\n    \"error\": {\n      \"type\": \"ACCOUNT_DISABLED\",\n      \"code\": 11005,\n      \"sub_type\": \"ACCOUNT_CONSENT_WITHDRAWN\",\n      \"message\": \"<string>\"\n    },\n    \"metadata\": null,\n    \"subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"available_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"restricted_subscriptions\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"latest_verification_session\": \"avf_b\",\n    \"balance\": \"bal_n\",\n    \"payoff\": \"pyf_NiDpj0O\",\n    \"payment_instrument\": \"pmt_inst_lSJ\",\n    \"card_brand\": \"cbrd_OI9\",\n    \"update\": \"upd_9HvKu1cXYh4\",\n    \"attribute\": \"acc_attr_3YsXffqcR5Q\",\n    \"sensitive\": \"astv_mI1Nbxh\"\n  },\n  \"message\": \"<string,null>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-5fc29e48-bccc-46cd-91fe-ac54369e2a58"
+            },
+            {
+              "id": "7c7e1253-6b83-4ce7-961e-d7fbcedbb26a",
+              "name": "Bad request - invalid parameters or request body.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holder_id\": \"ent_feNtPALAAI\",\n  \"ach\": {\n    \"routing\": \"365862796\",\n    \"number\": \"07900\",\n    \"type\": \"checking\"\n  },\n  \"type\": \"ach\",\n  \"metadata\": {\n    \"Lorem_88\": true,\n    \"incididunt_c\": \"ut do irure est\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/accounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-7c7e1253-6b83-4ce7-961e-d7fbcedbb26a"
+            },
+            {
+              "id": "26e38a9a-1f7a-426d-8f8c-cf3aef5c9280",
+              "name": "Unauthorized - missing or invalid authentication token.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holder_id\": \"ent_feNtPALAAI\",\n  \"ach\": {\n    \"routing\": \"365862796\",\n    \"number\": \"07900\",\n    \"type\": \"checking\"\n  },\n  \"type\": \"ach\",\n  \"metadata\": {\n    \"Lorem_88\": true,\n    \"incididunt_c\": \"ut do irure est\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/accounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-26e38a9a-1f7a-426d-8f8c-cf3aef5c9280"
+            },
+            {
+              "id": "6b0f87b2-1031-478a-a492-e4d8f473cad1",
+              "name": "Not found - the requested resource does not exist.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holder_id\": \"ent_feNtPALAAI\",\n  \"ach\": {\n    \"routing\": \"365862796\",\n    \"number\": \"07900\",\n    \"type\": \"checking\"\n  },\n  \"type\": \"ach\",\n  \"metadata\": {\n    \"Lorem_88\": true,\n    \"incididunt_c\": \"ut do irure est\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/accounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-6b0f87b2-1031-478a-a492-e4d8f473cad1"
+            },
+            {
+              "id": "8c8a4b84-5680-49a7-bc1b-3100a6c6b9f2",
+              "name": "Unprocessable entity - the request was valid JSON but failed business or validation rules.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holder_id\": \"ent_feNtPALAAI\",\n  \"ach\": {\n    \"routing\": \"365862796\",\n    \"number\": \"07900\",\n    \"type\": \"checking\"\n  },\n  \"type\": \"ach\",\n  \"metadata\": {\n    \"Lorem_88\": true,\n    \"incididunt_c\": \"ut do irure est\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/accounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-8c8a4b84-5680-49a7-bc1b-3100a6c6b9f2"
+            },
+            {
+              "id": "c5417100-3bce-41ae-9385-de8bfba1bedc",
+              "name": "Too many requests - rate limit exceeded.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holder_id\": \"ent_feNtPALAAI\",\n  \"ach\": {\n    \"routing\": \"365862796\",\n    \"number\": \"07900\",\n    \"type\": \"checking\"\n  },\n  \"type\": \"ach\",\n  \"metadata\": {\n    \"Lorem_88\": true,\n    \"incididunt_c\": \"ut do irure est\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/accounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Number of seconds to wait before retrying.",
+                    "type": "text/plain"
+                  },
+                  "key": "Retry-After",
+                  "value": "<integer>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-c5417100-3bce-41ae-9385-de8bfba1bedc"
+            },
+            {
+              "id": "78420fba-5db3-49cd-be78-6b4968be4cc7",
+              "name": "Internal server error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) API version to use for this request. This spec targets `2025-12-01`.\nThe SDK sets this header automatically.\n",
+                    "key": "Method-Version",
+                    "value": "2025-12-01"
+                  },
+                  {
+                    "description": "Idempotency key for safely retrying a write request. Reuse the same value when\nretrying the same logical operation to avoid creating duplicate side effects.\n",
+                    "key": "Idempotency-Key",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"holder_id\": \"ent_feNtPALAAI\",\n  \"ach\": {\n    \"routing\": \"365862796\",\n    \"number\": \"07900\",\n    \"type\": \"checking\"\n  },\n  \"type\": \"ach\",\n  \"metadata\": {\n    \"Lorem_88\": true,\n    \"incididunt_c\": \"ut do irure est\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/accounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "accounts"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"success\": \"<boolean>\",\n  \"data\": {\n    \"error\": {\n      \"type\": \"resource_error\",\n      \"code\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"sub_type\": \"<string,null>\"\n    }\n  },\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T02:09:46.000Z",
+              "updatedAt": "2026-07-28T02:09:46.000Z",
+              "uid": "35240-78420fba-5db3-49cd-be78-6b4968be4cc7"
+            }
+          ],
+          "createdAt": "2026-07-28T02:09:46.000Z",
+          "updatedAt": "2026-07-28T02:09:46.000Z",
+          "uid": "35240-dc17876b-7a56-431b-a039-d91d368fdc14"
+        }
+      ],
+      "id": "39dd2145-0715-4d84-aca7-6cb25810ee5a",
+      "createdAt": "2026-07-28T02:09:46.000Z",
+      "updatedAt": "2026-07-28T02:09:46.000Z",
+      "uid": "35240-39dd2145-0715-4d84-aca7-6cb25810ee5a"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.methodfi.com"
+    }
+  ]
+}
