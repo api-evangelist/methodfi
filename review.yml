@@ -1,0 +1,89 @@
+aid: method-fi
+name: Method Financial
+review:
+  question: Does Method Financial expose a documented public WebSocket or streaming API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was created. Method's asynchronous delivery is via
+    HTTP webhooks (POST callbacks to subscriber URLs), not a WebSocket,
+    Server-Sent Events, or other persistent streaming transport. Under API
+    Evangelist scope, plain HTTP webhook callbacks are documented in the
+    OpenAPI / catalog rather than modeled as an AsyncAPI streaming channel.
+findings:
+  summary: |
+    Method Financial does not publish a documented public WebSocket or
+    streaming API. The Method platform is a REST (HTTPS) API under
+    https://production.methodfi.com (with sandbox and dev environments).
+    Asynchronous resource changes - entity, account, payment, verification,
+    and attribute updates - are delivered through HTTP webhooks: the client
+    registers a callback URL via POST /webhooks and Method POSTs event
+    payloads to it. This is request/response HTTP callback delivery, not a
+    bidirectional or persistent socket transport. No ws:// or wss:// endpoint
+    is documented.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://production.methodfi.com
+      documented: true
+    - protocol: Webhooks
+      scheme: https
+      note: Method POSTs event payloads to subscriber-registered HTTPS callback URLs. Outbound HTTP callbacks, not WebSocket.
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Method's API reference for entities, accounts, payments, connect, transactions, or webhooks as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://production.methodfi.com/entities
+    - GET    https://production.methodfi.com/entities
+    - GET    https://production.methodfi.com/entities/{ent_id}
+    - PUT    https://production.methodfi.com/entities/{ent_id}
+    - GET    https://production.methodfi.com/entities/{ent_id}/connect
+    - GET    https://production.methodfi.com/entities/{ent_id}/credit_scores
+    - POST   https://production.methodfi.com/entities/{ent_id}/verification_sessions
+    - GET    https://production.methodfi.com/entities/{ent_id}/verification_sessions
+    - POST   https://production.methodfi.com/accounts
+    - GET    https://production.methodfi.com/accounts
+    - GET    https://production.methodfi.com/accounts/{acc_id}
+    - GET    https://production.methodfi.com/accounts/{acc_id}/balances
+    - GET    https://production.methodfi.com/accounts/{acc_id}/payoff
+    - GET    https://production.methodfi.com/accounts/{acc_id}/transactions
+    - POST   https://production.methodfi.com/accounts/{acc_id}/verification_sessions
+    - POST   https://production.methodfi.com/payments
+    - GET    https://production.methodfi.com/payments
+    - GET    https://production.methodfi.com/payments/{pmt_id}
+    - DELETE https://production.methodfi.com/payments/{pmt_id}
+    - POST   https://production.methodfi.com/payments/{pmt_id}/reversals
+    - GET    https://production.methodfi.com/payments/{pmt_id}/reversals
+    - GET    https://production.methodfi.com/merchants
+    - GET    https://production.methodfi.com/merchants/{mch_id}
+    - POST   https://production.methodfi.com/webhooks
+    - GET    https://production.methodfi.com/webhooks
+    - GET    https://production.methodfi.com/webhooks/{whk_id}
+    - DELETE https://production.methodfi.com/webhooks/{whk_id}
+sources:
+  - url: https://docs.methodfi.com
+    type: Documentation
+    note: Overview lists REST base URL https://production.methodfi.com; no WebSocket mentioned.
+  - url: https://docs.methodfi.com/reference/introduction
+    type: APIReference
+    note: All documented endpoints are HTTPS REST; auth is Bearer API key.
+  - url: https://docs.methodfi.com/api/core/webhooks/object
+    type: Documentation
+    note: Asynchronous events are delivered via HTTP webhook callbacks, not WebSocket.
+  - url: https://github.com/MethodFi
+    type: GitHubOrganization
+    note: Official SDKs (method-node, method-python) and OpenAPI repo; all REST clients.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or persistent streaming surface exists. Asynchronous delivery
+    is HTTP webhook callbacks, which are catalogued as a Webhooks REST resource
+    rather than modeled as an AsyncAPI streaming channel.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

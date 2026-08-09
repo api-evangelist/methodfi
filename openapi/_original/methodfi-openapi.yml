@@ -1,0 +1,942 @@
+openapi: 3.0.1
+info:
+  title: Method Financial API
+  description: >-
+    The Method API enables developers to connect, retrieve, and pay down a
+    consumer's liabilities (credit cards, student loans, auto loans, mortgages,
+    and personal loans) across a network of financial institutions. Core
+    resources are Entities, Accounts, Payments, Merchants, Connect,
+    Transactions, and Webhooks. All requests are authenticated with a Bearer
+    API key.
+  termsOfService: https://methodfi.com/legal/platform-agreement
+  contact:
+    name: Method Support
+    url: https://docs.methodfi.com
+    email: support@methodfi.com
+  version: '2026-03-30'
+servers:
+  - url: https://production.methodfi.com
+    description: Production
+  - url: https://sandbox.methodfi.com
+    description: Sandbox
+  - url: https://dev.methodfi.com
+    description: Development (simulations enabled)
+security:
+  - bearerAuth: []
+tags:
+  - name: Entities
+    description: Individuals and corporations that own accounts.
+  - name: Accounts
+    description: Liability and asset accounts linked to an entity.
+  - name: Payments
+    description: Electronic transfers between a source and destination account.
+  - name: Merchants
+    description: Financial institutions that accept payments for a liability.
+  - name: Connect
+    description: Liability discovery across Method's institution network.
+  - name: Transactions
+    description: Transaction history for an account.
+  - name: Webhooks
+    description: Asynchronous event delivery to your endpoints.
+paths:
+  /entities:
+    post:
+      operationId: createEntity
+      tags:
+        - Entities
+      summary: Create an entity
+      description: Creates an individual or corporation entity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityCreateRequest'
+      responses:
+        '200':
+          description: Entity created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityResponse'
+    get:
+      operationId: listEntities
+      tags:
+        - Entities
+      summary: List entities
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: A list of entities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityListResponse'
+  /entities/{ent_id}:
+    parameters:
+      - $ref: '#/components/parameters/EntityId'
+    get:
+      operationId: getEntity
+      tags:
+        - Entities
+      summary: Retrieve an entity
+      responses:
+        '200':
+          description: The entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityResponse'
+    put:
+      operationId: updateEntity
+      tags:
+        - Entities
+      summary: Update an entity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityCreateRequest'
+      responses:
+        '200':
+          description: The updated entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityResponse'
+  /entities/{ent_id}/connect:
+    parameters:
+      - $ref: '#/components/parameters/EntityId'
+    get:
+      operationId: retrieveEntityConnect
+      tags:
+        - Connect
+      summary: Retrieve connect results
+      description: >-
+        Returns all liability accounts discovered for the entity across
+        Method's network of financial institutions.
+      responses:
+        '200':
+          description: Connect results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectResponse'
+  /entities/{ent_id}/credit_scores:
+    parameters:
+      - $ref: '#/components/parameters/EntityId'
+    get:
+      operationId: retrieveEntityCreditScores
+      tags:
+        - Entities
+      summary: Retrieve credit scores
+      responses:
+        '200':
+          description: Credit score data
+          content:
+            application/json:
+              schema:
+                type: object
+  /entities/{ent_id}/verification_sessions:
+    parameters:
+      - $ref: '#/components/parameters/EntityId'
+    post:
+      operationId: createEntityVerificationSession
+      tags:
+        - Entities
+      summary: Create a verification session
+      description: Create an SMS, KBA, SNA, or BYO verification session for the entity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityVerificationSessionRequest'
+      responses:
+        '200':
+          description: Verification session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityVerificationSessionResponse'
+    get:
+      operationId: listEntityVerificationSessions
+      tags:
+        - Entities
+      summary: List verification sessions
+      responses:
+        '200':
+          description: Verification sessions
+          content:
+            application/json:
+              schema:
+                type: object
+  /accounts:
+    post:
+      operationId: createAccount
+      tags:
+        - Accounts
+      summary: Create an account
+      description: Links a liability or asset account to an entity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateRequest'
+      responses:
+        '200':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+    get:
+      operationId: listAccounts
+      tags:
+        - Accounts
+      summary: List accounts
+      parameters:
+        - name: holder_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: A list of accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountListResponse'
+  /accounts/{acc_id}:
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: getAccount
+      tags:
+        - Accounts
+      summary: Retrieve an account
+      responses:
+        '200':
+          description: The account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+  /accounts/{acc_id}/balances:
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: getAccountBalance
+      tags:
+        - Accounts
+      summary: Retrieve the latest balance
+      description: Retrieves the real-time balance from the account's financial institution.
+      responses:
+        '200':
+          description: Balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+  /accounts/{acc_id}/payoff:
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: getAccountPayoff
+      tags:
+        - Accounts
+      summary: Retrieve a payoff
+      responses:
+        '200':
+          description: Payoff
+          content:
+            application/json:
+              schema:
+                type: object
+  /accounts/{acc_id}/transactions:
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: listAccountTransactions
+      tags:
+        - Transactions
+      summary: List account transactions
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: Transactions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionListResponse'
+  /accounts/{acc_id}/verification_sessions:
+    parameters:
+      - $ref: '#/components/parameters/AccountId'
+    post:
+      operationId: createAccountVerificationSession
+      tags:
+        - Accounts
+      summary: Create an account verification session
+      description: >-
+        Verify an account via micro-deposits, instant network, or a supported
+        aggregator (Plaid, MX, Teller).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Verification session
+          content:
+            application/json:
+              schema:
+                type: object
+  /payments:
+    post:
+      operationId: createPayment
+      tags:
+        - Payments
+      summary: Create a payment
+      description: >-
+        Pulls funds from a source account and sends them to a destination
+        liability or asset account. Settlement occurs in 1-3 business days.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreateRequest'
+      responses:
+        '200':
+          description: Payment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+    get:
+      operationId: listPayments
+      tags:
+        - Payments
+      summary: List payments
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: A list of payments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentListResponse'
+  /payments/{pmt_id}:
+    parameters:
+      - $ref: '#/components/parameters/PaymentId'
+    get:
+      operationId: getPayment
+      tags:
+        - Payments
+      summary: Retrieve a payment
+      responses:
+        '200':
+          description: The payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+    delete:
+      operationId: deletePayment
+      tags:
+        - Payments
+      summary: Delete a pending payment
+      responses:
+        '200':
+          description: The deleted payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+  /payments/{pmt_id}/reversals:
+    parameters:
+      - $ref: '#/components/parameters/PaymentId'
+    post:
+      operationId: createPaymentReversal
+      tags:
+        - Payments
+      summary: Create a payment reversal
+      description: Balances funds for an unsuccessful payment.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Reversal
+          content:
+            application/json:
+              schema:
+                type: object
+    get:
+      operationId: listPaymentReversals
+      tags:
+        - Payments
+      summary: List payment reversals
+      responses:
+        '200':
+          description: Reversals
+          content:
+            application/json:
+              schema:
+                type: object
+  /merchants:
+    get:
+      operationId: listMerchants
+      tags:
+        - Merchants
+      summary: List merchants
+      description: >-
+        Lists merchants - the financial institutions that accept payments for
+        a liability.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: A list of merchants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantListResponse'
+  /merchants/{mch_id}:
+    parameters:
+      - name: mch_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getMerchant
+      tags:
+        - Merchants
+      summary: Retrieve a merchant
+      responses:
+        '200':
+          description: The merchant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantResponse'
+  /webhooks:
+    post:
+      operationId: createWebhook
+      tags:
+        - Webhooks
+      summary: Create a webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreateRequest'
+      responses:
+        '200':
+          description: Webhook created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+    get:
+      operationId: listWebhooks
+      tags:
+        - Webhooks
+      summary: List webhooks
+      responses:
+        '200':
+          description: A list of webhooks
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhooks/{whk_id}:
+    parameters:
+      - name: whk_id
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getWebhook
+      tags:
+        - Webhooks
+      summary: Retrieve a webhook
+      responses:
+        '200':
+          description: The webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+    delete:
+      operationId: deleteWebhook
+      tags:
+        - Webhooks
+      summary: Delete a webhook
+      responses:
+        '200':
+          description: The deleted webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Provide your Method API key as a Bearer token in the Authorization
+        header. Optionally send a Method-Version header (e.g. 2026-03-30).
+  parameters:
+    EntityId:
+      name: ent_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The entity identifier (e.g. ent_xxx).
+    AccountId:
+      name: acc_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The account identifier (e.g. acc_xxx).
+    PaymentId:
+      name: pmt_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The payment identifier (e.g. pmt_xxx).
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+    PageLimit:
+      name: page_limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 100
+  schemas:
+    EntityCreateRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - individual
+            - c_corporation
+            - receive_only
+        individual:
+          $ref: '#/components/schemas/Individual'
+        corporation:
+          $ref: '#/components/schemas/Corporation'
+        address:
+          $ref: '#/components/schemas/Address'
+        metadata:
+          type: object
+    Individual:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        dob:
+          type: string
+          format: date
+    Corporation:
+      type: object
+      properties:
+        name:
+          type: string
+        dba:
+          type: string
+        ein:
+          type: string
+        owners:
+          type: array
+          items:
+            type: object
+    Address:
+      type: object
+      properties:
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+    EntityResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        individual:
+          $ref: '#/components/schemas/Individual'
+        corporation:
+          $ref: '#/components/schemas/Corporation'
+        status:
+          type: string
+          enum:
+            - active
+            - incomplete
+            - disabled
+        verification:
+          type: object
+        products:
+          type: array
+          items:
+            type: string
+        restricted_products:
+          type: array
+          items:
+            type: string
+        error:
+          nullable: true
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    EntityListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityResponse'
+    EntityVerificationSessionRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - phone
+            - identity
+        method:
+          type: string
+          enum:
+            - sms
+            - kba
+            - sna
+            - byo_sms
+            - byo_kyc
+            - element
+        sms:
+          type: object
+        kba:
+          type: object
+    EntityVerificationSessionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        type:
+          type: string
+        method:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    AccountCreateRequest:
+      type: object
+      required:
+        - holder_id
+      properties:
+        holder_id:
+          type: string
+          description: The entity that owns this account.
+        ach:
+          type: object
+          description: ACH account details (routing/number/type).
+          properties:
+            routing:
+              type: string
+            number:
+              type: string
+            type:
+              type: string
+              enum:
+                - checking
+                - savings
+        liability:
+          type: object
+          description: A liability account to link by merchant and account number.
+          properties:
+            mch_id:
+              type: string
+            account_number:
+              type: string
+        metadata:
+          type: object
+    AccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        holder_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - disabled
+            - closed
+            - processing
+        type:
+          type: string
+          enum:
+            - ach
+            - liability
+        ach:
+          type: object
+        liability:
+          type: object
+        products:
+          type: array
+          items:
+            type: string
+        error:
+          nullable: true
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AccountListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountResponse'
+    BalanceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        amount:
+          type: integer
+          description: Balance in cents.
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    PaymentCreateRequest:
+      type: object
+      required:
+        - amount
+        - source
+        - destination
+      properties:
+        amount:
+          type: integer
+          description: Amount in cents (100 to 100000000).
+          minimum: 100
+          maximum: 100000000
+        source:
+          type: string
+          description: Source account ID.
+        destination:
+          type: string
+          description: Destination account ID.
+        description:
+          type: string
+          maxLength: 10
+        metadata:
+          type: object
+    PaymentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        destination:
+          type: string
+        amount:
+          type: integer
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - processing
+            - sent
+            - settled
+            - failed
+            - reversed
+            - canceled
+        error:
+          nullable: true
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    PaymentListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentResponse'
+    MerchantResponse:
+      type: object
+      properties:
+        mch_id:
+          type: string
+        name:
+          type: string
+        parent_name:
+          type: string
+        logo:
+          type: string
+          format: uri
+        type:
+          type: string
+          description: The liability account type this merchant services.
+        account_prefixes:
+          type: array
+          items:
+            type: string
+    MerchantListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantResponse'
+    TransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        amount:
+          type: integer
+        description:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    TransactionListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionResponse'
+    ConnectResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - in_progress
+            - completed
+            - failed
+        accounts:
+          type: array
+          description: Liability accounts discovered for the entity.
+          items:
+            $ref: '#/components/schemas/AccountResponse'
+        created_at:
+          type: string
+          format: date-time
+    WebhookCreateRequest:
+      type: object
+      required:
+        - type
+        - url
+      properties:
+        type:
+          type: string
+          description: The event type to subscribe to.
+          example: payment.update
+        url:
+          type: string
+          format: uri
+        auth_token:
+          type: string
+          description: Optional token Method includes when delivering events.
+        metadata:
+          type: object
+    WebhookResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+          format: uri
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time

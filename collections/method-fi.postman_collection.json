@@ -1,0 +1,853 @@
+{
+  "item": [
+    {
+      "id": "d7890a88-97f3-44e1-bf12-95c960befc77",
+      "name": "Entities",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5fa346fb-8835-414e-8713-d2bc0291d412",
+          "name": "Create an entity",
+          "request": {
+            "name": "Create an entity",
+            "url": {
+              "path": [
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"individual\",\n  \"individual\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone\": \"<string>\",\n    \"email\": \"<string>\",\n    \"dob\": \"<date>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "60378160-64a1-4692-b49b-48c31e0510da",
+          "name": "List entities",
+          "request": {
+            "name": "List entities",
+            "url": {
+              "path": [
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "3d9434e3-733b-44b2-b8b5-779da7730555",
+          "name": "Retrieve an entity",
+          "request": {
+            "name": "Retrieve an entity",
+            "url": {
+              "path": [
+                "entities",
+                "{{ent_id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "db69e8c6-8bf2-4c6a-9ae9-dcd9fdd6aecb",
+          "name": "Update an entity",
+          "request": {
+            "name": "Update an entity",
+            "url": {
+              "path": [
+                "entities",
+                "{{ent_id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"individual\": {\n    \"email\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "f1ba451e-e41b-4325-94b6-62d96f8ca569",
+          "name": "Retrieve connect results",
+          "request": {
+            "name": "Retrieve connect results",
+            "url": {
+              "path": [
+                "entities",
+                "{{ent_id}}",
+                "connect"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "db2b1560-e436-4986-8ee3-700a6e5dbf78",
+          "name": "Retrieve credit scores",
+          "request": {
+            "name": "Retrieve credit scores",
+            "url": {
+              "path": [
+                "entities",
+                "{{ent_id}}",
+                "credit_scores"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "cfeb1c00-f416-4a3a-a5a6-2cbb9eb45fb8",
+          "name": "Create a verification session",
+          "request": {
+            "name": "Create a verification session",
+            "url": {
+              "path": [
+                "entities",
+                "{{ent_id}}",
+                "verification_sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"phone\",\n  \"method\": \"sms\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "6f523197-e6d2-493a-becb-5281d00cf647",
+          "name": "List verification sessions",
+          "request": {
+            "name": "List verification sessions",
+            "url": {
+              "path": [
+                "entities",
+                "{{ent_id}}",
+                "verification_sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "cf8feecb-3107-483f-a21f-42627a31bb1e",
+      "name": "Accounts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "64defc39-7fe6-4a11-87f3-0cd481a91645",
+          "name": "Create an account",
+          "request": {
+            "name": "Create an account",
+            "url": {
+              "path": [
+                "accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"holder_id\": \"<string>\",\n  \"ach\": {\n    \"routing\": \"<string>\",\n    \"number\": \"<string>\",\n    \"type\": \"checking\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "c8c5dc67-4654-4f03-8af5-e8a30b18084d",
+          "name": "List accounts",
+          "request": {
+            "name": "List accounts",
+            "url": {
+              "path": [
+                "accounts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "0f76517e-498d-4aa6-bf9a-5b56b168e305",
+          "name": "Retrieve an account",
+          "request": {
+            "name": "Retrieve an account",
+            "url": {
+              "path": [
+                "accounts",
+                "{{acc_id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "fad1e8ce-ac24-4ef9-95ce-5cfeb19d1e7c",
+          "name": "Retrieve the latest balance",
+          "request": {
+            "name": "Retrieve the latest balance",
+            "url": {
+              "path": [
+                "accounts",
+                "{{acc_id}}",
+                "balances"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "771d43ab-d815-4de6-a993-263ef4d87e94",
+          "name": "Retrieve a payoff",
+          "request": {
+            "name": "Retrieve a payoff",
+            "url": {
+              "path": [
+                "accounts",
+                "{{acc_id}}",
+                "payoff"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "0f176bff-f5f1-4818-af55-5cb8237c1952",
+          "name": "List account transactions",
+          "request": {
+            "name": "List account transactions",
+            "url": {
+              "path": [
+                "accounts",
+                "{{acc_id}}",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "3fe6b7a5-0780-4318-aad4-f480ecfc28e2",
+          "name": "Create an account verification session",
+          "request": {
+            "name": "Create an account verification session",
+            "url": {
+              "path": [
+                "accounts",
+                "{{acc_id}}",
+                "verification_sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"micro_deposits\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "da1d405e-762e-4f84-a15d-c47fa1f2f0ee",
+      "name": "Payments",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2e9a1627-a9a2-47f1-8829-f641b850d611",
+          "name": "Create a payment",
+          "request": {
+            "name": "Create a payment",
+            "url": {
+              "path": [
+                "payments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 1000,\n  \"source\": \"<string>\",\n  \"destination\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "ee54d82f-294b-475a-95e4-f1c435230171",
+          "name": "List payments",
+          "request": {
+            "name": "List payments",
+            "url": {
+              "path": [
+                "payments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "a6596696-7830-46b7-ab09-47cb958ac99d",
+          "name": "Retrieve a payment",
+          "request": {
+            "name": "Retrieve a payment",
+            "url": {
+              "path": [
+                "payments",
+                "{{pmt_id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "e0e2f1e3-ec0a-495a-aa40-91f3f8806a8f",
+          "name": "Delete a pending payment",
+          "request": {
+            "name": "Delete a pending payment",
+            "url": {
+              "path": [
+                "payments",
+                "{{pmt_id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "a402eee2-e937-47a3-8ddc-a28bf5244505",
+          "name": "Create a payment reversal",
+          "request": {
+            "name": "Create a payment reversal",
+            "url": {
+              "path": [
+                "payments",
+                "{{pmt_id}}",
+                "reversals"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "c7951315-9e58-47bc-83da-daaf5ec62dc2",
+          "name": "List payment reversals",
+          "request": {
+            "name": "List payment reversals",
+            "url": {
+              "path": [
+                "payments",
+                "{{pmt_id}}",
+                "reversals"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "8b57d130-3812-43d7-8d03-5a81a5709bb9",
+      "name": "Merchants",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d7a4d9c0-9f63-40c9-a62d-263f0afff4e3",
+          "name": "List merchants",
+          "request": {
+            "name": "List merchants",
+            "url": {
+              "path": [
+                "merchants"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "a50daf15-7991-48ce-ad98-fc0b1ae998ad",
+          "name": "Retrieve a merchant",
+          "request": {
+            "name": "Retrieve a merchant",
+            "url": {
+              "path": [
+                "merchants",
+                "{{mch_id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "1b82778c-79f8-40a3-9ca9-2662ae0bbe52",
+      "name": "Connect",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6d43044e-ea88-4fb4-9c4d-7c9e0796223b",
+          "name": "Retrieve connect results",
+          "request": {
+            "name": "Retrieve connect results",
+            "url": {
+              "path": [
+                "entities",
+                "{{ent_id}}",
+                "connect"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "bd50d474-d146-4383-8061-af10f901ff48",
+      "name": "Transactions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e18cda41-aea1-4570-b725-4547c992c228",
+          "name": "List account transactions",
+          "request": {
+            "name": "List account transactions",
+            "url": {
+              "path": [
+                "accounts",
+                "{{acc_id}}",
+                "transactions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "df70e4fa-2fb7-4470-a327-c5d36c3fa9fd",
+      "name": "Webhooks",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f8bdf388-b0b3-4df1-90dd-65b4f047e46a",
+          "name": "Create a webhook",
+          "request": {
+            "name": "Create a webhook",
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"payment.update\",\n  \"url\": \"<string>\",\n  \"auth_token\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "a5f40916-a46e-41a9-a4e1-e92a8ec675a3",
+          "name": "List webhooks",
+          "request": {
+            "name": "List webhooks",
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "275fe99f-85a4-4e37-a601-64e172fae816",
+          "name": "Retrieve a webhook",
+          "request": {
+            "name": "Retrieve a webhook",
+            "url": {
+              "path": [
+                "webhooks",
+                "{{whk_id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "d1160a4b-9288-4056-85d5-3cb88cdbbe61",
+          "name": "Delete a webhook",
+          "request": {
+            "name": "Delete a webhook",
+            "url": {
+              "path": [
+                "webhooks",
+                "{{whk_id}}"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://production.methodfi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "29a098b6-d3e5-4f15-bfb0-68d68c57b6a8",
+    "name": "Method Financial API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Method API - embedded liability connectivity and payments.\n\nContact Support:\n Name: Method Support\n Email: support@methodfi.com",
+      "type": "text/plain"
+    }
+  }
+}

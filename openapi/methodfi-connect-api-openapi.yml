@@ -1,0 +1,111 @@
+openapi: 3.0.1
+info:
+  title: Method Financial Accounts Connect API
+  description: The Method API enables developers to connect, retrieve, and pay down a consumer's liabilities (credit cards, student loans, auto loans, mortgages, and personal loans) across a network of financial institutions. Core resources are Entities, Accounts, Payments, Merchants, Connect, Transactions, and Webhooks. All requests are authenticated with a Bearer API key.
+  termsOfService: https://methodfi.com/legal/platform-agreement
+  contact:
+    name: Method Support
+    url: https://docs.methodfi.com
+    email: support@methodfi.com
+  version: '2026-03-30'
+servers:
+- url: https://production.methodfi.com
+  description: Production
+- url: https://sandbox.methodfi.com
+  description: Sandbox
+- url: https://dev.methodfi.com
+  description: Development (simulations enabled)
+security:
+- bearerAuth: []
+tags:
+- name: Connect
+  description: Liability discovery across Method's institution network.
+paths:
+  /entities/{ent_id}/connect:
+    parameters:
+    - $ref: '#/components/parameters/EntityId'
+    get:
+      operationId: retrieveEntityConnect
+      tags:
+      - Connect
+      summary: Retrieve connect results
+      description: Returns all liability accounts discovered for the entity across Method's network of financial institutions.
+      responses:
+        '200':
+          description: Connect results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectResponse'
+components:
+  parameters:
+    EntityId:
+      name: ent_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The entity identifier (e.g. ent_xxx).
+  schemas:
+    ConnectResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - in_progress
+          - completed
+          - failed
+        accounts:
+          type: array
+          description: Liability accounts discovered for the entity.
+          items:
+            $ref: '#/components/schemas/AccountResponse'
+        created_at:
+          type: string
+          format: date-time
+    AccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        holder_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - disabled
+          - closed
+          - processing
+        type:
+          type: string
+          enum:
+          - ach
+          - liability
+        ach:
+          type: object
+        liability:
+          type: object
+        products:
+          type: array
+          items:
+            type: string
+        error:
+          nullable: true
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Method API key as a Bearer token in the Authorization header. Optionally send a Method-Version header (e.g. 2026-03-30).

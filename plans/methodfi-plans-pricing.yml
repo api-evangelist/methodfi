@@ -1,0 +1,112 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Method Financial
+providerId: method-fi
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- FinTech
+- Payments
+- Liabilities
+- Debt
+- Embedded Finance
+- Plans
+description: >-
+  Method Financial pricing is sales-led and not published as public,
+  self-service rate cards. Pricing is typically structured around the products
+  consumed - entity verification, account connectivity (Connect / liability
+  discovery), data refreshes (balances, payoffs, transactions, attributes),
+  and ACH payment processing - and negotiated per customer based on volume and
+  use case. Developers can build and test for free in the development
+  environment; production access and pricing are arranged with Method sales.
+notes: >-
+  No public per-unit price list is documented. Specific per-product and
+  per-transaction rates are not reconciled in this artifact; confirm directly
+  with Method during contracting.
+sources:
+- https://methodfi.com
+- https://methodfi.com/pricing
+- https://docs.methodfi.com
+plans:
+- id: method-fi-development
+  name: Development
+  type: free
+  description: >-
+    Free access to the development environment for building and testing,
+    including simulation endpoints for entities, accounts, payments, connect,
+    and events.
+  entries:
+  - label: Development Environment
+    name: development
+    type: free
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  elements:
+  - name: Entities
+  - name: Accounts
+  - name: Payments (test)
+  - name: Connect
+  - name: Simulations
+- id: method-fi-production
+  name: Production
+  type: enterprise
+  description: >-
+    Production access with usage-based and contracted pricing across
+    verification, connectivity, data, and payments products. Pricing is
+    negotiated with Method sales based on volume and use case.
+  entries:
+  - label: Connect / Liability Discovery
+    name: connect
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: us
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  - label: Account Data Refresh (balances, payoffs, transactions, attributes)
+    name: data_refresh
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: us
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  - label: Payment Processing (ACH)
+    name: payments
+    type: usage
+    metric: transactions
+    limit: -1
+    timeFrame: month
+    geo: us
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  - label: Entity Verification
+    name: verification
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: us
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: Connect
+  - name: Payments
+  - name: Portfolio Intelligence
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,105 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Method Financial
+providerId: method-fi
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- FinTech
+- Payments
+- Liabilities
+- Debt
+- Embedded Finance
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Method Financial spend. Method bills usage of its
+  connectivity and payments products - entity verification, Connect / liability
+  discovery, account data refreshes (balances, payoffs, transactions,
+  attributes), and ACH payment processing. Pricing is sales-led and contracted
+  per customer, so unit rates are not public; cost is driven by the volume of
+  verifications, connect requests, data refreshes, and payment transactions.
+notes: >-
+  Per-product unit rates are negotiated and not published. Meters below reflect
+  the billable activities to track for allocation and optimization; confirm
+  exact rates and invoice structure with Method.
+sources:
+- https://methodfi.com
+- https://docs.methodfi.com
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Method Financial
+serviceCategory: Financial Services
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Method API
+  ServiceCategory: Financial Services
+  ProviderName: Method Financial
+  PublisherName: Method Financial
+  InvoiceIssuerName: Method Financial
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: entity_verifications
+  description: Identity / phone verification sessions (SMS, KBA, SNA, BYO) run per entity.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - method
+- name: connect_requests
+  description: Liability discovery requests that match an entity's accounts across the network.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - entity
+- name: data_refreshes
+  description: Balance, payoff, transaction, and attribute refreshes on connected accounts.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - product
+- name: payment_transactions
+  description: ACH payments created and settled between source and destination accounts.
+  unit: transactions
+  aggregation: sum
+  dimensions:
+  - account
+  - status
+- name: subscriptions
+  description: Continuous monitoring subscriptions (e.g. portfolio intelligence) that fire update events.
+  unit: subscriptions
+  aggregation: sum
+  dimensions:
+  - account
+  - bundle
+principles:
+- name: Visibility
+  description: Track verification, connect, data-refresh, and payment volumes against the Method invoice.
+- name: Allocation
+  description: Tag entities and accounts with metadata mapped to internal teams and cost centers.
+- name: Optimization
+  description: Avoid redundant data refreshes; use webhooks/subscriptions instead of polling; scope connect to entities that need liability discovery.
+- name: Accountability
+  description: Assign owners per integration; review verification and payment volume monthly against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
