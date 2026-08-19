@@ -2,12 +2,10 @@ generated: '2026-07-20'
 method: derived
 status: candidate
 source: openapi/methodfi-openapi-original.yml
-description: >-
-  No official hosted/remote Method MCP server was found (no @methodfi MCP package, no
-  documented MCP endpoint). This is a DERIVED candidate tool surface mapping marquee
-  Method operations to MCP tools, one tool per operationId. Read/list tools are the
-  agent-safe starting set; money-movement tools (createPayment, updatePaymentReversal)
-  should require elevated, human-in-the-loop authorization (see agentic-access/).
+description: No official hosted/remote Method MCP server was found (no @methodfi MCP package, no documented
+  MCP endpoint). This is a DERIVED candidate tool surface mapping marquee Method operations to MCP tools,
+  one tool per operationId. Read/list tools are the agent-safe starting set; money-movement tools (createPayment,
+  updatePaymentReversal) should require elevated, human-in-the-loop authorization (see agentic-access/).
 server:
   name: methodfi
   transport: http
@@ -68,6 +66,11 @@ tools:
 - name: create_webhook
   description: Register a webhook endpoint.
   source_operation: openapi/methodfi-openapi-original.yml#createWebhook
-note: >-
-  Candidate only — 128 operations exist in the OpenAPI; this is a representative subset.
-  See agentic-access/methodfi-agentic-access.yml for per-operation execution contracts.
+note: Candidate only — 128 operations exist in the OpenAPI; this is a representative subset. See agentic-access/methodfi-agentic-access.yml
+  for per-operation execution contracts.
+deployment:
+  mode: none
+  verified: derived
+  tools: 18
+  checked: '2026-08-12'
+  source: catalog MCP census

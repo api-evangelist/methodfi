@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Method Account Attributes Ping API",
+    "version": "2025-12-01"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Ping",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Health check",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://production.methodfi.com/ping",
+            "headers": [
+              {
+                "name": "Method-Version",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Returns a simple health check response for authenticated API clients."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

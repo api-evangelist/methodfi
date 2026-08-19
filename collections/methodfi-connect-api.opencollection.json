@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Method Financial Accounts Connect API",
+    "version": "2026-03-30"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connect",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve connect results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://production.methodfi.com/entities/:ent_id/connect",
+            "params": [
+              {
+                "name": "ent_id",
+                "value": "",
+                "type": "path",
+                "description": "The entity identifier (e.g. ent_xxx)."
+              }
+            ]
+          },
+          "docs": "Returns all liability accounts discovered for the entity across Method's network of financial institutions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

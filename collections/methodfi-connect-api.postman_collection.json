@@ -1,0 +1,139 @@
+{
+  "item": [
+    {
+      "id": "f9def2b3-6004-4e40-b270-d1dc9c850a30",
+      "name": "Connect",
+      "description": {
+        "content": "Liability discovery across Method's institution network.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "05336cef-36e9-4c34-a6a4-b4eb37a278e7",
+          "name": "Retrieve connect results",
+          "request": {
+            "name": "Retrieve connect results",
+            "description": {
+              "content": "Returns all liability accounts discovered for the entity across Method's network of financial institutions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "entities",
+                ":ent_id",
+                "connect"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ent_id",
+                  "description": "(Required) The entity identifier (e.g. ent_xxx)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b90bccf5-51d1-4091-8db1-cdf64439e529",
+              "name": "Connect results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "entities",
+                    ":ent_id",
+                    "connect"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ent_id",
+                      "description": "(Required) The entity identifier (e.g. ent_xxx)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"entity_id\": \"string\",\n  \"status\": \"completed\",\n  \"accounts\": [\n    {\n      \"id\": \"string\",\n      \"holder_id\": \"string\",\n      \"status\": \"processing\",\n      \"type\": \"ach\",\n      \"ach\": {},\n      \"liability\": {},\n      \"products\": [\n        \"string\",\n        \"string\"\n      ],\n      \"error\": {},\n      \"created_at\": \"1949-01-30T16:13:01.561Z\",\n      \"updated_at\": \"1982-09-17T17:18:31.600Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"holder_id\": \"string\",\n      \"status\": \"disabled\",\n      \"type\": \"liability\",\n      \"ach\": {},\n      \"liability\": {},\n      \"products\": [\n        \"string\",\n        \"string\"\n      ],\n      \"error\": {},\n      \"created_at\": \"1983-07-21T09:29:30.169Z\",\n      \"updated_at\": \"2017-08-13T16:06:28.841Z\"\n    }\n  ],\n  \"created_at\": \"1967-10-30T12:43:51.205Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://production.methodfi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f59cebb0-d72f-458e-bd07-b8d326f78c74",
+    "name": "Method Financial Accounts Connect API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Method API enables developers to connect, retrieve, and pay down a consumer's liabilities (credit cards, student loans, auto loans, mortgages, and personal loans) across a network of financial institutions. Core resources are Entities, Accounts, Payments, Merchants, Connect, Transactions, and Webhooks. All requests are authenticated with a Bearer API key.\n\nContact Support:\n Name: Method Support\n Email: support@methodfi.com",
+      "type": "text/plain"
+    }
+  }
+}

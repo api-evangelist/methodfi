@@ -1,0 +1,53 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Method Financial Accounts Transactions API",
+    "version": "2026-03-30"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List account transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://production.methodfi.com/accounts/:acc_id/transactions",
+            "params": [
+              {
+                "name": "acc_id",
+                "value": "",
+                "type": "path",
+                "description": "The account identifier (e.g. acc_xxx)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List account transactions"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
