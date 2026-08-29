@@ -1,15 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Merchants API
-  version: '2025-12-01'
-  license:
-    name: Proprietary
-    url: https://methodfi.com
-  description: "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n"
-  contact:
-    name: Method Financial
-    url: https://methodfi.com
-    email: team@methodfi.com
+  title: Methodfi Merchants API
+  version: '1.0'
+  description: 'Operations tagged Merchants across 2 of this provider''s published API definitions: methodfi-openapi-original.yml, methodfi-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://production.methodfi.com
   description: Production
@@ -17,8 +10,6 @@ servers:
   description: Sandbox
 - url: https://dev.methodfi.com
   description: Development
-security:
-- SecretKey: []
 tags:
 - name: Merchants
   description: Merchant directory
@@ -63,6 +54,13 @@ paths:
           $ref: '#/components/responses/RateLimited'
         '500':
           $ref: '#/components/responses/InternalError'
+    servers:
+    - url: https://production.methodfi.com
+      description: Production
+    - url: https://sandbox.methodfi.com
+      description: Sandbox
+    - url: https://dev.methodfi.com
+      description: Development
   /merchants/{mchId}:
     get:
       operationId: retrieveMerchant
@@ -100,8 +98,67 @@ paths:
           $ref: '#/components/responses/RateLimited'
         '500':
           $ref: '#/components/responses/InternalError'
+    servers:
+    - url: https://production.methodfi.com
+      description: Production
+    - url: https://sandbox.methodfi.com
+      description: Sandbox
+    - url: https://dev.methodfi.com
+      description: Development
+  /merchants/{mch_id}:
+    parameters:
+    - name: mch_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: getMerchant
+      tags:
+      - Merchants
+      summary: Retrieve a merchant
+      responses:
+        '200':
+          description: The merchant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantResponse_2'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://production.methodfi.com
+      description: Production
+    - url: https://sandbox.methodfi.com
+      description: Sandbox
+    - url: https://dev.methodfi.com
+      description: Development (simulations enabled)
 components:
   responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
       content:
@@ -119,56 +176,28 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    ErrorObject:
+    SuccessEnvelope:
       type: object
+      description: Standard envelope for successful responses that return a single payload.
       required:
-      - type
-      - code
+      - success
+      - data
       - message
       properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
           type:
           - string
           - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
+      example:
+        success: true
+        data: {}
+        message: null
     MerchantProviderIds:
       type: object
       properties:
@@ -192,6 +221,46 @@ components:
           type: array
           items:
             type: string
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
     Merchant:
       type: object
       required:
@@ -233,15 +302,6 @@ components:
           items:
             type: string
           description: Accepted account number formats.
-    MerchantListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/Merchant'
     MerchantResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -249,46 +309,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/Merchant'
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     MerchantType:
       type: string
       enum:
@@ -320,27 +340,66 @@ components:
       - utility
       - waste_utility
       - water_utility
-    SuccessEnvelope:
+    ErrorObject:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
       required:
-      - success
-      - data
+      - type
+      - code
       - message
       properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
           type:
           - string
           - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
+    MerchantListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/Merchant'
+    MerchantResponse_2:
+      type: object
+      properties:
+        mch_id:
+          type: string
+        name:
+          type: string
+        parent_name:
+          type: string
+        logo:
+          type: string
+          format: uri
+        type:
+          type: string
+          description: The liability account type this merchant services.
+        account_prefixes:
+          type: array
+          items:
+            type: string
+    MerchantListResponse_2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantResponse_2'
   parameters:
     method_version:
       name: Method-Version
@@ -356,6 +415,21 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
+    PageLimit:
+      name: page_limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 100
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
   securitySchemes:
     OpalToken:
       type: http
@@ -373,3 +447,10 @@ components:
         All authenticated API endpoints require this scheme unless otherwise noted.
 
         '
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Method API key as a Bearer token in the Authorization header. Optionally send a Method-Version header (e.g. 2026-03-30).
+x-refined-from:
+- methodfi-openapi-original.yml
+- methodfi-openapi.yml

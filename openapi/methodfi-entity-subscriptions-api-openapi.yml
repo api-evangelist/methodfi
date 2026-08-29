@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Entity Subscriptions API
+  title: Method Entity Subscriptions API
   version: '2025-12-01'
   license:
     name: Proprietary
@@ -161,8 +161,8 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   responses:
-    InternalError:
-      description: Internal server error.
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
       content:
         application/json:
           schema:
@@ -178,14 +178,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
@@ -196,44 +190,118 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     UnprocessableEntity:
       description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
+    InternalError:
+      description: Internal server error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    EntitySubscriptionIdParam:
+      name: subId
+      in: path
+      required: true
+      description: Unique identifier for the entity subscription.
+      schema:
+        type: string
+        pattern: ^sub_\w+$
+    EntityIdParam:
+      name: entityId
+      in: path
+      required: true
+      description: Unique identifier for the entity.
+      schema:
+        type: string
+        pattern: ^ent_\w+$
   schemas:
-    ErrorObject:
+    SuccessEnvelope:
       type: object
+      description: Standard envelope for successful responses that return a single payload.
       required:
-      - type
-      - code
+      - success
+      - data
       - message
       properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
           type:
           - string
           - 'null'
-          description: More specific error classification.
+      example:
+        success: true
+        data: {}
+        message: null
+    EntitySubscriptionListResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            description: Object keyed by subscription name with EntitySubscription values.
+            additionalProperties:
+              $ref: '#/components/schemas/EntitySubscription'
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
-          description: Human-readable error description.
     EntitySubscription:
       type: object
       required:
@@ -274,16 +342,13 @@ components:
           type: string
           format: date-time
           description: Timestamp when the subscription was last updated.
-    EntitySubscriptionListResponse:
+    EntitySubscriptionResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
       - type: object
         properties:
           data:
-            type: object
-            description: Object keyed by subscription name with EntitySubscription values.
-            additionalProperties:
-              $ref: '#/components/schemas/EntitySubscription'
+            $ref: '#/components/schemas/EntitySubscription'
     CreateEntitySubscriptionRequest:
       type: object
       required:
@@ -311,96 +376,31 @@ components:
                   description: List of attribute names to request.
                   items:
                     type: string
-    EntitySubscriptionResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/EntitySubscription'
-    ErrorEnvelope:
+    ErrorObject:
       type: object
       required:
-      - success
-      - data
+      - type
+      - code
       - message
       properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
+        type:
           type: string
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
           type:
           - string
           - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-  parameters:
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    EntitySubscriptionIdParam:
-      name: subId
-      in: path
-      required: true
-      description: Unique identifier for the entity subscription.
-      schema:
-        type: string
-        pattern: ^sub_\w+$
-    EntityIdParam:
-      name: entityId
-      in: path
-      required: true
-      description: Unique identifier for the entity.
-      schema:
-        type: string
-        pattern: ^ent_\w+$
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
   securitySchemes:
     OpalToken:
       type: http

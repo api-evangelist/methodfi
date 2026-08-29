@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Method Financial Accounts Connect API
+  title: Method Financial Connect API
   description: The Method API enables developers to connect, retrieve, and pay down a consumer's liabilities (credit cards, student loans, auto loans, mortgages, and personal loans) across a network of financial institutions. Core resources are Entities, Accounts, Payments, Merchants, Connect, Transactions, and Webhooks. All requests are authenticated with a Bearer API key.
   termsOfService: https://methodfi.com/legal/platform-agreement
   contact:
@@ -38,14 +38,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ConnectResponse'
 components:
-  parameters:
-    EntityId:
-      name: ent_id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The entity identifier (e.g. ent_xxx).
   schemas:
     ConnectResponse:
       type: object
@@ -96,14 +88,23 @@ components:
           items:
             type: string
         error:
-          nullable: true
-          type: object
+          type:
+          - object
+          - 'null'
         created_at:
           type: string
           format: date-time
         updated_at:
           type: string
           format: date-time
+  parameters:
+    EntityId:
+      name: ent_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The entity identifier (e.g. ent_xxx).
   securitySchemes:
     bearerAuth:
       type: http

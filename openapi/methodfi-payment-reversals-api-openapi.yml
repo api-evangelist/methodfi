@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Payment Reversals API
+  title: Method Payment Reversals API
   version: '2025-12-01'
   license:
     name: Proprietary
@@ -121,39 +121,99 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  parameters:
+    ReversalIdParam:
+      name: reversalId
+      in: path
+      required: true
+      description: Unique identifier for the reversal.
+      schema:
+        type: string
+        pattern: ^rvs_\w+$
+    PaymentIdParam:
+      name: paymentId
+      in: path
+      required: true
+      description: Unique identifier for the payment.
+      schema:
+        type: string
+        pattern: ^pmt_\w+$
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   schemas:
-    ErrorObject:
+    ErrorEnvelope:
       type: object
       required:
-      - type
-      - code
+      - success
+      - data
       - message
       properties:
-        type:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
           type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
           type:
           - string
           - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
-    PaymentReversalUpdateRequest:
-      type: object
-      description: Request body for updating a payment reversal.
-      properties:
-        status:
-          type: string
-          description: Updated status for the reversal.
+      example:
+        success: true
+        data: []
+        message: null
+    PaymentReversalListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/PaymentReversal'
     PaymentReversalResourceError:
       type:
       - object
@@ -192,13 +252,6 @@ components:
         code: 14001
         sub_type: PAYMENT_REVERSAL_INSUFFICIENT_FUNDS
         message: Payment reversal failed due to insufficient funds from the account.
-    PaymentReversalResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/PaymentReversal'
     PaymentReversal:
       type: object
       description: A reversal for a payment, representing a return of funds.
@@ -274,55 +327,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the reversal was last updated.
-    PaymentReversalListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/PaymentReversal'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -344,7 +348,52 @@ components:
         success: true
         data: {}
         message: null
+    PaymentReversalResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/PaymentReversal'
+    PaymentReversalUpdateRequest:
+      type: object
+      description: Request body for updating a payment reversal.
+      properties:
+        status:
+          type: string
+          description: Updated status for the reversal.
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
   responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     RateLimited:
       description: Too many requests - rate limit exceeded.
       headers:
@@ -352,6 +401,12 @@ components:
           description: Number of seconds to wait before retrying.
           schema:
             type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
@@ -368,67 +423,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-  parameters:
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    ReversalIdParam:
-      name: reversalId
-      in: path
-      required: true
-      description: Unique identifier for the reversal.
-      schema:
-        type: string
-        pattern: ^rvs_\w+$
-    PaymentIdParam:
-      name: paymentId
-      in: path
-      required: true
-      description: Unique identifier for the payment.
-      schema:
-        type: string
-        pattern: ^pmt_\w+$
   securitySchemes:
     OpalToken:
       type: http

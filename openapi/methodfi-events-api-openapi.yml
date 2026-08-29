@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Events API
+  title: Method Events API
   version: '2025-12-01'
   license:
     name: Proprietary
@@ -160,43 +160,28 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    EventListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/Event'
-    ErrorObject:
+    ErrorEnvelope:
       type: object
       required:
-      - type
-      - code
+      - success
+      - data
       - message
       properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
-          description: Human-readable error description.
-    SuccessEnvelope:
+    ListEnvelope:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
+      description: Standard envelope for successful responses that return a list payload.
       required:
       - success
       - data
@@ -206,15 +191,44 @@ components:
           type: boolean
           description: Always `true` for successful responses.
         data:
-          description: Operation-specific response payload.
+          description: Operation-specific list payload.
         message:
           type:
           - string
           - 'null'
       example:
         success: true
-        data: {}
+        data: []
         message: null
+    EventResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Event'
+      example:
+        success: true
+        data:
+          id: evt_HnEJMFWS8rJbh
+          type: payment.create
+          resource_id: pmt_rPrDPEwyCVUcm
+          resource_type: payment
+          related_ids:
+          - acc_b9q2XVAnNFbp3
+          - acc_Y8u3qL9mNa1Bz
+          data:
+            id: pmt_rPrDPEwyCVUcm
+            status: pending
+            amount: 5000
+          diff: {}
+          created_at: '2026-01-15T18:30:00.000Z'
+          updated_at: '2026-01-15T18:30:00.000Z'
+        message: null
+    JsonObject:
+      type: object
+      description: Arbitrary JSON object.
+      additionalProperties: true
     WebhookType:
       type: string
       description: The event type this webhook subscribes to.
@@ -310,6 +324,15 @@ components:
       - entity_attribute.credit_health_soft_inquiries_value.increased
       - entity_attribute.credit_health_hard_inquiries_value.decreased
       - entity_attribute.credit_health_hard_inquiries_value.increased
+    EventListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/Event'
     Event:
       type: object
       required:
@@ -358,57 +381,9 @@ components:
           type: string
           format: date-time
           description: Timestamp when the event was last updated.
-    JsonObject:
+    SuccessEnvelope:
       type: object
-      description: Arbitrary JSON object.
-      additionalProperties: true
-    EventResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Event'
-      example:
-        success: true
-        data:
-          id: evt_HnEJMFWS8rJbh
-          type: payment.create
-          resource_id: pmt_rPrDPEwyCVUcm
-          resource_type: payment
-          related_ids:
-          - acc_b9q2XVAnNFbp3
-          - acc_Y8u3qL9mNa1Bz
-          data:
-            id: pmt_rPrDPEwyCVUcm
-            status: pending
-            amount: 5000
-          diff: {}
-          created_at: '2026-01-15T18:30:00.000Z'
-          updated_at: '2026-01-15T18:30:00.000Z'
-        message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
+      description: Standard envelope for successful responses that return a single payload.
       required:
       - success
       - data
@@ -418,16 +393,53 @@ components:
           type: boolean
           description: Always `true` for successful responses.
         data:
-          description: Operation-specific list payload.
+          description: Operation-specific response payload.
         message:
           type:
           - string
           - 'null'
       example:
         success: true
-        data: []
+        data: {}
         message: null
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
   responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     RateLimited:
       description: Too many requests - rate limit exceeded.
       headers:
@@ -439,20 +451,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     NotFound:
       description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
       content:
         application/json:
           schema:
@@ -463,36 +469,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   parameters:
-    FromDateParam:
-      name: from_date
-      in: query
-      required: false
-      description: Filter results from this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
-    PageCursorParam:
-      name: page_cursor
-      in: query
-      required: false
-      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
-      schema:
-        type: string
-    ToDateParam:
-      name: to_date
-      in: query
-      required: false
-      description: Filter results to this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
     PageLimitParam:
       name: page_limit
       in: query
@@ -503,6 +480,29 @@ components:
         minimum: 1
         maximum: 100
         default: 10
+    ToDateParam:
+      name: to_date
+      in: query
+      required: false
+      description: Filter results to this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
+    PageCursorParam:
+      name: page_cursor
+      in: query
+      required: false
+      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
+      schema:
+        type: string
+    EventIdParam:
+      name: evtId
+      in: path
+      required: true
+      description: Unique identifier for the event.
+      schema:
+        type: string
+        pattern: ^evt_\w+$
     method_version:
       name: Method-Version
       in: header
@@ -517,6 +517,14 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
+    FromDateParam:
+      name: from_date
+      in: query
+      required: false
+      description: Filter results from this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
     PageParam:
       name: page
       in: query
@@ -526,14 +534,6 @@ components:
         type: integer
         minimum: 1
         default: 1
-    EventIdParam:
-      name: evtId
-      in: path
-      required: true
-      description: Unique identifier for the event.
-      schema:
-        type: string
-        pattern: ^evt_\w+$
   securitySchemes:
     OpalToken:
       type: http

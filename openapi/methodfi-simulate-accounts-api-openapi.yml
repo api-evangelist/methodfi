@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Simulate Accounts API
+  title: Method Simulate Accounts API
   version: '2025-12-01'
   license:
     name: Proprietary
@@ -170,57 +170,143 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    ErrorObject:
+    SuccessEnvelope:
       type: object
+      description: Standard envelope for successful responses that return a single payload.
       required:
-      - type
-      - code
+      - success
+      - data
       - message
       properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
           type:
           - string
           - 'null'
-          description: More specific error classification.
-        message:
+      example:
+        success: true
+        data: {}
+        message: null
+    AccountCardBrand:
+      type: object
+      description: Card brand information for an account.
+      required:
+      - id
+      - account_id
+      - status
+      - created_at
+      - updated_at
+      properties:
+        id:
           type: string
-          description: Human-readable error description.
+          description: Unique identifier for the card brand.
+          pattern: ^cbrd_\w+$
+          example: cbrd_aTJMbnCjw34yQ
+        account_id:
+          type: string
+          description: The account this card brand belongs to.
+          pattern: ^acc_\w+$
+        brands:
+          type:
+          - array
+          - 'null'
+          description: Array of card brand entries for this account.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Unique identifier for the brand entry.
+              card_product_id:
+                type:
+                - string
+                - 'null'
+                description: Associated card product ID.
+              description:
+                type: string
+                description: Description of the brand.
+              name:
+                type: string
+                description: Name of the brand.
+              issuer:
+                type: string
+                description: The card issuer.
+              network:
+                type: string
+                description: The card network.
+              network_tier:
+                type: string
+                description: The tier of the card network.
+              type:
+                type:
+                - string
+                - 'null'
+                description: The brand type.
+              url:
+                type: string
+                description: URL for the brand image.
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source of the card brand data.
+          enum:
+          - network
+          - method
+          - null
+        shared:
+          type: boolean
+          description: Whether this card brand record is shared.
+        network:
+          type:
+          - string
+          - 'null'
+          description: The card network. Deprecated in favor of brands[].network.
+          enum:
+          - visa
+          - mastercard
+          - amex
+          - discover
+          - null
+        issuer:
+          type:
+          - string
+          - 'null'
+          description: The card issuer. Deprecated in favor of brands[].issuer.
+        last4:
+          type:
+          - string
+          - 'null'
+          description: Last 4 digits of the card number. Deprecated in favor of brands[].
+        status:
+          type: string
+          description: Current status of the card brand request.
+          enum:
+          - completed
+          - pending
+          - failed
+        error:
+          $ref: '#/components/schemas/ResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the card brand was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the card brand was last updated.
+    AccountTransactionResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/AccountTransaction'
     AccountTransaction:
       type: object
       description: A transaction for an account.
@@ -340,114 +426,25 @@ components:
           type: string
           format: date-time
           description: Timestamp when the transaction record was last updated.
-    AccountCardBrand:
+    ErrorEnvelope:
       type: object
-      description: Card brand information for an account.
       required:
-      - id
-      - account_id
-      - status
-      - created_at
-      - updated_at
+      - success
+      - data
+      - message
       properties:
-        id:
-          type: string
-          description: Unique identifier for the card brand.
-          pattern: ^cbrd_\w+$
-          example: cbrd_aTJMbnCjw34yQ
-        account_id:
-          type: string
-          description: The account this card brand belongs to.
-          pattern: ^acc_\w+$
-        brands:
-          type:
-          - array
-          - 'null'
-          description: Array of card brand entries for this account.
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: Unique identifier for the brand entry.
-              card_product_id:
-                type:
-                - string
-                - 'null'
-                description: Associated card product ID.
-              description:
-                type: string
-                description: Description of the brand.
-              name:
-                type: string
-                description: Name of the brand.
-              issuer:
-                type: string
-                description: The card issuer.
-              network:
-                type: string
-                description: The card network.
-              network_tier:
-                type: string
-                description: The tier of the card network.
-              type:
-                type:
-                - string
-                - 'null'
-                description: The brand type.
-              url:
-                type: string
-                description: URL for the brand image.
-        source:
-          type:
-          - string
-          - 'null'
-          description: Source of the card brand data.
-          enum:
-          - network
-          - method
-          - null
-        shared:
+        success:
           type: boolean
-          description: Whether this card brand record is shared.
-        network:
-          type:
-          - string
-          - 'null'
-          description: The card network. Deprecated in favor of brands[].network.
-          enum:
-          - visa
-          - mastercard
-          - amex
-          - discover
-          - null
-        issuer:
-          type:
-          - string
-          - 'null'
-          description: The card issuer. Deprecated in favor of brands[].issuer.
-        last4:
-          type:
-          - string
-          - 'null'
-          description: Last 4 digits of the card number. Deprecated in favor of brands[].
-        status:
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
           type: string
-          description: Current status of the card brand request.
-          enum:
-          - completed
-          - pending
-          - failed
-        error:
-          $ref: '#/components/schemas/ResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the card brand was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the card brand was last updated.
     ResourceError:
       type:
       - object
@@ -487,53 +484,56 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/AccountCardBrand'
-    ErrorEnvelope:
+    ErrorObject:
       type: object
       required:
-      - success
-      - data
+      - type
+      - code
       - message
       properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
+        type:
           type: string
-    AccountTransactionResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/AccountTransaction'
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
           type:
           - string
           - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   parameters:
     method_version:
       name: Method-Version

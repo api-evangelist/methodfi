@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Account Products API
+  title: Method Account Products API
   version: '2025-12-01'
   license:
     name: Proprietary
@@ -83,102 +83,78 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    AccountIdParam:
+      name: accountId
+      in: path
+      required: true
+      description: Unique identifier for the account.
+      schema:
+        type: string
+        pattern: ^acc_\w+$
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    AccountProductIdParam:
+      name: prdId
+      in: path
+      required: true
+      description: Unique identifier for the account product.
+      schema:
+        type: string
+        pattern: ^prd_\w+$
   schemas:
-    ErrorObject:
+    SuccessEnvelope:
       type: object
+      description: Standard envelope for successful responses that return a single payload.
       required:
-      - type
-      - code
+      - success
+      - data
       - message
       properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
           type:
           - string
           - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
-    ProductResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a product execution fails.
+      example:
+        success: true
+        data: {}
+        message: null
+    ErrorEnvelope:
+      type: object
       required:
-      - type
-      - code
-      - sub_type
+      - success
+      - data
       - message
       properties:
-        type:
-          type: string
-          description: The category of product error.
-          enum:
-          - PRODUCT_EXECUTION_FAILED
-        code:
-          type: integer
-          description: Numeric error code (24XXX range).
-          enum:
-          - 24001
-        sub_type:
-          type: string
-          description: Specific product error classification.
-          enum:
-          - PRODUCT_EXECUTION_FAILED
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
-          description: Human-readable error description.
-      example:
-        type: PRODUCT_EXECUTION_FAILED
-        code: 24001
-        sub_type: PRODUCT_EXECUTION_FAILED
-        message: Product execution failed.
     AccountProduct:
       type: object
       description: A product associated with an account.
@@ -225,6 +201,40 @@ components:
           type: string
           format: date-time
           description: Timestamp when the product was last updated.
+    ProductResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a product execution fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of product error.
+          enum:
+          - PRODUCT_EXECUTION_FAILED
+        code:
+          type: integer
+          description: Numeric error code (24XXX range).
+          enum:
+          - 24001
+        sub_type:
+          type: string
+          description: Specific product error classification.
+          enum:
+          - PRODUCT_EXECUTION_FAILED
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: PRODUCT_EXECUTION_FAILED
+        code: 24001
+        sub_type: PRODUCT_EXECUTION_FAILED
+        message: Product execution failed.
     AccountProductResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -232,25 +242,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/AccountProduct'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     AccountProductListResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -261,58 +252,67 @@ components:
             description: Object keyed by product name.
             additionalProperties:
               $ref: '#/components/schemas/AccountProduct'
-    SuccessEnvelope:
+    ErrorObject:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
       required:
-      - success
-      - data
+      - type
+      - code
       - message
       properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
           type:
           - string
           - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-  parameters:
-    AccountProductIdParam:
-      name: prdId
-      in: path
-      required: true
-      description: Unique identifier for the account product.
-      schema:
-        type: string
-        pattern: ^prd_\w+$
-    AccountIdParam:
-      name: accountId
-      in: path
-      required: true
-      description: Unique identifier for the account.
-      schema:
-        type: string
-        pattern: ^acc_\w+$
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
+  responses:
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   securitySchemes:
     OpalToken:
       type: http

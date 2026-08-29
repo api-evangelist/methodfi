@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Simulate Entities API
+  title: Method Simulate Entities API
   version: '2025-12-01'
   license:
     name: Proprietary
@@ -169,8 +169,44 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    ErrorObject:
+    AccountDebitCard:
+      type:
+      - object
+      - 'null'
+      description: Debit card account details. Present when `type` is `debit_card`.
+      properties:
+        network:
+          type: string
+          description: The card network.
+        mask:
+          type: string
+          description: Last 4 digits of the card number.
+        issuer:
+          type: string
+          description: The card issuer.
+    ErrorEnvelope:
       type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    ResourceError:
+      type:
+      - object
+      - 'null'
       required:
       - type
       - code
@@ -178,350 +214,24 @@ components:
       properties:
         type:
           type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
         code:
           type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
         sub_type:
           type:
           - string
           - 'null'
-          description: More specific error classification.
         message:
           type: string
-          description: Human-readable error description.
-    EntityCreditScoreResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/EntityCreditScore'
-    EntityConnect:
-      type: object
-      required:
-      - id
-      - entity_id
-      - status
-      - accounts
-      - requested_products
-      - requested_subscriptions
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the connect session.
-          example: cxn_iENwGBMDnr7sJ
-        entity_id:
-          type: string
-          description: The ID of the entity this connect session belongs to.
-          example: ent_au22b1fbFJbp8
-        status:
-          type: string
-          description: Status of the connect session.
-          enum:
-          - completed
-          - in_progress
-          - pending
-          - failed
-        accounts:
-          type: array
-          items:
-            title: EntityConnectExpandableAccount
-            oneOf:
-            - type: string
-              pattern: ^acc_\w+$
-            - $ref: '#/components/schemas/Account'
-          description: Expandable. List of account IDs connected through this session.
-        requested_products:
-          type:
-          - array
-          - 'null'
-          description: Products requested for this connect session.
-          items:
-            type: string
-        requested_subscriptions:
-          type:
-          - array
-          - 'null'
-          description: Subscriptions requested for this connect session.
-          items:
-            type: string
-        error:
-          type:
-          - object
-          - 'null'
-          description: Error details if the resource encountered an error.
-          allOf:
-          - $ref: '#/components/schemas/ConnectResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the connect session was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the connect session was last updated.
-    UpdateResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when an account update fails.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of update error.
-          enum:
-          - UPDATE_FAILED
-        code:
-          type: integer
-          description: Numeric error code (21XXX range).
-          enum:
-          - 21001
-        sub_type:
-          type: string
-          description: Specific update error classification.
-          enum:
-          - UPDATE_TEMPORARILY_UNAVAILABLE
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: UPDATE_FAILED
-        code: 21001
-        sub_type: UPDATE_TEMPORARILY_UNAVAILABLE
-        message: Update is temporarily unavailable for this account.
-    AccountSensitive:
-      type: object
-      description: Sensitive data for an account.
-      required:
-      - id
-      - account_id
-      - status
-      - type
-      - fields
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the sensitive record.
-          pattern: ^astv_\w+$
-          example: astv_aTJMbnCjw34yQ
-        account_id:
-          type: string
-          description: The account this sensitive data belongs to.
-          pattern: ^acc_\w+$
-        status:
-          type: string
-          description: Current status of the sensitive data request.
-          enum:
-          - completed
-          - pending
-          - failed
-        type:
-          type: string
-          description: The type of sensitive data.
-        fields:
-          type: array
-          description: List of sensitive data fields retrieved.
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name of the field.
-              value:
-                type: string
-                description: Value of the field.
-        error:
-          $ref: '#/components/schemas/AccountSensitiveResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the sensitive record was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the sensitive record was last updated.
-    EntityCreditScore:
-      type: object
-      required:
-      - id
-      - entity_id
-      - status
-      - scores
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the credit score.
-          example: crs_pn4ca33GRnrJm
-        entity_id:
-          type: string
-          description: The ID of the entity this credit score belongs to.
-          example: ent_au22b1fbFJbp8
-        status:
-          type: string
-          description: Status of the credit score retrieval.
-          enum:
-          - completed
-          - in_progress
-          - pending
-          - failed
-        scores:
-          type:
-          - array
-          - 'null'
-          description: Array of credit score results.
-          items:
-            type: object
-            required:
-            - score
-            - source
-            - model
-            - factors
-            - created_at
-            properties:
-              score:
-                type:
-                - integer
-                - 'null'
-                description: The credit score value.
-              source:
-                type:
-                - string
-                - 'null'
-                description: The source of the credit score.
-              model:
-                type:
-                - string
-                - 'null'
-                description: The scoring model used.
-              factors:
-                type:
-                - array
-                - 'null'
-                description: Factors affecting the credit score.
-                items:
-                  $ref: '#/components/schemas/EntityCreditScoreFactor'
-              created_at:
-                type: string
-                format: date-time
-                description: Timestamp when this score was generated.
-        error:
-          type:
-          - object
-          - 'null'
-          description: Error details if the resource encountered an error.
-          allOf:
-          - $ref: '#/components/schemas/CreditScoreResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the credit score was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the credit score was last updated.
-    PayoffResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a payoff sync fails.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of payoff error.
-          enum:
-          - PAYOFF_FAILED
-        code:
-          type: integer
-          description: Numeric error code (18XXX range).
-          enum:
-          - 18001
-        sub_type:
-          type: string
-          description: Specific payoff error classification.
-          enum:
-          - PAYOFF_TEMPORARILY_UNAVAILABLE
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: PAYOFF_FAILED
-        code: 18001
-        sub_type: PAYOFF_TEMPORARILY_UNAVAILABLE
-        message: Payoff is temporarily unavailable for this account.
-    AccountExpandableBalance:
-      title: AccountExpandableBalance
-      description: 'The latest balance ID. This field is expandable. When expanded, returns the full AccountBalance object.
+    AccountExpandableUpdate:
+      title: AccountExpandableUpdate
+      description: 'The latest update ID. This field is expandable. When expanded, returns the full AccountUpdate object.
 
         '
       oneOf:
       - type: string
-        pattern: ^bal_\w+$
+        pattern: ^upd_\w+$
       - type: 'null'
-      - $ref: '#/components/schemas/AccountBalance'
-    EntityAttribute:
-      type: object
-      required:
-      - id
-      - entity_id
-      - status
-      - attributes
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the entity attribute.
-          example: attr_QwMjMDEwMTY1
-        entity_id:
-          type: string
-          description: The ID of the entity this attribute belongs to.
-          example: ent_au22b1fbFJbp8
-        status:
-          type: string
-          description: Status of the attribute retrieval.
-          enum:
-          - completed
-          - in_progress
-          - pending
-          - failed
-        attributes:
-          $ref: '#/components/schemas/EntityAttributeData'
-        error:
-          type:
-          - object
-          - 'null'
-          description: Error details if the resource encountered an error.
-          allOf:
-          - $ref: '#/components/schemas/ResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the attribute was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the attribute was last updated.
+      - $ref: '#/components/schemas/AccountUpdate'
     EntityAttributeData:
       type:
       - object
@@ -699,11 +409,118 @@ components:
               - object
               - 'null'
               description: Additional metadata.
-    AccountVerificationSessionResourceError:
+    AccountAttribute:
+      type: object
+      description: An attribute record for an account containing financial data attributes.
+      required:
+      - id
+      - account_id
+      - status
+      - attributes
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the account attribute.
+          pattern: ^acc_attr_\w+$
+          example: acc_attr_eTJMbnCjw34yQ
+        account_id:
+          type: string
+          description: The account this attribute belongs to.
+          pattern: ^acc_\w+$
+        status:
+          type: string
+          description: Current status of the attribute request.
+          enum:
+          - completed
+          - pending
+          - failed
+        attributes:
+          type: object
+          description: Financial data attributes for the account.
+          additionalProperties: true
+        error:
+          $ref: '#/components/schemas/ResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the attribute was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the attribute was last updated.
+    MerchantType:
+      type: string
+      enum:
+      - auto_loan
+      - bank
+      - bnpl
+      - business_loan
+      - city
+      - collection
+      - county
+      - credit_builder
+      - credit_card
+      - electric_utility
+      - fintech
+      - home_equity_loan
+      - home_loan
+      - insurance
+      - internet_utility
+      - loan
+      - medical
+      - mortgage
+      - personal_loan
+      - student_loan
+      - student_loans
+      - subscription
+      - telephone_utility
+      - television_utility
+      - unknown
+      - utility
+      - waste_utility
+      - water_utility
+    EntityAttributeResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/EntityAttribute'
+    AccountExpandableCardBrand:
+      title: AccountExpandableCardBrand
+      description: 'The latest card brand ID. This field is expandable. When expanded, returns the full AccountCardBrand object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^cbrd_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountCardBrand'
+    AccountClearing:
       type:
       - object
       - 'null'
-      description: Error details when an account verification session fails.
+      description: Clearing account details. Present when `type` is `clearing`.
+      properties:
+        type:
+          type: string
+          description: The type of clearing account.
+          enum:
+          - single_use
+          - multi_use
+        routing:
+          type: string
+          description: The clearing routing number.
+        number:
+          type: string
+          description: The clearing account number.
+    CreditScoreResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a credit score pull fails.
       required:
       - type
       - code
@@ -712,43 +529,27 @@ components:
       properties:
         type:
           type: string
-          description: The category of verification session error.
+          description: The category of credit score error.
           enum:
-          - ACCOUNT_VERIFICATION_SESSION_FAILED
+          - CREDIT_SCORE_FAILED
         code:
           type: integer
-          description: Numeric error code (16XXX range).
+          description: Numeric error code (23XXX range).
           enum:
-          - 16001
-          - 16002
-          - 16003
-          - 16004
+          - 23001
         sub_type:
           type: string
-          description: Specific verification session error classification.
+          description: Specific credit score error classification.
           enum:
-          - VERIFICATION_TYPE_NOT_SUPPORTED
-          - INVALID_DETAILS
-          - VERIFICATION_SESSION_ATTEMPT_LIMIT_REACHED
-          - MICRO_DEPOSITS_FAILED
+          - CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
         message:
           type: string
           description: Human-readable error description.
       example:
-        type: ACCOUNT_VERIFICATION_SESSION_FAILED
-        code: 16001
-        sub_type: VERIFICATION_TYPE_NOT_SUPPORTED
-        message: The verification type provided is not supported for the merchant.
-    AccountExpandableSensitive:
-      title: AccountExpandableSensitive
-      description: 'The latest sensitive ID. This field is expandable. When expanded, returns the full AccountSensitive object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^astv_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountSensitive'
+        type: CREDIT_SCORE_FAILED
+        code: 23001
+        sub_type: CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
+        message: Credit Score is temporarily unavailable for this entity.
     AccountPaymentInstrument:
       type: object
       description: A payment instrument for an account.
@@ -835,192 +636,238 @@ components:
           type: string
           format: date-time
           description: Timestamp when the payment instrument was last updated.
-    EntityAttributeResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/EntityAttribute'
-    EntityCreditScoreFactor:
+    AccountSensitive:
       type: object
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-          description: Factor code.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Human-readable description of the factor.
-    EntityConnectResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/EntityConnect'
-    CreditScoreResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a credit score pull fails.
+      description: Sensitive data for an account.
       required:
+      - id
+      - account_id
+      - status
       - type
-      - code
-      - sub_type
-      - message
+      - fields
+      - created_at
+      - updated_at
       properties:
+        id:
+          type: string
+          description: Unique identifier for the sensitive record.
+          pattern: ^astv_\w+$
+          example: astv_aTJMbnCjw34yQ
+        account_id:
+          type: string
+          description: The account this sensitive data belongs to.
+          pattern: ^acc_\w+$
+        status:
+          type: string
+          description: Current status of the sensitive data request.
+          enum:
+          - completed
+          - pending
+          - failed
         type:
           type: string
-          description: The category of credit score error.
-          enum:
-          - CREDIT_SCORE_FAILED
-        code:
-          type: integer
-          description: Numeric error code (23XXX range).
-          enum:
-          - 23001
-        sub_type:
+          description: The type of sensitive data.
+        fields:
+          type: array
+          description: List of sensitive data fields retrieved.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the field.
+              value:
+                type: string
+                description: Value of the field.
+        error:
+          $ref: '#/components/schemas/AccountSensitiveResourceError'
+        created_at:
           type: string
-          description: Specific credit score error classification.
-          enum:
-          - CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
-        message:
+          format: date-time
+          description: Timestamp when the sensitive record was created.
+        updated_at:
           type: string
-          description: Human-readable error description.
-      example:
-        type: CREDIT_SCORE_FAILED
-        code: 23001
-        sub_type: CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
-        message: Credit Score is temporarily unavailable for this entity.
-    MerchantProviderIds:
-      type: object
-      properties:
-        plaid:
-          type: array
-          items:
-            type: string
-        mx:
-          type: array
-          items:
-            type: string
-        finicity:
-          type: array
-          items:
-            type: string
-        dpp:
-          type: array
-          items:
-            type: string
-        rpps:
-          type: array
-          items:
-            type: string
-    AccountExpandableAttribute:
-      title: AccountExpandableAttribute
-      description: 'The latest attribute ID. This field is expandable. When expanded, returns the full AccountAttribute object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^acc_attr_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountAttribute'
-    AccountExpandableUpdate:
-      title: AccountExpandableUpdate
-      description: 'The latest update ID. This field is expandable. When expanded, returns the full AccountUpdate object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^upd_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountUpdate'
-    AccountExpandableCardBrand:
-      title: AccountExpandableCardBrand
-      description: 'The latest card brand ID. This field is expandable. When expanded, returns the full AccountCardBrand object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^cbrd_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountCardBrand'
-    Metadata:
+          format: date-time
+          description: Timestamp when the sensitive record was last updated.
+    AccountLiability:
       type:
       - object
       - 'null'
-      additionalProperties: true
-      description: Arbitrary key-value metadata attached to the resource.
-    AccountDebitCard:
-      type:
-      - object
-      - 'null'
-      description: Debit card account details. Present when `type` is `debit_card`.
+      description: Liability account details. Present when `type` is `liability`.
+      required:
+      - mch_id
+      - mask
+      - ownership
+      - fingerprint
+      - type
+      - sub_type
+      - name
       properties:
-        network:
-          type: string
-          description: The card network.
+        mch_id:
+          title: AccountLiabilityExpandableMerchant
+          description: The merchant ID associated with this liability.
+          oneOf:
+          - type: string
+            pattern: ^mch_\w+$
+          - $ref: '#/components/schemas/Merchant'
         mask:
+          type:
+          - string
+          - 'null'
+          description: Last 4 digits of the account number.
+          example: '4321'
+        ownership:
+          type:
+          - string
+          - 'null'
+          description: Ownership type of the account.
+          enum:
+          - primary
+          - authorized
+          - joint
+          - unknown
+          - null
+        fingerprint:
+          type:
+          - string
+          - 'null'
+          description: Unique fingerprint for de-duplication.
+        type:
           type: string
-          description: Last 4 digits of the card number.
+          description: The type of liability.
+          enum:
+          - credit_card
+          - auto_loan
+          - mortgage
+          - personal_loan
+          - student_loan
+          - student_loans
+          - collection
+          - credit_builder
+          - insurance
+          - loan
+          - medical
+          - utility
+          - bnpl
+          - fintech
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific classification of the liability type.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Display name of the liability account.
+    AccountCardBrand:
+      type: object
+      description: Card brand information for an account.
+      required:
+      - id
+      - account_id
+      - status
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the card brand.
+          pattern: ^cbrd_\w+$
+          example: cbrd_aTJMbnCjw34yQ
+        account_id:
+          type: string
+          description: The account this card brand belongs to.
+          pattern: ^acc_\w+$
+        brands:
+          type:
+          - array
+          - 'null'
+          description: Array of card brand entries for this account.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Unique identifier for the brand entry.
+              card_product_id:
+                type:
+                - string
+                - 'null'
+                description: Associated card product ID.
+              description:
+                type: string
+                description: Description of the brand.
+              name:
+                type: string
+                description: Name of the brand.
+              issuer:
+                type: string
+                description: The card issuer.
+              network:
+                type: string
+                description: The card network.
+              network_tier:
+                type: string
+                description: The tier of the card network.
+              type:
+                type:
+                - string
+                - 'null'
+                description: The brand type.
+              url:
+                type: string
+                description: URL for the brand image.
+        source:
+          type:
+          - string
+          - 'null'
+          description: Source of the card brand data.
+          enum:
+          - network
+          - method
+          - null
+        shared:
+          type: boolean
+          description: Whether this card brand record is shared.
+        network:
+          type:
+          - string
+          - 'null'
+          description: The card network. Deprecated in favor of brands[].network.
+          enum:
+          - visa
+          - mastercard
+          - amex
+          - discover
+          - null
         issuer:
+          type:
+          - string
+          - 'null'
+          description: The card issuer. Deprecated in favor of brands[].issuer.
+        last4:
+          type:
+          - string
+          - 'null'
+          description: Last 4 digits of the card number. Deprecated in favor of brands[].
+        status:
           type: string
-          description: The card issuer.
-    MerchantType:
-      type: string
-      enum:
-      - auto_loan
-      - bank
-      - bnpl
-      - business_loan
-      - city
-      - collection
-      - county
-      - credit_builder
-      - credit_card
-      - electric_utility
-      - fintech
-      - home_equity_loan
-      - home_loan
-      - insurance
-      - internet_utility
-      - loan
-      - medical
-      - mortgage
-      - personal_loan
-      - student_loan
-      - student_loans
-      - subscription
-      - telephone_utility
-      - television_utility
-      - unknown
-      - utility
-      - waste_utility
-      - water_utility
-    AccountExpandablePaymentInstrument:
-      title: AccountExpandablePaymentInstrument
-      description: 'The latest payment instrument ID. This field is expandable. When expanded, returns the full AccountPaymentInstrument object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^pmt_inst_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountPaymentInstrument'
-    AccountExpandablePayoff:
-      title: AccountExpandablePayoff
-      description: 'The latest payoff ID. This field is expandable. When expanded, returns the full AccountPayoff object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^pyf_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountPayoff'
+          description: Current status of the card brand request.
+          enum:
+          - completed
+          - pending
+          - failed
+        error:
+          $ref: '#/components/schemas/ResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the card brand was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the card brand was last updated.
     AccountSensitiveResourceError:
       type:
       - object
@@ -1055,11 +902,21 @@ components:
         code: 17001
         sub_type: ACCOUNT_SENSITIVE_FAILED_VERIFICATION_REQUIRED
         message: Account sensitive failed due to missing required verification.
-    AccountResourceError:
+    AccountExpandableSensitive:
+      title: AccountExpandableSensitive
+      description: 'The latest sensitive ID. This field is expandable. When expanded, returns the full AccountSensitive object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^astv_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountSensitive'
+    AccountVerificationSessionResourceError:
       type:
       - object
       - 'null'
-      description: Error details when an account is disabled.
+      description: Error details when an account verification session fails.
       required:
       - type
       - code
@@ -1068,37 +925,67 @@ components:
       properties:
         type:
           type: string
-          description: The category of account error.
+          description: The category of verification session error.
           enum:
-          - ACCOUNT_DISABLED
+          - ACCOUNT_VERIFICATION_SESSION_FAILED
         code:
           type: integer
-          description: Numeric error code (11XXX range).
+          description: Numeric error code (16XXX range).
           enum:
-          - 11001
-          - 11002
-          - 11003
-          - 11004
-          - 11005
-          - 11006
+          - 16001
+          - 16002
+          - 16003
+          - 16004
         sub_type:
           type: string
-          description: Specific account error classification.
+          description: Specific verification session error classification.
           enum:
-          - ACCOUNT_INVALID_DETAILS
-          - ACCOUNT_UNAUTHORIZED_PAYMENT
-          - ACCOUNT_CLOSED
-          - ACCOUNT_CONSENT_WITHDRAWN
-          - ACCOUNT_DISABLED_INVALID_STATE
-          - ACCOUNT_DISABLED_HOLDER_ENTITY_DISABLED
+          - VERIFICATION_TYPE_NOT_SUPPORTED
+          - INVALID_DETAILS
+          - VERIFICATION_SESSION_ATTEMPT_LIMIT_REACHED
+          - MICRO_DEPOSITS_FAILED
         message:
           type: string
           description: Human-readable error description.
       example:
-        type: ACCOUNT_DISABLED
-        code: 11001
-        sub_type: ACCOUNT_INVALID_DETAILS
-        message: Account was disabled due to invalid information reported by the financial institution.
+        type: ACCOUNT_VERIFICATION_SESSION_FAILED
+        code: 16001
+        sub_type: VERIFICATION_TYPE_NOT_SUPPORTED
+        message: The verification type provided is not supported for the merchant.
+    BalanceResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a balance sync fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of balance error.
+          enum:
+          - BALANCE_FAILED
+        code:
+          type: integer
+          description: Numeric error code (20XXX range).
+          enum:
+          - 20001
+        sub_type:
+          type: string
+          description: Specific balance error classification.
+          enum:
+          - BALANCE_TEMPORARILY_UNAVAILABLE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: BALANCE_FAILED
+        code: 20001
+        sub_type: BALANCE_TEMPORARILY_UNAVAILABLE
+        message: Balance is temporarily unavailable for this account.
     Merchant:
       type: object
       required:
@@ -1140,120 +1027,72 @@ components:
           items:
             type: string
           description: Accepted account number formats.
-    AccountBalance:
+    EntityConnect:
       type: object
-      description: A balance record for an account.
       required:
       - id
-      - account_id
+      - entity_id
       - status
-      - amount
+      - accounts
+      - requested_products
+      - requested_subscriptions
       - created_at
       - updated_at
       properties:
         id:
           type: string
-          description: Unique identifier for the balance.
-          pattern: ^bal_\w+$
-          example: bal_dKe9ehC3hEBYy
-        account_id:
+          description: Unique identifier for the connect session.
+          example: cxn_iENwGBMDnr7sJ
+        entity_id:
           type: string
-          description: The account this balance belongs to.
-          pattern: ^acc_\w+$
+          description: The ID of the entity this connect session belongs to.
+          example: ent_au22b1fbFJbp8
         status:
           type: string
-          description: Current status of the balance request.
+          description: Status of the connect session.
           enum:
           - completed
+          - in_progress
           - pending
           - failed
-        amount:
+        accounts:
+          type: array
+          items:
+            title: EntityConnectExpandableAccount
+            oneOf:
+            - type: string
+              pattern: ^acc_\w+$
+            - $ref: '#/components/schemas/Account'
+          description: Expandable. List of account IDs connected through this session.
+        requested_products:
           type:
-          - number
+          - array
           - 'null'
-          description: The balance amount in cents.
+          description: Products requested for this connect session.
+          items:
+            type: string
+        requested_subscriptions:
+          type:
+          - array
+          - 'null'
+          description: Subscriptions requested for this connect session.
+          items:
+            type: string
         error:
-          $ref: '#/components/schemas/BalanceResourceError'
+          type:
+          - object
+          - 'null'
+          description: Error details if the resource encountered an error.
+          allOf:
+          - $ref: '#/components/schemas/ConnectResourceError'
         created_at:
           type: string
           format: date-time
-          description: Timestamp when the balance was created.
+          description: Timestamp when the connect session was created.
         updated_at:
           type: string
           format: date-time
-          description: Timestamp when the balance was last updated.
-    AccountClearing:
-      type:
-      - object
-      - 'null'
-      description: Clearing account details. Present when `type` is `clearing`.
-      properties:
-        type:
-          type: string
-          description: The type of clearing account.
-          enum:
-          - single_use
-          - multi_use
-        routing:
-          type: string
-          description: The clearing routing number.
-        number:
-          type: string
-          description: The clearing account number.
-    AccountPayoff:
-      type: object
-      description: A payoff record for an account.
-      required:
-      - id
-      - account_id
-      - status
-      - amount
-      - term
-      - per_diem_amount
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the payoff.
-          pattern: ^pyf_\w+$
-          example: pyf_dKe9ehC3hEBYy
-        account_id:
-          type: string
-          description: The account this payoff belongs to.
-          pattern: ^acc_\w+$
-        status:
-          type: string
-          description: Current status of the payoff request.
-          enum:
-          - completed
-          - pending
-          - failed
-        amount:
-          type:
-          - number
-          - 'null'
-          description: The payoff amount in cents.
-        term:
-          type:
-          - number
-          - 'null'
-          description: Number of days the payoff amount is valid.
-        per_diem_amount:
-          type:
-          - number
-          - 'null'
-          description: Per diem interest amount in cents.
-        error:
-          $ref: '#/components/schemas/PayoffResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the payoff was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the payoff was last updated.
+          description: Timestamp when the connect session was last updated.
     AccountUpdate:
       type: object
       description: An update record for an account.
@@ -1780,279 +1619,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the update was last updated.
-    BalanceResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a balance sync fails.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of balance error.
-          enum:
-          - BALANCE_FAILED
-        code:
-          type: integer
-          description: Numeric error code (20XXX range).
-          enum:
-          - 20001
-        sub_type:
-          type: string
-          description: Specific balance error classification.
-          enum:
-          - BALANCE_TEMPORARILY_UNAVAILABLE
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: BALANCE_FAILED
-        code: 20001
-        sub_type: BALANCE_TEMPORARILY_UNAVAILABLE
-        message: Balance is temporarily unavailable for this account.
-    AccountLiability:
-      type:
-      - object
-      - 'null'
-      description: Liability account details. Present when `type` is `liability`.
-      required:
-      - mch_id
-      - mask
-      - ownership
-      - fingerprint
-      - type
-      - sub_type
-      - name
-      properties:
-        mch_id:
-          title: AccountLiabilityExpandableMerchant
-          description: The merchant ID associated with this liability.
-          oneOf:
-          - type: string
-            pattern: ^mch_\w+$
-          - $ref: '#/components/schemas/Merchant'
-        mask:
-          type:
-          - string
-          - 'null'
-          description: Last 4 digits of the account number.
-          example: '4321'
-        ownership:
-          type:
-          - string
-          - 'null'
-          description: Ownership type of the account.
-          enum:
-          - primary
-          - authorized
-          - joint
-          - unknown
-          - null
-        fingerprint:
-          type:
-          - string
-          - 'null'
-          description: Unique fingerprint for de-duplication.
-        type:
-          type: string
-          description: The type of liability.
-          enum:
-          - credit_card
-          - auto_loan
-          - mortgage
-          - personal_loan
-          - student_loan
-          - student_loans
-          - collection
-          - credit_builder
-          - insurance
-          - loan
-          - medical
-          - utility
-          - bnpl
-          - fintech
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific classification of the liability type.
-        name:
-          type:
-          - string
-          - 'null'
-          description: Display name of the liability account.
-    AccountCardBrand:
-      type: object
-      description: Card brand information for an account.
-      required:
-      - id
-      - account_id
-      - status
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the card brand.
-          pattern: ^cbrd_\w+$
-          example: cbrd_aTJMbnCjw34yQ
-        account_id:
-          type: string
-          description: The account this card brand belongs to.
-          pattern: ^acc_\w+$
-        brands:
-          type:
-          - array
-          - 'null'
-          description: Array of card brand entries for this account.
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: Unique identifier for the brand entry.
-              card_product_id:
-                type:
-                - string
-                - 'null'
-                description: Associated card product ID.
-              description:
-                type: string
-                description: Description of the brand.
-              name:
-                type: string
-                description: Name of the brand.
-              issuer:
-                type: string
-                description: The card issuer.
-              network:
-                type: string
-                description: The card network.
-              network_tier:
-                type: string
-                description: The tier of the card network.
-              type:
-                type:
-                - string
-                - 'null'
-                description: The brand type.
-              url:
-                type: string
-                description: URL for the brand image.
-        source:
-          type:
-          - string
-          - 'null'
-          description: Source of the card brand data.
-          enum:
-          - network
-          - method
-          - null
-        shared:
-          type: boolean
-          description: Whether this card brand record is shared.
-        network:
-          type:
-          - string
-          - 'null'
-          description: The card network. Deprecated in favor of brands[].network.
-          enum:
-          - visa
-          - mastercard
-          - amex
-          - discover
-          - null
-        issuer:
-          type:
-          - string
-          - 'null'
-          description: The card issuer. Deprecated in favor of brands[].issuer.
-        last4:
-          type:
-          - string
-          - 'null'
-          description: Last 4 digits of the card number. Deprecated in favor of brands[].
-        status:
-          type: string
-          description: Current status of the card brand request.
-          enum:
-          - completed
-          - pending
-          - failed
-        error:
-          $ref: '#/components/schemas/ResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the card brand was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the card brand was last updated.
-    ResourceError:
-      type:
-      - object
-      - 'null'
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-        code:
-          type: integer
-        sub_type:
-          type:
-          - string
-          - 'null'
-        message:
-          type: string
-    AccountAttribute:
-      type: object
-      description: An attribute record for an account containing financial data attributes.
-      required:
-      - id
-      - account_id
-      - status
-      - attributes
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the account attribute.
-          pattern: ^acc_attr_\w+$
-          example: acc_attr_eTJMbnCjw34yQ
-        account_id:
-          type: string
-          description: The account this attribute belongs to.
-          pattern: ^acc_\w+$
-        status:
-          type: string
-          description: Current status of the attribute request.
-          enum:
-          - completed
-          - pending
-          - failed
-        attributes:
-          type: object
-          description: Financial data attributes for the account.
-          additionalProperties: true
-        error:
-          $ref: '#/components/schemas/ResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the attribute was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the attribute was last updated.
     AccountVerificationSession:
       type: object
       description: A verification session for an account.
@@ -2345,43 +1911,16 @@ components:
           type: string
           format: date-time
           description: Timestamp when the verification session was last updated.
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    AccountACH:
-      type:
-      - object
-      - 'null'
-      description: ACH account details. Present when `type` is `ach`.
-      properties:
-        routing:
-          type: string
-          description: The ACH routing number.
-        number:
-          type: string
-          description: The ACH account number.
-        type:
-          type: string
-          description: The type of ACH account.
-          enum:
-          - checking
-          - savings
+    AccountExpandableAttribute:
+      title: AccountExpandableAttribute
+      description: 'The latest attribute ID. This field is expandable. When expanded, returns the full AccountAttribute object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^acc_attr_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountAttribute'
     ConnectResourceError:
       type:
       - object
@@ -2418,6 +1957,33 @@ components:
         code: 26001
         sub_type: CONNECT_FAILED_THIN_CREDIT_FILE
         message: Entity has a thin credit file.
+    EntityConnectResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/EntityConnect'
+    AccountExpandablePaymentInstrument:
+      title: AccountExpandablePaymentInstrument
+      description: 'The latest payment instrument ID. This field is expandable. When expanded, returns the full AccountPaymentInstrument object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^pmt_inst_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountPaymentInstrument'
+    AccountExpandableBalance:
+      title: AccountExpandableBalance
+      description: 'The latest balance ID. This field is expandable. When expanded, returns the full AccountBalance object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^bal_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountBalance'
     Account:
       type: object
       description: 'An Account represents a financial account (ACH, liability, clearing, or debit card) associated with an Entity. The `type` field indicates which nested details object (`ach`, `liability`, `clearing`, or `debit_card`) is populated. `type` is null for accounts that are disabled before a type was determined.
@@ -2540,6 +2106,34 @@ components:
           type: string
           format: date-time
           description: Timestamp when the account was last updated.
+    AccountACH:
+      type:
+      - object
+      - 'null'
+      description: ACH account details. Present when `type` is `ach`.
+      properties:
+        routing:
+          type: string
+          description: The ACH routing number.
+        number:
+          type: string
+          description: The ACH account number.
+        type:
+          type: string
+          description: The type of ACH account.
+          enum:
+          - checking
+          - savings
+    AccountExpandablePayoff:
+      title: AccountExpandablePayoff
+      description: 'The latest payoff ID. This field is expandable. When expanded, returns the full AccountPayoff object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^pyf_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountPayoff'
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -2561,27 +2155,433 @@ components:
         success: true
         data: {}
         message: null
+    Metadata:
+      type:
+      - object
+      - 'null'
+      additionalProperties: true
+      description: Arbitrary key-value metadata attached to the resource.
+    PayoffResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a payoff sync fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of payoff error.
+          enum:
+          - PAYOFF_FAILED
+        code:
+          type: integer
+          description: Numeric error code (18XXX range).
+          enum:
+          - 18001
+        sub_type:
+          type: string
+          description: Specific payoff error classification.
+          enum:
+          - PAYOFF_TEMPORARILY_UNAVAILABLE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: PAYOFF_FAILED
+        code: 18001
+        sub_type: PAYOFF_TEMPORARILY_UNAVAILABLE
+        message: Payoff is temporarily unavailable for this account.
+    AccountBalance:
+      type: object
+      description: A balance record for an account.
+      required:
+      - id
+      - account_id
+      - status
+      - amount
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the balance.
+          pattern: ^bal_\w+$
+          example: bal_dKe9ehC3hEBYy
+        account_id:
+          type: string
+          description: The account this balance belongs to.
+          pattern: ^acc_\w+$
+        status:
+          type: string
+          description: Current status of the balance request.
+          enum:
+          - completed
+          - pending
+          - failed
+        amount:
+          type:
+          - number
+          - 'null'
+          description: The balance amount in cents.
+        error:
+          $ref: '#/components/schemas/BalanceResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the balance was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the balance was last updated.
+    MerchantProviderIds:
+      type: object
+      properties:
+        plaid:
+          type: array
+          items:
+            type: string
+        mx:
+          type: array
+          items:
+            type: string
+        finicity:
+          type: array
+          items:
+            type: string
+        dpp:
+          type: array
+          items:
+            type: string
+        rpps:
+          type: array
+          items:
+            type: string
+    AccountResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when an account is disabled.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of account error.
+          enum:
+          - ACCOUNT_DISABLED
+        code:
+          type: integer
+          description: Numeric error code (11XXX range).
+          enum:
+          - 11001
+          - 11002
+          - 11003
+          - 11004
+          - 11005
+          - 11006
+        sub_type:
+          type: string
+          description: Specific account error classification.
+          enum:
+          - ACCOUNT_INVALID_DETAILS
+          - ACCOUNT_UNAUTHORIZED_PAYMENT
+          - ACCOUNT_CLOSED
+          - ACCOUNT_CONSENT_WITHDRAWN
+          - ACCOUNT_DISABLED_INVALID_STATE
+          - ACCOUNT_DISABLED_HOLDER_ENTITY_DISABLED
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: ACCOUNT_DISABLED
+        code: 11001
+        sub_type: ACCOUNT_INVALID_DETAILS
+        message: Account was disabled due to invalid information reported by the financial institution.
+    EntityCreditScoreResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/EntityCreditScore'
+    EntityCreditScoreFactor:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          description: Factor code.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Human-readable description of the factor.
+    EntityAttribute:
+      type: object
+      required:
+      - id
+      - entity_id
+      - status
+      - attributes
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the entity attribute.
+          example: attr_QwMjMDEwMTY1
+        entity_id:
+          type: string
+          description: The ID of the entity this attribute belongs to.
+          example: ent_au22b1fbFJbp8
+        status:
+          type: string
+          description: Status of the attribute retrieval.
+          enum:
+          - completed
+          - in_progress
+          - pending
+          - failed
+        attributes:
+          $ref: '#/components/schemas/EntityAttributeData'
+        error:
+          type:
+          - object
+          - 'null'
+          description: Error details if the resource encountered an error.
+          allOf:
+          - $ref: '#/components/schemas/ResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the attribute was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the attribute was last updated.
+    UpdateResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when an account update fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of update error.
+          enum:
+          - UPDATE_FAILED
+        code:
+          type: integer
+          description: Numeric error code (21XXX range).
+          enum:
+          - 21001
+        sub_type:
+          type: string
+          description: Specific update error classification.
+          enum:
+          - UPDATE_TEMPORARILY_UNAVAILABLE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: UPDATE_FAILED
+        code: 21001
+        sub_type: UPDATE_TEMPORARILY_UNAVAILABLE
+        message: Update is temporarily unavailable for this account.
+    EntityCreditScore:
+      type: object
+      required:
+      - id
+      - entity_id
+      - status
+      - scores
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the credit score.
+          example: crs_pn4ca33GRnrJm
+        entity_id:
+          type: string
+          description: The ID of the entity this credit score belongs to.
+          example: ent_au22b1fbFJbp8
+        status:
+          type: string
+          description: Status of the credit score retrieval.
+          enum:
+          - completed
+          - in_progress
+          - pending
+          - failed
+        scores:
+          type:
+          - array
+          - 'null'
+          description: Array of credit score results.
+          items:
+            type: object
+            required:
+            - score
+            - source
+            - model
+            - factors
+            - created_at
+            properties:
+              score:
+                type:
+                - integer
+                - 'null'
+                description: The credit score value.
+              source:
+                type:
+                - string
+                - 'null'
+                description: The source of the credit score.
+              model:
+                type:
+                - string
+                - 'null'
+                description: The scoring model used.
+              factors:
+                type:
+                - array
+                - 'null'
+                description: Factors affecting the credit score.
+                items:
+                  $ref: '#/components/schemas/EntityCreditScoreFactor'
+              created_at:
+                type: string
+                format: date-time
+                description: Timestamp when this score was generated.
+        error:
+          type:
+          - object
+          - 'null'
+          description: Error details if the resource encountered an error.
+          allOf:
+          - $ref: '#/components/schemas/CreditScoreResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the credit score was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the credit score was last updated.
+    AccountPayoff:
+      type: object
+      description: A payoff record for an account.
+      required:
+      - id
+      - account_id
+      - status
+      - amount
+      - term
+      - per_diem_amount
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the payoff.
+          pattern: ^pyf_\w+$
+          example: pyf_dKe9ehC3hEBYy
+        account_id:
+          type: string
+          description: The account this payoff belongs to.
+          pattern: ^acc_\w+$
+        status:
+          type: string
+          description: Current status of the payoff request.
+          enum:
+          - completed
+          - pending
+          - failed
+        amount:
+          type:
+          - number
+          - 'null'
+          description: The payoff amount in cents.
+        term:
+          type:
+          - number
+          - 'null'
+          description: Number of days the payoff amount is valid.
+        per_diem_amount:
+          type:
+          - number
+          - 'null'
+          description: Per diem interest amount in cents.
+        error:
+          $ref: '#/components/schemas/PayoffResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the payoff was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the payoff was last updated.
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
   responses:
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
       content:
         application/json:
           schema:

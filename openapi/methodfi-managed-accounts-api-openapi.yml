@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Managed Accounts API
+  title: Method Managed Accounts API
   version: '2025-12-01'
   license:
     name: Proprietary
@@ -138,107 +138,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    ErrorObject:
-      type: object
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
-    ManagedAccountResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/ManagedAccount'
-    ManagedAccountTransactionListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ManagedAccountTransaction'
-    ManagedAccountTransaction:
-      type: object
-      description: A transaction on a managed account.
-      required:
-      - id
-      - description
-      - date
-      - amount
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the transaction.
-          pattern: ^macc_txn_\w+$
-          example: macc_txn_aTJMbnCjw34yQ
-        description:
-          type: string
-          description: Human-readable description of the transaction.
-        date:
-          type: string
-          format: date
-          description: Date the transaction occurred (YYYY-MM-DD).
-        amount:
-          type: number
-          description: Transaction amount in cents. Positive for inbound/credit transactions, negative for outbound/debit transactions.
-    ManagedAccountListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ManagedAccount'
-    ManagedAccount:
-      type: object
-      description: A Managed Account is a Method-managed financial account used for fund operations.
-      required:
-      - id
-      - routing
-      - number
-      - current_balance
-      - available_balance
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the managed account.
-          pattern: ^macc_\w+$
-          example: macc_3mDnkR8Ft6Bx7
-        routing:
-          type: string
-          description: Bank routing number for the managed account.
-        number:
-          type: string
-          description: Bank account number for the managed account.
-        current_balance:
-          type: number
-          description: Current balance of the managed account in cents.
-        available_balance:
-          type: number
-          description: Available balance of the managed account in cents.
     ErrorEnvelope:
       type: object
       required:
@@ -279,6 +178,73 @@ components:
         success: true
         data: []
         message: null
+    ManagedAccountListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ManagedAccount'
+    ManagedAccountResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/ManagedAccount'
+    ManagedAccount:
+      type: object
+      description: A Managed Account is a Method-managed financial account used for fund operations.
+      required:
+      - id
+      - routing
+      - number
+      - current_balance
+      - available_balance
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the managed account.
+          pattern: ^macc_\w+$
+          example: macc_3mDnkR8Ft6Bx7
+        routing:
+          type: string
+          description: Bank routing number for the managed account.
+        number:
+          type: string
+          description: Bank account number for the managed account.
+        current_balance:
+          type: number
+          description: Current balance of the managed account in cents.
+        available_balance:
+          type: number
+          description: Available balance of the managed account in cents.
+    ManagedAccountTransaction:
+      type: object
+      description: A transaction on a managed account.
+      required:
+      - id
+      - description
+      - date
+      - amount
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the transaction.
+          pattern: ^macc_txn_\w+$
+          example: macc_txn_aTJMbnCjw34yQ
+        description:
+          type: string
+          description: Human-readable description of the transaction.
+        date:
+          type: string
+          format: date
+          description: Date the transaction occurred (YYYY-MM-DD).
+        amount:
+          type: number
+          description: Transaction amount in cents. Positive for inbound/credit transactions, negative for outbound/debit transactions.
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -300,7 +266,58 @@ components:
         success: true
         data: {}
         message: null
+    ManagedAccountTransactionListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ManagedAccountTransaction'
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
+  headers:
+    Pagination-Page-Limit:
+      description: Number of items per page.
+      schema:
+        type: integer
+    Pagination-Page-Cursor-Next:
+      description: Cursor for the next page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
   responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     RateLimited:
       description: Too many requests - rate limit exceeded.
       headers:
@@ -312,20 +329,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     BadRequest:
       description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -337,11 +348,11 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
   parameters:
-    FromDateParam:
-      name: from_date
+    ToDateParam:
+      name: to_date
       in: query
       required: false
-      description: Filter results from this date (inclusive, YYYY-MM-DD format).
+      description: Filter results to this date (inclusive, YYYY-MM-DD format).
       schema:
         type: string
         format: date
@@ -352,14 +363,6 @@ components:
       description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
       schema:
         type: string
-    ToDateParam:
-      name: to_date
-      in: query
-      required: false
-      description: Filter results to this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
     method_version:
       name: Method-Version
       in: header
@@ -374,17 +377,14 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
-  headers:
-    Pagination-Page-Cursor-Next:
-      description: Cursor for the next page, if available.
+    FromDateParam:
+      name: from_date
+      in: query
+      required: false
+      description: Filter results from this date (inclusive, YYYY-MM-DD format).
       schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page-Limit:
-      description: Number of items per page.
-      schema:
-        type: integer
+        type: string
+        format: date
   securitySchemes:
     OpalToken:
       type: http

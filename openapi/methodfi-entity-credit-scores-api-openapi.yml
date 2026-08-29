@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Method Account Attributes Entity Credit Scores API
+  title: Method Entity Credit Scores API
   version: '2025-12-01'
   license:
     name: Proprietary
@@ -155,38 +155,89 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    ErrorObject:
+    ErrorEnvelope:
       type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
+    CreditScoreResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a credit score pull fails.
       required:
       - type
       - code
+      - sub_type
       - message
       properties:
         type:
           type: string
-          description: Error type category.
+          description: The category of credit score error.
           enum:
-          - invalid_request
-          - api_error
-          - resource_error
+          - CREDIT_SCORE_FAILED
         code:
           type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+          description: Numeric error code (23XXX range).
+          enum:
+          - 23001
         sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
+          type: string
+          description: Specific credit score error classification.
+          enum:
+          - CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
         message:
           type: string
           description: Human-readable error description.
-    EntityCreditScoreResponse:
+      example:
+        type: CREDIT_SCORE_FAILED
+        code: 23001
+        sub_type: CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
+        message: Credit Score is temporarily unavailable for this entity.
+    EntityCreditScoreListResponse:
       allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
+      - $ref: '#/components/schemas/ListEnvelope'
       - type: object
         properties:
           data:
-            $ref: '#/components/schemas/EntityCreditScore'
+            type: array
+            items:
+              $ref: '#/components/schemas/EntityCreditScore'
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -208,6 +259,26 @@ components:
         success: true
         data: {}
         message: null
+    EntityCreditScoreResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/EntityCreditScore'
+    EntityCreditScoreFactor:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          description: Factor code.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Human-readable description of the factor.
     EntityCreditScore:
       type: object
       required:
@@ -289,103 +360,44 @@ components:
           type: string
           format: date-time
           description: Timestamp when the credit score was last updated.
-    EntityCreditScoreFactor:
+    ErrorObject:
       type: object
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-          description: Factor code.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Human-readable description of the factor.
-    CreditScoreResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a credit score pull fails.
       required:
       - type
       - code
-      - sub_type
       - message
       properties:
         type:
           type: string
-          description: The category of credit score error.
+          description: Error type category.
           enum:
-          - CREDIT_SCORE_FAILED
+          - invalid_request
+          - api_error
+          - resource_error
         code:
           type: integer
-          description: Numeric error code (23XXX range).
-          enum:
-          - 23001
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
         sub_type:
-          type: string
-          description: Specific credit score error classification.
-          enum:
-          - CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: CREDIT_SCORE_FAILED
-        code: 23001
-        sub_type: CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
-        message: Credit Score is temporarily unavailable for this entity.
-    EntityCreditScoreListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/EntityCreditScore'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
           type:
           - string
           - 'null'
-      example:
-        success: true
-        data: []
-        message: null
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
   responses:
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     RateLimited:
       description: Too many requests - rate limit exceeded.
       headers:
@@ -393,6 +405,12 @@ components:
           description: Number of seconds to wait before retrying.
           schema:
             type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
@@ -409,54 +427,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   parameters:
-    PageCursorParam:
-      name: page_cursor
-      in: query
-      required: false
-      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
-      schema:
-        type: string
-    EntityIdParam:
-      name: entityId
-      in: path
-      required: true
-      description: Unique identifier for the entity.
-      schema:
-        type: string
-        pattern: ^ent_\w+$
-    ToDateParam:
-      name: to_date
-      in: query
-      required: false
-      description: Filter results to this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
     PageLimitParam:
       name: page_limit
       in: query
@@ -467,14 +444,33 @@ components:
         minimum: 1
         maximum: 100
         default: 10
-    EntityCreditScoreIdParam:
-      name: crsId
-      in: path
-      required: true
-      description: Unique identifier for the entity credit score.
+    ToDateParam:
+      name: to_date
+      in: query
+      required: false
+      description: Filter results to this date (inclusive, YYYY-MM-DD format).
       schema:
         type: string
-        pattern: ^crs_\w+$
+        format: date
+    PageCursorParam:
+      name: page_cursor
+      in: query
+      required: false
+      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
+      schema:
+        type: string
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
     method_version:
       name: Method-Version
       in: header
@@ -489,18 +485,30 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
+    FromDateParam:
+      name: from_date
+      in: query
       required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
+      description: Filter results from this date (inclusive, YYYY-MM-DD format).
       schema:
         type: string
-        format: uuid
+        format: date
+    EntityIdParam:
+      name: entityId
+      in: path
+      required: true
+      description: Unique identifier for the entity.
+      schema:
+        type: string
+        pattern: ^ent_\w+$
+    EntityCreditScoreIdParam:
+      name: crsId
+      in: path
+      required: true
+      description: Unique identifier for the entity credit score.
+      schema:
+        type: string
+        pattern: ^crs_\w+$
     PageParam:
       name: page
       in: query
@@ -510,14 +518,6 @@ components:
         type: integer
         minimum: 1
         default: 1
-    FromDateParam:
-      name: from_date
-      in: query
-      required: false
-      description: Filter results from this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
   securitySchemes:
     OpalToken:
       type: http
