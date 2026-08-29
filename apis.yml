@@ -7,6 +7,18 @@ description: Method (Method Financial) is the infrastructure layer for consumer 
   liabilities. Additional products include credit scores, card-brand enrichment, financial attributes,
   transactions, updates/subscriptions for monitoring, reports, and embeddable UI (Opal/Elements). Method
   powers lending, personal finance management, and commerce/card-linking use cases.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -503,6 +515,9 @@ apis:
   - type: OpenAPI
     url: openapi/methodfi-transactions-api-openapi.yml
 common:
+- type: CapabilityMap
+  url: capabilities/methodfi-capability-edges.yml
+  name: MethodFi Business Capability Map
 - type: Overlay
   url: overlays/methodfi-openapi-overlay.yaml
 - type: PostmanWorkspace
