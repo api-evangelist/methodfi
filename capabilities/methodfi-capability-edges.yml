@@ -1,0 +1,68 @@
+slug: methodfi
+provider: MethodFi
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: Payments
+  spec_file: methodfi-payments-api-openapi.yml
+  capability_id: BC-1340.10
+  capability_id_l1: BC-1340
+  capability_name: Payment Initiation Management
+  confidence: 0.85
+  evidence: POST /payments  createPayment  Create a payment; DELETE /payments/{pmt_id}  Delete a pending
+    payment
+  reason: Operations capture, retrieve and cancel payment instructions for ACH money movement, which is
+    payment initiation management.
+- tag: Webhooks
+  spec_file: methodfi-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.8
+  evidence: POST /webhooks createWebhook Create a webhook; PATCH /webhooks/{webhookId} updateWebhook Update
+    a webhook status; schemas WebhookCreateRequest, WebhookEventPayload, WebhookType
+  reason: Pure lifecycle management of outbound event subscriptions (create/list/update/delete webhooks
+    with event types and payloads). This is developer-platform plumbing, and the frame offers an explicit
+    capability for outbound webhook and event subscription lifecycle, so it maps there rather than to
+    any banking business capability.
+- tag: Account Payoffs
+  spec_file: methodfi-account-payoffs-api-openapi.yml
+  capability_id: BC-1320.30
+  capability_id_l1: BC-1320
+  capability_name: Loan Servicing Management
+  confidence: 0.7
+  evidence: POST /accounts/{accountId}/payoffs  createAccountPayoff  Create an account payoff
+  reason: Payoff quotes on loan accounts (AccountPayoff, PayoffResourceError) are a loan servicing function
+    — obtaining the amount required to settle a loan — consistent with the vendor's debt payment product.
+- tag: Entity Verification Sessions
+  spec_file: methodfi-entity-verification-sessions-api-openapi.yml
+  capability_id: BC-1300
+  capability_id_l1: BC-1300
+  capability_name: Banking Customer Management
+  confidence: 0.7
+  evidence: 'POST /entities/{entityId}/verification_sessions "Create an entity verification session";
+    schemas EntityVerificationSession, VerificationSessionResourceError; vendor: "lets developers create
+    entities, verify identity"'
+  reason: Operations run identity/ownership verification sessions for a consumer entity — banking customer
+    identity verification. Evidence supports Banking Customer Management at L1 but does not disambiguate
+    between onboarding identity verification (BC-1300.10) and KYC/CDD (BC-1300.20), so no L2 is asserted.
+- tag: Payment Reversals
+  spec_file: methodfi-payment-reversals-api-openapi.yml
+  capability_id: BC-1340.20
+  capability_id_l1: BC-1340
+  capability_name: Payment Processing Management
+  confidence: 0.7
+  evidence: GET /payments/{paymentId}/reversals  listPaymentReversals  List all reversals for a payment
+  reason: Reversals of ACH payments are exception handling within payment processing for this payments-infrastructure
+    vendor; L2 assignment to payment processing is the best fit though initiation/clearing readings are
+    possible.
