@@ -49,13 +49,6 @@ components:
         type: integer
         default: 50
         maximum: 100
-    AccountId:
-      name: acc_id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The account identifier (e.g. acc_xxx).
     Page:
       name: page
       in: query
@@ -63,7 +56,21 @@ components:
       schema:
         type: integer
         default: 1
+    AccountId:
+      name: acc_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The account identifier (e.g. acc_xxx).
   schemas:
+    TransactionListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionResponse'
     TransactionResponse:
       type: object
       properties:
@@ -80,13 +87,6 @@ components:
         created_at:
           type: string
           format: date-time
-    TransactionListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransactionResponse'
   securitySchemes:
     bearerAuth:
       type: http

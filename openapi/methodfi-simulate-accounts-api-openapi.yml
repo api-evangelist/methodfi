@@ -5,7 +5,9 @@ info:
   license:
     name: Proprietary
     url: https://methodfi.com
-  description: "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n"
+  description: 'The Method API enables you to retrieve financial data, create payments, and manage
+
+    entities and accounts programmatically.'
   contact:
     name: Method Financial
     url: https://methodfi.com
@@ -32,9 +34,7 @@ paths:
         Use this to retrieve the test amounts needed to complete micro-deposit verification during development.
 
 
-        **Development only** - This endpoint is only available in the sandbox environment.
-
-        '
+        **Development only** - This endpoint is only available in the sandbox environment.'
       tags:
       - Simulate Accounts
       security:
@@ -79,9 +79,7 @@ paths:
         Use this to test transaction-related flows during development.
 
 
-        **Development only** - This endpoint is only available in the sandbox environment.
-
-        '
+        **Development only** - This endpoint is only available in the sandbox environment.'
       tags:
       - Simulate Accounts
       security:
@@ -138,9 +136,7 @@ paths:
         Use this to test card brand retrieval flows during development.
 
 
-        **Development only** - This endpoint is only available in the sandbox environment.
-
-        '
+        **Development only** - This endpoint is only available in the sandbox environment.'
       tags:
       - Simulate Accounts
       security:
@@ -171,6 +167,58 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
+    AccountVerificationSessionAmountsResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              amounts:
+                type: array
+                description: The micro deposit amounts.
+                items:
+                  type: integer
+    AccountCardBrandResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/AccountCardBrand'
+    AccountTransactionResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/AccountTransaction'
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -300,13 +348,25 @@ components:
           type: string
           format: date-time
           description: Timestamp when the card brand was last updated.
-    AccountTransactionResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/AccountTransaction'
+    ResourceError:
+      type:
+      - object
+      - 'null'
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+        code:
+          type: integer
+        sub_type:
+          type:
+          - string
+          - 'null'
+        message:
+          type: string
     AccountTransaction:
       type: object
       description: A transaction for an account.
@@ -445,79 +505,15 @@ components:
               $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
-    ResourceError:
-      type:
-      - object
-      - 'null'
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-        code:
-          type: integer
-        sub_type:
-          type:
-          - string
-          - 'null'
-        message:
-          type: string
-    AccountVerificationSessionAmountsResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              amounts:
-                type: array
-                description: The micro deposit amounts.
-                items:
-                  type: integer
-    AccountCardBrandResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/AccountCardBrand'
-    ErrorObject:
-      type: object
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
+    InternalError:
+      description: Internal server error.
       content:
         application/json:
           schema:
@@ -528,8 +524,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:

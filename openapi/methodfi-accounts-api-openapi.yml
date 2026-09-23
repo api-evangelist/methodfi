@@ -475,167 +475,7 @@ paths:
     - url: https://dev.methodfi.com
       description: Development (simulations enabled)
 components:
-  parameters:
-    AccountIdParam:
-      name: accountId
-      in: path
-      required: true
-      description: Unique identifier for the account.
-      schema:
-        type: string
-        pattern: ^acc_\w+$
-    PageLimitParam:
-      name: page_limit
-      in: query
-      required: false
-      description: Number of items per page.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    ToDateParam:
-      name: to_date
-      in: query
-      required: false
-      description: Filter results to this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
-    PageCursorParam:
-      name: page_cursor
-      in: query
-      required: false
-      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
-      schema:
-        type: string
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    expand_accounts:
-      name: expand
-      in: query
-      required: false
-      description: 'Expand related account resources inline. Supports the account expandable fields
-
-        documented by the API validator for account list and retrieve operations.
-
-        '
-      style: form
-      explode: true
-      schema:
-        type: array
-        items:
-          type: string
-          enum:
-          - sensitive
-          - balance
-          - card_brand
-          - attribute
-          - payoff
-          - transaction
-          - update
-          - payment_instrument
-          - latest_verification_session
-          - liability.mch_id
-    FromDateParam:
-      name: from_date
-      in: query
-      required: false
-      description: Filter results from this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
-    PageParam:
-      name: page
-      in: query
-      required: false
-      description: Page number for pagination (1-indexed).
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    PageLimit:
-      name: page_limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 50
-        maximum: 100
-    AccountId:
-      name: acc_id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The account identifier (e.g. acc_xxx).
-    Page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 1
   schemas:
-    AccountCreateRequest:
-      description: 'Request body for creating an account.
-
-        `type` is recommended and used for discrimination in generated clients, but
-
-        the API can also infer the account type from the nested object you provide.
-
-        '
-      oneOf:
-      - $ref: '#/components/schemas/CreateAchAccountRequest'
-      - $ref: '#/components/schemas/CreateLiabilityAccountRequest'
-      - $ref: '#/components/schemas/CreateClearingAccountRequest'
-      - $ref: '#/components/schemas/CreateDebitCardAccountRequest'
-      discriminator:
-        propertyName: type
-        mapping:
-          ach: '#/components/schemas/CreateAchAccountRequest'
-          liability: '#/components/schemas/CreateLiabilityAccountRequest'
-          clearing: '#/components/schemas/CreateClearingAccountRequest'
-          debit_card: '#/components/schemas/CreateDebitCardAccountRequest'
-    AccountDebitCard:
-      type:
-      - object
-      - 'null'
-      description: Debit card account details. Present when `type` is `debit_card`.
-      properties:
-        network:
-          type: string
-          description: The card network.
-        mask:
-          type: string
-          description: Last 4 digits of the card number.
-        issuer:
-          type: string
-          description: The card issuer.
     CreateClearingAccountRequest:
       type: object
       description: Create a clearing account.
@@ -665,25 +505,308 @@ components:
               - multi_use
         metadata:
           $ref: '#/components/schemas/Metadata'
-    ErrorEnvelope:
+    AccountExpandableBalance:
+      title: AccountExpandableBalance
+      description: 'The latest balance ID. This field is expandable. When expanded, returns the full AccountBalance object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^bal_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountBalance'
+    AccountVerificationSession:
       type: object
+      description: A verification session for an account.
       required:
-      - success
-      - data
-      - message
+      - id
+      - account_id
+      - status
+      - type
+      - created_at
+      - updated_at
       properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
+        id:
           type: string
+          description: Unique identifier for the verification session.
+          pattern: ^avf_\w+$
+          example: avf_aTJMbnCjw34yQ
+        account_id:
+          type: string
+          description: The account this verification session belongs to.
+          pattern: ^acc_\w+$
+        status:
+          type: string
+          description: Current status of the verification session.
+          enum:
+          - pending
+          - in_progress
+          - verified
+          - failed
+        type:
+          type: string
+          description: The type of verification.
+          enum:
+          - micro_deposits
+          - mx
+          - plaid
+          - teller
+          - auto_verify
+          - trusted_provisioner
+          - pre_auth
+          - standard
+          - issuer
+          - instant
+          - network
+          - three_ds
+        micro_deposits:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type micro_deposits.
+          properties:
+            amounts:
+              type: array
+              description: The latest amounts that this verification session was updated with.
+              items:
+                type: integer
+        plaid:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type plaid.
+          properties:
+            balances:
+              type: object
+              description: The raw balance data received from Plaid.
+            transactions:
+              type: array
+              description: The raw transaction data received from Plaid.
+              items:
+                type: object
+        mx:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type mx.
+          properties:
+            account:
+              type: object
+              description: The raw account data received from MX.
+            transactions:
+              type: array
+              description: The raw transaction data received from MX.
+              items:
+                type: object
+        teller:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type teller.
+          properties:
+            balances:
+              type: object
+              description: The raw balance data received from Teller.
+            transactions:
+              type: array
+              description: The raw transaction data received from Teller.
+              items:
+                type: object
+        auto_verify:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type auto_verify.
+        trusted_provisioner:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type trusted_provisioner.
+        standard:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type standard.
+          properties:
+            number:
+              type:
+              - string
+              - 'null'
+              description: The masked card number. Null if the number still needs to be provided.
+        pre_auth:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type pre_auth.
+          properties:
+            number:
+              type:
+              - string
+              - 'null'
+              description: The masked card number. Null if the number still needs to be provided.
+            exp_month:
+              type:
+              - string
+              - 'null'
+              description: The masked card expiration month. Null if it still needs to be provided.
+            exp_year:
+              type:
+              - string
+              - 'null'
+              description: The masked card expiration year. Null if it still needs to be provided.
+            exp_check:
+              type:
+              - string
+              - 'null'
+              description: The card expiration verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+            cvv:
+              type:
+              - string
+              - 'null'
+              description: The masked card CVV. Null if it still needs to be provided.
+            cvv_check:
+              type:
+              - string
+              - 'null'
+              description: The card CVV verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+            billing_zip_code:
+              type:
+              - string
+              - 'null'
+              description: The masked billing zip code.
+            billing_zip_code_check:
+              type:
+              - string
+              - 'null'
+              description: The billing zip code verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+            pre_auth_check:
+              type:
+              - string
+              - 'null'
+              description: The pre-auth verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+        network:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type network.
+          properties:
+            number:
+              type:
+              - string
+              - 'null'
+              description: The masked card number. Null if the number still needs to be provided.
+            exp_month:
+              type:
+              - string
+              - 'null'
+              description: The masked card expiration month. Null if it still needs to be provided.
+            exp_year:
+              type:
+              - string
+              - 'null'
+              description: The masked card expiration year. Null if it still needs to be provided.
+            exp_check:
+              type:
+              - string
+              - 'null'
+              description: The card expiration verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+            cvv:
+              type:
+              - string
+              - 'null'
+              description: The masked card CVV. Null if it still needs to be provided.
+            cvv_check:
+              type:
+              - string
+              - 'null'
+              description: The card CVV verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+            billing_zip_code:
+              type:
+              - string
+              - 'null'
+              description: The masked billing zip code.
+            billing_zip_code_check:
+              type:
+              - string
+              - 'null'
+              description: The billing zip code verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+            network_check:
+              type:
+              - string
+              - 'null'
+              description: The network verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+        instant:
+          type:
+          - object
+          - 'null'
+          description: Populated when the verification session is of type instant.
+          properties:
+            number:
+              type:
+              - string
+              - 'null'
+              description: The masked card number. Null if the number still needs to be provided.
+            exp_month:
+              type:
+              - string
+              - 'null'
+              description: The masked card expiration month. Null if it still needs to be provided.
+            exp_year:
+              type:
+              - string
+              - 'null'
+              description: The masked card expiration year. Null if it still needs to be provided.
+            exp_check:
+              type:
+              - string
+              - 'null'
+              description: The card expiration verification check result.
+              enum:
+              - pass
+              - fail
+              - unavailable
+        error:
+          $ref: '#/components/schemas/AccountVerificationSessionResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the verification session was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the verification session was last updated.
     CreateLiabilityAccountRequest:
       type: object
       description: Create a liability account.
@@ -736,28 +859,9 @@ components:
             - number
         metadata:
           $ref: '#/components/schemas/Metadata'
-    ResourceError:
-      type:
-      - object
-      - 'null'
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-        code:
-          type: integer
-        sub_type:
-          type:
-          - string
-          - 'null'
-        message:
-          type: string
-    ListEnvelope:
+    SuccessEnvelope:
       type: object
-      description: Standard envelope for successful responses that return a list payload.
+      description: Standard envelope for successful responses that return a single payload.
       required:
       - success
       - data
@@ -767,25 +871,49 @@ components:
           type: boolean
           description: Always `true` for successful responses.
         data:
-          description: Operation-specific list payload.
+          description: Operation-specific response payload.
         message:
           type:
           - string
           - 'null'
       example:
         success: true
-        data: []
+        data: {}
         message: null
-    AccountExpandableUpdate:
-      title: AccountExpandableUpdate
-      description: 'The latest update ID. This field is expandable. When expanded, returns the full AccountUpdate object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^upd_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountUpdate'
+    UpdateResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when an account update fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of update error.
+          enum:
+          - UPDATE_FAILED
+        code:
+          type: integer
+          description: Numeric error code (21XXX range).
+          enum:
+          - 21001
+        sub_type:
+          type: string
+          description: Specific update error classification.
+          enum:
+          - UPDATE_TEMPORARILY_UNAVAILABLE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: UPDATE_FAILED
+        code: 21001
+        sub_type: UPDATE_TEMPORARILY_UNAVAILABLE
+        message: Update is temporarily unavailable for this account.
     AccountAttribute:
       type: object
       description: An attribute record for an account containing financial data attributes.
@@ -827,204 +955,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the attribute was last updated.
-    MerchantType:
-      type: string
-      enum:
-      - auto_loan
-      - bank
-      - bnpl
-      - business_loan
-      - city
-      - collection
-      - county
-      - credit_builder
-      - credit_card
-      - electric_utility
-      - fintech
-      - home_equity_loan
-      - home_loan
-      - insurance
-      - internet_utility
-      - loan
-      - medical
-      - mortgage
-      - personal_loan
-      - student_loan
-      - student_loans
-      - subscription
-      - telephone_utility
-      - television_utility
-      - unknown
-      - utility
-      - waste_utility
-      - water_utility
-    AccountExpandableCardBrand:
-      title: AccountExpandableCardBrand
-      description: 'The latest card brand ID. This field is expandable. When expanded, returns the full AccountCardBrand object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^cbrd_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountCardBrand'
-    AccountClearing:
-      type:
-      - object
-      - 'null'
-      description: Clearing account details. Present when `type` is `clearing`.
-      properties:
-        type:
-          type: string
-          description: The type of clearing account.
-          enum:
-          - single_use
-          - multi_use
-        routing:
-          type: string
-          description: The clearing routing number.
-        number:
-          type: string
-          description: The clearing account number.
-    AccountPaymentInstrument:
-      type: object
-      description: A payment instrument for an account.
-      required:
-      - id
-      - account_id
-      - status
-      - type
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the payment instrument.
-          pattern: ^pmt_inst_\w+$
-          example: pmt_inst_aTJMbnCjw34yQ
-        account_id:
-          type: string
-          description: The account this payment instrument belongs to.
-          pattern: ^acc_\w+$
-        status:
-          type: string
-          description: Current status of the payment instrument.
-          enum:
-          - pending
-          - in_progress
-          - completed
-        type:
-          type: string
-          description: The type of payment instrument.
-          enum:
-          - card
-          - network_token
-          - inbound_achwire_payment
-        chargeable:
-          type: boolean
-          description: Whether this payment instrument is currently chargeable.
-        card:
-          type:
-          - object
-          - 'null'
-          description: Card details. Present when type is card.
-          properties:
-            number:
-              type: string
-              description: The card number.
-            exp_month:
-              type: string
-              description: Card expiration month.
-            exp_year:
-              type: string
-              description: Card expiration year.
-            billing_zip_code:
-              type: string
-              description: Billing zip code.
-        network_token:
-          type:
-          - object
-          - 'null'
-          description: Network token details. Present when type is network_token.
-          properties:
-            token:
-              type: string
-              description: The network token value.
-        inbound_achwire_payment:
-          type:
-          - object
-          - 'null'
-          description: ACH/wire payment details. Present when type is inbound_achwire_payment.
-          properties:
-            account_number:
-              type: string
-              description: The account number.
-            routing_number:
-              type: string
-              description: The routing number.
-        error:
-          $ref: '#/components/schemas/ResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the payment instrument was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the payment instrument was last updated.
-    AccountSensitive:
-      type: object
-      description: Sensitive data for an account.
-      required:
-      - id
-      - account_id
-      - status
-      - type
-      - fields
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the sensitive record.
-          pattern: ^astv_\w+$
-          example: astv_aTJMbnCjw34yQ
-        account_id:
-          type: string
-          description: The account this sensitive data belongs to.
-          pattern: ^acc_\w+$
-        status:
-          type: string
-          description: Current status of the sensitive data request.
-          enum:
-          - completed
-          - pending
-          - failed
-        type:
-          type: string
-          description: The type of sensitive data.
-        fields:
-          type: array
-          description: List of sensitive data fields retrieved.
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name of the field.
-              value:
-                type: string
-                description: Value of the field.
-        error:
-          $ref: '#/components/schemas/AccountSensitiveResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the sensitive record was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the sensitive record was last updated.
     AccountLiability:
       type:
       - object
@@ -1096,6 +1026,172 @@ components:
           - string
           - 'null'
           description: Display name of the liability account.
+    AccountACH:
+      type:
+      - object
+      - 'null'
+      description: ACH account details. Present when `type` is `ach`.
+      properties:
+        routing:
+          type: string
+          description: The ACH routing number.
+        number:
+          type: string
+          description: The ACH account number.
+        type:
+          type: string
+          description: The type of ACH account.
+          enum:
+          - checking
+          - savings
+    AccountResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when an account is disabled.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of account error.
+          enum:
+          - ACCOUNT_DISABLED
+        code:
+          type: integer
+          description: Numeric error code (11XXX range).
+          enum:
+          - 11001
+          - 11002
+          - 11003
+          - 11004
+          - 11005
+          - 11006
+        sub_type:
+          type: string
+          description: Specific account error classification.
+          enum:
+          - ACCOUNT_INVALID_DETAILS
+          - ACCOUNT_UNAUTHORIZED_PAYMENT
+          - ACCOUNT_CLOSED
+          - ACCOUNT_CONSENT_WITHDRAWN
+          - ACCOUNT_DISABLED_INVALID_STATE
+          - ACCOUNT_DISABLED_HOLDER_ENTITY_DISABLED
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: ACCOUNT_DISABLED
+        code: 11001
+        sub_type: ACCOUNT_INVALID_DETAILS
+        message: Account was disabled due to invalid information reported by the financial institution.
+    MerchantProviderIds:
+      type: object
+      properties:
+        plaid:
+          type: array
+          items:
+            type: string
+        mx:
+          type: array
+          items:
+            type: string
+        finicity:
+          type: array
+          items:
+            type: string
+        dpp:
+          type: array
+          items:
+            type: string
+        rpps:
+          type: array
+          items:
+            type: string
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
+    PayoffResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a payoff sync fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of payoff error.
+          enum:
+          - PAYOFF_FAILED
+        code:
+          type: integer
+          description: Numeric error code (18XXX range).
+          enum:
+          - 18001
+        sub_type:
+          type: string
+          description: Specific payoff error classification.
+          enum:
+          - PAYOFF_TEMPORARILY_UNAVAILABLE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: PAYOFF_FAILED
+        code: 18001
+        sub_type: PAYOFF_TEMPORARILY_UNAVAILABLE
+        message: Payoff is temporarily unavailable for this account.
+    AccountResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Account'
+    AccountListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/Account'
+    Metadata:
+      type:
+      - object
+      - 'null'
+      additionalProperties: true
+      description: Arbitrary key-value metadata attached to the resource.
     AccountCardBrand:
       type: object
       description: Card brand information for an account.
@@ -1204,50 +1300,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the card brand was last updated.
-    AccountSensitiveResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when retrieving account sensitive data fails.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of sensitive data error.
-          enum:
-          - ACCOUNT_SENSITIVE_FAILED
-        code:
-          type: integer
-          description: Numeric error code (17XXX range).
-          enum:
-          - 17001
-        sub_type:
-          type: string
-          description: Specific sensitive data error classification.
-          enum:
-          - ACCOUNT_SENSITIVE_FAILED_VERIFICATION_REQUIRED
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: ACCOUNT_SENSITIVE_FAILED
-        code: 17001
-        sub_type: ACCOUNT_SENSITIVE_FAILED_VERIFICATION_REQUIRED
-        message: Account sensitive failed due to missing required verification.
-    AccountExpandableSensitive:
-      title: AccountExpandableSensitive
-      description: 'The latest sensitive ID. This field is expandable. When expanded, returns the full AccountSensitive object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^astv_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountSensitive'
     CreateDebitCardAccountRequest:
       type: object
       description: Create a debit card account.
@@ -1286,6 +1338,130 @@ components:
               type: string
         metadata:
           $ref: '#/components/schemas/Metadata'
+    AccountUpdateRequest:
+      type: object
+      description: Request body for updating an account.
+      properties:
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        liability:
+          type: object
+          description: Liability-specific update fields. Use either mortgage or credit_card (mutually exclusive).
+          properties:
+            mortgage:
+              type: object
+              description: Mortgage address update.
+              properties:
+                address_street:
+                  type: string
+                address_city:
+                  type: string
+                address_state:
+                  type: string
+                address_zip:
+                  type: string
+            credit_card:
+              type: object
+              description: Credit card update. Provide either number alone, or expiration + CVV.
+              properties:
+                number:
+                  type: string
+                  description: The credit card number.
+                expiration_month:
+                  type: string
+                  description: Card expiration month.
+                expiration_year:
+                  type: string
+                  description: Card expiration year.
+                cvv:
+                  type: string
+                  description: Card CVV.
+    AccountPaymentInstrument:
+      type: object
+      description: A payment instrument for an account.
+      required:
+      - id
+      - account_id
+      - status
+      - type
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the payment instrument.
+          pattern: ^pmt_inst_\w+$
+          example: pmt_inst_aTJMbnCjw34yQ
+        account_id:
+          type: string
+          description: The account this payment instrument belongs to.
+          pattern: ^acc_\w+$
+        status:
+          type: string
+          description: Current status of the payment instrument.
+          enum:
+          - pending
+          - in_progress
+          - completed
+        type:
+          type: string
+          description: The type of payment instrument.
+          enum:
+          - card
+          - network_token
+          - inbound_achwire_payment
+        chargeable:
+          type: boolean
+          description: Whether this payment instrument is currently chargeable.
+        card:
+          type:
+          - object
+          - 'null'
+          description: Card details. Present when type is card.
+          properties:
+            number:
+              type: string
+              description: The card number.
+            exp_month:
+              type: string
+              description: Card expiration month.
+            exp_year:
+              type: string
+              description: Card expiration year.
+            billing_zip_code:
+              type: string
+              description: Billing zip code.
+        network_token:
+          type:
+          - object
+          - 'null'
+          description: Network token details. Present when type is network_token.
+          properties:
+            token:
+              type: string
+              description: The network token value.
+        inbound_achwire_payment:
+          type:
+          - object
+          - 'null'
+          description: ACH/wire payment details. Present when type is inbound_achwire_payment.
+          properties:
+            account_number:
+              type: string
+              description: The account number.
+            routing_number:
+              type: string
+              description: The routing number.
+        error:
+          $ref: '#/components/schemas/ResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the payment instrument was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the payment instrument was last updated.
     AccountVerificationSessionResourceError:
       type:
       - object
@@ -1326,40 +1502,47 @@ components:
         code: 16001
         sub_type: VERIFICATION_TYPE_NOT_SUPPORTED
         message: The verification type provided is not supported for the merchant.
-    BalanceResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a balance sync fails.
+    AccountExpandableCardBrand:
+      title: AccountExpandableCardBrand
+      description: 'The latest card brand ID. This field is expandable. When expanded, returns the full AccountCardBrand object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^cbrd_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountCardBrand'
+    AccountExpandablePayoff:
+      title: AccountExpandablePayoff
+      description: 'The latest payoff ID. This field is expandable. When expanded, returns the full AccountPayoff object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^pyf_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountPayoff'
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
       required:
-      - type
-      - code
-      - sub_type
+      - success
+      - data
       - message
       properties:
-        type:
-          type: string
-          description: The category of balance error.
-          enum:
-          - BALANCE_FAILED
-        code:
-          type: integer
-          description: Numeric error code (20XXX range).
-          enum:
-          - 20001
-        sub_type:
-          type: string
-          description: Specific balance error classification.
-          enum:
-          - BALANCE_TEMPORARILY_UNAVAILABLE
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
         message:
-          type: string
-          description: Human-readable error description.
+          type:
+          - string
+          - 'null'
       example:
-        type: BALANCE_FAILED
-        code: 20001
-        sub_type: BALANCE_TEMPORARILY_UNAVAILABLE
-        message: Balance is temporarily unavailable for this account.
+        success: true
+        data: []
+        message: null
     Merchant:
       type: object
       required:
@@ -1401,45 +1584,337 @@ components:
           items:
             type: string
           description: Accepted account number formats.
-    CreateAchAccountRequest:
-      type: object
-      description: Create an ACH account.
-      required:
-      - holder_id
-      - ach
+    AccountClearing:
+      type:
+      - object
+      - 'null'
+      description: Clearing account details. Present when `type` is `clearing`.
       properties:
         type:
           type: string
+          description: The type of clearing account.
           enum:
-          - ach
+          - single_use
+          - multi_use
+        routing:
+          type: string
+          description: The clearing routing number.
+        number:
+          type: string
+          description: The clearing account number.
+    Account:
+      type: object
+      description: 'An Account represents a financial account (ACH, liability, clearing, or debit card) associated with an Entity. The `type` field indicates which nested details object (`ach`, `liability`, `clearing`, or `debit_card`) is populated. `type` is null for accounts that are disabled before a type was determined.
+
+        '
+      required:
+      - id
+      - holder_id
+      - type
+      - status
+      - consent_status
+      - products
+      - restricted_products
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the account.
+          pattern: ^acc_\w+$
+          example: acc_b9q2XVAnNFbp3
         holder_id:
           type: string
-          description: The entity ID that will own this account.
+          description: The entity ID that owns this account.
           pattern: ^ent_\w+$
+          example: ent_au22b1fbFJbp8
+        type:
+          type:
+          - string
+          - 'null'
+          description: The type of account. Null for accounts that are disabled before a type was determined.
+          enum:
+          - ach
+          - liability
+          - clearing
+          - debit_card
+          - null
+        status:
+          type: string
+          description: Current status of the account.
+          enum:
+          - active
+          - disabled
+          - processing
+          - pending_exchange
+          - closed
+        consent_status:
+          type: string
+          description: Current consent status for data access on this account.
+          enum:
+          - pending
+          - withdrawn
+          - approved
         ach:
-          type: object
-          description: ACH account details.
-          required:
-          - routing
-          - number
-          - type
-          properties:
-            routing:
-              type: string
-              description: The ACH routing number.
-              pattern: ^\d{9}$
-            number:
-              type: string
-              description: The ACH account number.
-              pattern: ^\d+$
-            type:
-              type: string
-              description: The type of ACH account.
-              enum:
-              - checking
-              - savings
+          $ref: '#/components/schemas/AccountACH'
+        liability:
+          $ref: '#/components/schemas/AccountLiability'
+        clearing:
+          $ref: '#/components/schemas/AccountClearing'
+        debit_card:
+          $ref: '#/components/schemas/AccountDebitCard'
+        error:
+          $ref: '#/components/schemas/AccountResourceError'
         metadata:
           $ref: '#/components/schemas/Metadata'
+        products:
+          type: array
+          description: Products currently active for this account.
+          items:
+            type: string
+        restricted_products:
+          type: array
+          description: Products restricted from this account.
+          items:
+            type: string
+        subscriptions:
+          type: array
+          description: Subscriptions currently active for this account. Only present for liability accounts.
+          items:
+            type: string
+        available_subscriptions:
+          type: array
+          description: Subscriptions available to be enrolled for this account. Only present for liability accounts.
+          items:
+            type: string
+        restricted_subscriptions:
+          type: array
+          description: Subscriptions restricted from this account. Only present for liability accounts.
+          items:
+            type: string
+        latest_verification_session:
+          title: AccountExpandableLatestVerificationSession
+          description: 'The latest verification session ID. This field is expandable. When expanded, returns the full AccountVerificationSession object.
+
+            '
+          oneOf:
+          - type: string
+            pattern: ^avf_\w+$
+          - type: 'null'
+          - $ref: '#/components/schemas/AccountVerificationSession'
+        balance:
+          $ref: '#/components/schemas/AccountExpandableBalance'
+        payoff:
+          $ref: '#/components/schemas/AccountExpandablePayoff'
+        payment_instrument:
+          $ref: '#/components/schemas/AccountExpandablePaymentInstrument'
+        card_brand:
+          $ref: '#/components/schemas/AccountExpandableCardBrand'
+        update:
+          $ref: '#/components/schemas/AccountExpandableUpdate'
+        attribute:
+          $ref: '#/components/schemas/AccountExpandableAttribute'
+        sensitive:
+          $ref: '#/components/schemas/AccountExpandableSensitive'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the account was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the account was last updated.
+    AccountExpandableAttribute:
+      title: AccountExpandableAttribute
+      description: 'The latest attribute ID. This field is expandable. When expanded, returns the full AccountAttribute object.
+
+        '
+      oneOf:
+      - type: string
+        pattern: ^acc_attr_\w+$
+      - type: 'null'
+      - $ref: '#/components/schemas/AccountAttribute'
+    AccountPayoff:
+      type: object
+      description: A payoff record for an account.
+      required:
+      - id
+      - account_id
+      - status
+      - amount
+      - term
+      - per_diem_amount
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the payoff.
+          pattern: ^pyf_\w+$
+          example: pyf_dKe9ehC3hEBYy
+        account_id:
+          type: string
+          description: The account this payoff belongs to.
+          pattern: ^acc_\w+$
+        status:
+          type: string
+          description: Current status of the payoff request.
+          enum:
+          - completed
+          - pending
+          - failed
+        amount:
+          type:
+          - number
+          - 'null'
+          description: The payoff amount in cents.
+        term:
+          type:
+          - number
+          - 'null'
+          description: Number of days the payoff amount is valid.
+        per_diem_amount:
+          type:
+          - number
+          - 'null'
+          description: Per diem interest amount in cents.
+        error:
+          $ref: '#/components/schemas/PayoffResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the payoff was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the payoff was last updated.
+    MerchantType:
+      type: string
+      enum:
+      - auto_loan
+      - bank
+      - bnpl
+      - business_loan
+      - city
+      - collection
+      - county
+      - credit_builder
+      - credit_card
+      - electric_utility
+      - fintech
+      - home_equity_loan
+      - home_loan
+      - insurance
+      - internet_utility
+      - loan
+      - medical
+      - mortgage
+      - personal_loan
+      - student_loan
+      - student_loans
+      - subscription
+      - telephone_utility
+      - television_utility
+      - unknown
+      - utility
+      - waste_utility
+      - water_utility
+    AccountBalance:
+      type: object
+      description: A balance record for an account.
+      required:
+      - id
+      - account_id
+      - status
+      - amount
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the balance.
+          pattern: ^bal_\w+$
+          example: bal_dKe9ehC3hEBYy
+        account_id:
+          type: string
+          description: The account this balance belongs to.
+          pattern: ^acc_\w+$
+        status:
+          type: string
+          description: Current status of the balance request.
+          enum:
+          - completed
+          - pending
+          - failed
+        amount:
+          type:
+          - number
+          - 'null'
+          description: The balance amount in cents.
+        error:
+          $ref: '#/components/schemas/BalanceResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the balance was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the balance was last updated.
+    AccountCreateRequest:
+      description: 'Request body for creating an account.
+
+        `type` is recommended and used for discrimination in generated clients, but
+
+        the API can also infer the account type from the nested object you provide.
+
+        '
+      oneOf:
+      - $ref: '#/components/schemas/CreateAchAccountRequest'
+      - $ref: '#/components/schemas/CreateLiabilityAccountRequest'
+      - $ref: '#/components/schemas/CreateClearingAccountRequest'
+      - $ref: '#/components/schemas/CreateDebitCardAccountRequest'
+      discriminator:
+        propertyName: type
+        mapping:
+          ach: '#/components/schemas/CreateAchAccountRequest'
+          liability: '#/components/schemas/CreateLiabilityAccountRequest'
+          clearing: '#/components/schemas/CreateClearingAccountRequest'
+          debit_card: '#/components/schemas/CreateDebitCardAccountRequest'
+    BalanceResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a balance sync fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of balance error.
+          enum:
+          - BALANCE_FAILED
+        code:
+          type: integer
+          description: Numeric error code (20XXX range).
+          enum:
+          - 20001
+        sub_type:
+          type: string
+          description: Specific balance error classification.
+          enum:
+          - BALANCE_TEMPORARILY_UNAVAILABLE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: BALANCE_FAILED
+        code: 20001
+        sub_type: BALANCE_TEMPORARILY_UNAVAILABLE
+        message: Balance is temporarily unavailable for this account.
     AccountUpdate:
       type: object
       description: An update record for an account.
@@ -1966,317 +2441,104 @@ components:
           type: string
           format: date-time
           description: Timestamp when the update was last updated.
-    AccountVerificationSession:
+    CreateAchAccountRequest:
       type: object
-      description: A verification session for an account.
+      description: Create an ACH account.
       required:
-      - id
-      - account_id
-      - status
-      - type
-      - created_at
-      - updated_at
+      - holder_id
+      - ach
       properties:
-        id:
-          type: string
-          description: Unique identifier for the verification session.
-          pattern: ^avf_\w+$
-          example: avf_aTJMbnCjw34yQ
-        account_id:
-          type: string
-          description: The account this verification session belongs to.
-          pattern: ^acc_\w+$
-        status:
-          type: string
-          description: Current status of the verification session.
-          enum:
-          - pending
-          - in_progress
-          - verified
-          - failed
         type:
           type: string
-          description: The type of verification.
           enum:
-          - micro_deposits
-          - mx
-          - plaid
-          - teller
-          - auto_verify
-          - trusted_provisioner
-          - pre_auth
-          - standard
-          - issuer
-          - instant
-          - network
-          - three_ds
-        micro_deposits:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type micro_deposits.
+          - ach
+        holder_id:
+          type: string
+          description: The entity ID that will own this account.
+          pattern: ^ent_\w+$
+        ach:
+          type: object
+          description: ACH account details.
+          required:
+          - routing
+          - number
+          - type
           properties:
-            amounts:
-              type: array
-              description: The latest amounts that this verification session was updated with.
-              items:
-                type: integer
-        plaid:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type plaid.
-          properties:
-            balances:
-              type: object
-              description: The raw balance data received from Plaid.
-            transactions:
-              type: array
-              description: The raw transaction data received from Plaid.
-              items:
-                type: object
-        mx:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type mx.
-          properties:
-            account:
-              type: object
-              description: The raw account data received from MX.
-            transactions:
-              type: array
-              description: The raw transaction data received from MX.
-              items:
-                type: object
-        teller:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type teller.
-          properties:
-            balances:
-              type: object
-              description: The raw balance data received from Teller.
-            transactions:
-              type: array
-              description: The raw transaction data received from Teller.
-              items:
-                type: object
-        auto_verify:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type auto_verify.
-        trusted_provisioner:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type trusted_provisioner.
-        standard:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type standard.
-          properties:
+            routing:
+              type: string
+              description: The ACH routing number.
+              pattern: ^\d{9}$
             number:
-              type:
-              - string
-              - 'null'
-              description: The masked card number. Null if the number still needs to be provided.
-        pre_auth:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type pre_auth.
-          properties:
-            number:
-              type:
-              - string
-              - 'null'
-              description: The masked card number. Null if the number still needs to be provided.
-            exp_month:
-              type:
-              - string
-              - 'null'
-              description: The masked card expiration month. Null if it still needs to be provided.
-            exp_year:
-              type:
-              - string
-              - 'null'
-              description: The masked card expiration year. Null if it still needs to be provided.
-            exp_check:
-              type:
-              - string
-              - 'null'
-              description: The card expiration verification check result.
+              type: string
+              description: The ACH account number.
+              pattern: ^\d+$
+            type:
+              type: string
+              description: The type of ACH account.
               enum:
-              - pass
-              - fail
-              - unavailable
-            cvv:
-              type:
-              - string
-              - 'null'
-              description: The masked card CVV. Null if it still needs to be provided.
-            cvv_check:
-              type:
-              - string
-              - 'null'
-              description: The card CVV verification check result.
-              enum:
-              - pass
-              - fail
-              - unavailable
-            billing_zip_code:
-              type:
-              - string
-              - 'null'
-              description: The masked billing zip code.
-            billing_zip_code_check:
-              type:
-              - string
-              - 'null'
-              description: The billing zip code verification check result.
-              enum:
-              - pass
-              - fail
-              - unavailable
-            pre_auth_check:
-              type:
-              - string
-              - 'null'
-              description: The pre-auth verification check result.
-              enum:
-              - pass
-              - fail
-              - unavailable
+              - checking
+              - savings
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+    AccountDebitCard:
+      type:
+      - object
+      - 'null'
+      description: Debit card account details. Present when `type` is `debit_card`.
+      properties:
         network:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type network.
-          properties:
-            number:
-              type:
-              - string
-              - 'null'
-              description: The masked card number. Null if the number still needs to be provided.
-            exp_month:
-              type:
-              - string
-              - 'null'
-              description: The masked card expiration month. Null if it still needs to be provided.
-            exp_year:
-              type:
-              - string
-              - 'null'
-              description: The masked card expiration year. Null if it still needs to be provided.
-            exp_check:
-              type:
-              - string
-              - 'null'
-              description: The card expiration verification check result.
-              enum:
-              - pass
-              - fail
-              - unavailable
-            cvv:
-              type:
-              - string
-              - 'null'
-              description: The masked card CVV. Null if it still needs to be provided.
-            cvv_check:
-              type:
-              - string
-              - 'null'
-              description: The card CVV verification check result.
-              enum:
-              - pass
-              - fail
-              - unavailable
-            billing_zip_code:
-              type:
-              - string
-              - 'null'
-              description: The masked billing zip code.
-            billing_zip_code_check:
-              type:
-              - string
-              - 'null'
-              description: The billing zip code verification check result.
-              enum:
-              - pass
-              - fail
-              - unavailable
-            network_check:
-              type:
-              - string
-              - 'null'
-              description: The network verification check result.
-              enum:
-              - pass
-              - fail
-              - unavailable
-        instant:
-          type:
-          - object
-          - 'null'
-          description: Populated when the verification session is of type instant.
-          properties:
-            number:
-              type:
-              - string
-              - 'null'
-              description: The masked card number. Null if the number still needs to be provided.
-            exp_month:
-              type:
-              - string
-              - 'null'
-              description: The masked card expiration month. Null if it still needs to be provided.
-            exp_year:
-              type:
-              - string
-              - 'null'
-              description: The masked card expiration year. Null if it still needs to be provided.
-            exp_check:
-              type:
-              - string
-              - 'null'
-              description: The card expiration verification check result.
-              enum:
-              - pass
-              - fail
-              - unavailable
-        error:
-          $ref: '#/components/schemas/AccountVerificationSessionResourceError'
-        created_at:
           type: string
-          format: date-time
-          description: Timestamp when the verification session was created.
-        updated_at:
+          description: The card network.
+        mask:
           type: string
-          format: date-time
-          description: Timestamp when the verification session was last updated.
-    AccountExpandableAttribute:
-      title: AccountExpandableAttribute
-      description: 'The latest attribute ID. This field is expandable. When expanded, returns the full AccountAttribute object.
+          description: Last 4 digits of the card number.
+        issuer:
+          type: string
+          description: The card issuer.
+    AccountExpandableSensitive:
+      title: AccountExpandableSensitive
+      description: 'The latest sensitive ID. This field is expandable. When expanded, returns the full AccountSensitive object.
 
         '
       oneOf:
       - type: string
-        pattern: ^acc_attr_\w+$
+        pattern: ^astv_\w+$
       - type: 'null'
-      - $ref: '#/components/schemas/AccountAttribute'
-    AccountListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/Account'
+      - $ref: '#/components/schemas/AccountSensitive'
+    AccountSensitiveResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when retrieving account sensitive data fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of sensitive data error.
+          enum:
+          - ACCOUNT_SENSITIVE_FAILED
+        code:
+          type: integer
+          description: Numeric error code (17XXX range).
+          enum:
+          - 17001
+        sub_type:
+          type: string
+          description: Specific sensitive data error classification.
+          enum:
+          - ACCOUNT_SENSITIVE_FAILED_VERIFICATION_REQUIRED
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: ACCOUNT_SENSITIVE_FAILED
+        code: 17001
+        sub_type: ACCOUNT_SENSITIVE_FAILED_VERIFICATION_REQUIRED
+        message: Account sensitive failed due to missing required verification.
     AccountExpandablePaymentInstrument:
       title: AccountExpandablePaymentInstrument
       description: 'The latest payment instrument ID. This field is expandable. When expanded, returns the full AccountPaymentInstrument object.
@@ -2287,176 +2549,90 @@ components:
         pattern: ^pmt_inst_\w+$
       - type: 'null'
       - $ref: '#/components/schemas/AccountPaymentInstrument'
-    AccountResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Account'
-    AccountExpandableBalance:
-      title: AccountExpandableBalance
-      description: 'The latest balance ID. This field is expandable. When expanded, returns the full AccountBalance object.
+    ResourceError:
+      type:
+      - object
+      - 'null'
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+        code:
+          type: integer
+        sub_type:
+          type:
+          - string
+          - 'null'
+        message:
+          type: string
+    AccountExpandableUpdate:
+      title: AccountExpandableUpdate
+      description: 'The latest update ID. This field is expandable. When expanded, returns the full AccountUpdate object.
 
         '
       oneOf:
       - type: string
-        pattern: ^bal_\w+$
+        pattern: ^upd_\w+$
       - type: 'null'
-      - $ref: '#/components/schemas/AccountBalance'
-    Account:
+      - $ref: '#/components/schemas/AccountUpdate'
+    AccountSensitive:
       type: object
-      description: 'An Account represents a financial account (ACH, liability, clearing, or debit card) associated with an Entity. The `type` field indicates which nested details object (`ach`, `liability`, `clearing`, or `debit_card`) is populated. `type` is null for accounts that are disabled before a type was determined.
-
-        '
+      description: Sensitive data for an account.
       required:
       - id
-      - holder_id
-      - type
+      - account_id
       - status
-      - consent_status
-      - products
-      - restricted_products
+      - type
+      - fields
       - created_at
       - updated_at
       properties:
         id:
           type: string
-          description: Unique identifier for the account.
-          pattern: ^acc_\w+$
-          example: acc_b9q2XVAnNFbp3
-        holder_id:
+          description: Unique identifier for the sensitive record.
+          pattern: ^astv_\w+$
+          example: astv_aTJMbnCjw34yQ
+        account_id:
           type: string
-          description: The entity ID that owns this account.
-          pattern: ^ent_\w+$
-          example: ent_au22b1fbFJbp8
-        type:
-          type:
-          - string
-          - 'null'
-          description: The type of account. Null for accounts that are disabled before a type was determined.
-          enum:
-          - ach
-          - liability
-          - clearing
-          - debit_card
-          - null
+          description: The account this sensitive data belongs to.
+          pattern: ^acc_\w+$
         status:
           type: string
-          description: Current status of the account.
+          description: Current status of the sensitive data request.
           enum:
-          - active
-          - disabled
-          - processing
-          - pending_exchange
-          - closed
-        consent_status:
-          type: string
-          description: Current consent status for data access on this account.
-          enum:
+          - completed
           - pending
-          - withdrawn
-          - approved
-        ach:
-          $ref: '#/components/schemas/AccountACH'
-        liability:
-          $ref: '#/components/schemas/AccountLiability'
-        clearing:
-          $ref: '#/components/schemas/AccountClearing'
-        debit_card:
-          $ref: '#/components/schemas/AccountDebitCard'
+          - failed
+        type:
+          type: string
+          description: The type of sensitive data.
+        fields:
+          type: array
+          description: List of sensitive data fields retrieved.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the field.
+              value:
+                type: string
+                description: Value of the field.
         error:
-          $ref: '#/components/schemas/AccountResourceError'
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        products:
-          type: array
-          description: Products currently active for this account.
-          items:
-            type: string
-        restricted_products:
-          type: array
-          description: Products restricted from this account.
-          items:
-            type: string
-        subscriptions:
-          type: array
-          description: Subscriptions currently active for this account. Only present for liability accounts.
-          items:
-            type: string
-        available_subscriptions:
-          type: array
-          description: Subscriptions available to be enrolled for this account. Only present for liability accounts.
-          items:
-            type: string
-        restricted_subscriptions:
-          type: array
-          description: Subscriptions restricted from this account. Only present for liability accounts.
-          items:
-            type: string
-        latest_verification_session:
-          title: AccountExpandableLatestVerificationSession
-          description: 'The latest verification session ID. This field is expandable. When expanded, returns the full AccountVerificationSession object.
-
-            '
-          oneOf:
-          - type: string
-            pattern: ^avf_\w+$
-          - type: 'null'
-          - $ref: '#/components/schemas/AccountVerificationSession'
-        balance:
-          $ref: '#/components/schemas/AccountExpandableBalance'
-        payoff:
-          $ref: '#/components/schemas/AccountExpandablePayoff'
-        payment_instrument:
-          $ref: '#/components/schemas/AccountExpandablePaymentInstrument'
-        card_brand:
-          $ref: '#/components/schemas/AccountExpandableCardBrand'
-        update:
-          $ref: '#/components/schemas/AccountExpandableUpdate'
-        attribute:
-          $ref: '#/components/schemas/AccountExpandableAttribute'
-        sensitive:
-          $ref: '#/components/schemas/AccountExpandableSensitive'
+          $ref: '#/components/schemas/AccountSensitiveResourceError'
         created_at:
           type: string
           format: date-time
-          description: Timestamp when the account was created.
+          description: Timestamp when the sensitive record was created.
         updated_at:
           type: string
           format: date-time
-          description: Timestamp when the account was last updated.
-    AccountACH:
-      type:
-      - object
-      - 'null'
-      description: ACH account details. Present when `type` is `ach`.
-      properties:
-        routing:
-          type: string
-          description: The ACH routing number.
-        number:
-          type: string
-          description: The ACH account number.
-        type:
-          type: string
-          description: The type of ACH account.
-          enum:
-          - checking
-          - savings
-    AccountExpandablePayoff:
-      title: AccountExpandablePayoff
-      description: 'The latest payoff ID. This field is expandable. When expanded, returns the full AccountPayoff object.
-
-        '
-      oneOf:
-      - type: string
-        pattern: ^pyf_\w+$
-      - type: 'null'
-      - $ref: '#/components/schemas/AccountPayoff'
-    SuccessEnvelope:
+          description: Timestamp when the sensitive record was last updated.
+    ErrorEnvelope:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
       required:
       - success
       - data
@@ -2464,324 +2640,16 @@ components:
       properties:
         success:
           type: boolean
-          description: Always `true` for successful responses.
+          description: Always `false` for error responses.
         data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    Metadata:
-      type:
-      - object
-      - 'null'
-      additionalProperties: true
-      description: Arbitrary key-value metadata attached to the resource.
-    AccountUpdateRequest:
-      type: object
-      description: Request body for updating an account.
-      properties:
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        liability:
           type: object
-          description: Liability-specific update fields. Use either mortgage or credit_card (mutually exclusive).
+          required:
+          - error
           properties:
-            mortgage:
-              type: object
-              description: Mortgage address update.
-              properties:
-                address_street:
-                  type: string
-                address_city:
-                  type: string
-                address_state:
-                  type: string
-                address_zip:
-                  type: string
-            credit_card:
-              type: object
-              description: Credit card update. Provide either number alone, or expiration + CVV.
-              properties:
-                number:
-                  type: string
-                  description: The credit card number.
-                expiration_month:
-                  type: string
-                  description: Card expiration month.
-                expiration_year:
-                  type: string
-                  description: Card expiration year.
-                cvv:
-                  type: string
-                  description: Card CVV.
-    AccountBalance:
-      type: object
-      description: A balance record for an account.
-      required:
-      - id
-      - account_id
-      - status
-      - amount
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the balance.
-          pattern: ^bal_\w+$
-          example: bal_dKe9ehC3hEBYy
-        account_id:
-          type: string
-          description: The account this balance belongs to.
-          pattern: ^acc_\w+$
-        status:
-          type: string
-          description: Current status of the balance request.
-          enum:
-          - completed
-          - pending
-          - failed
-        amount:
-          type:
-          - number
-          - 'null'
-          description: The balance amount in cents.
-        error:
-          $ref: '#/components/schemas/BalanceResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the balance was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the balance was last updated.
-    PayoffResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a payoff sync fails.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of payoff error.
-          enum:
-          - PAYOFF_FAILED
-        code:
-          type: integer
-          description: Numeric error code (18XXX range).
-          enum:
-          - 18001
-        sub_type:
-          type: string
-          description: Specific payoff error classification.
-          enum:
-          - PAYOFF_TEMPORARILY_UNAVAILABLE
+            error:
+              $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
-          description: Human-readable error description.
-      example:
-        type: PAYOFF_FAILED
-        code: 18001
-        sub_type: PAYOFF_TEMPORARILY_UNAVAILABLE
-        message: Payoff is temporarily unavailable for this account.
-    MerchantProviderIds:
-      type: object
-      properties:
-        plaid:
-          type: array
-          items:
-            type: string
-        mx:
-          type: array
-          items:
-            type: string
-        finicity:
-          type: array
-          items:
-            type: string
-        dpp:
-          type: array
-          items:
-            type: string
-        rpps:
-          type: array
-          items:
-            type: string
-    AccountResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when an account is disabled.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of account error.
-          enum:
-          - ACCOUNT_DISABLED
-        code:
-          type: integer
-          description: Numeric error code (11XXX range).
-          enum:
-          - 11001
-          - 11002
-          - 11003
-          - 11004
-          - 11005
-          - 11006
-        sub_type:
-          type: string
-          description: Specific account error classification.
-          enum:
-          - ACCOUNT_INVALID_DETAILS
-          - ACCOUNT_UNAUTHORIZED_PAYMENT
-          - ACCOUNT_CLOSED
-          - ACCOUNT_CONSENT_WITHDRAWN
-          - ACCOUNT_DISABLED_INVALID_STATE
-          - ACCOUNT_DISABLED_HOLDER_ENTITY_DISABLED
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: ACCOUNT_DISABLED
-        code: 11001
-        sub_type: ACCOUNT_INVALID_DETAILS
-        message: Account was disabled due to invalid information reported by the financial institution.
-    UpdateResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when an account update fails.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of update error.
-          enum:
-          - UPDATE_FAILED
-        code:
-          type: integer
-          description: Numeric error code (21XXX range).
-          enum:
-          - 21001
-        sub_type:
-          type: string
-          description: Specific update error classification.
-          enum:
-          - UPDATE_TEMPORARILY_UNAVAILABLE
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: UPDATE_FAILED
-        code: 21001
-        sub_type: UPDATE_TEMPORARILY_UNAVAILABLE
-        message: Update is temporarily unavailable for this account.
-    AccountPayoff:
-      type: object
-      description: A payoff record for an account.
-      required:
-      - id
-      - account_id
-      - status
-      - amount
-      - term
-      - per_diem_amount
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the payoff.
-          pattern: ^pyf_\w+$
-          example: pyf_dKe9ehC3hEBYy
-        account_id:
-          type: string
-          description: The account this payoff belongs to.
-          pattern: ^acc_\w+$
-        status:
-          type: string
-          description: Current status of the payoff request.
-          enum:
-          - completed
-          - pending
-          - failed
-        amount:
-          type:
-          - number
-          - 'null'
-          description: The payoff amount in cents.
-        term:
-          type:
-          - number
-          - 'null'
-          description: Number of days the payoff amount is valid.
-        per_diem_amount:
-          type:
-          - number
-          - 'null'
-          description: Per diem interest amount in cents.
-        error:
-          $ref: '#/components/schemas/PayoffResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the payoff was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the payoff was last updated.
-    ErrorObject:
-      type: object
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
-    AccountListResponse_2:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountResponse_2'
     AccountCreateRequest_2:
       type: object
       required:
@@ -2813,6 +2681,28 @@ components:
               type: string
         metadata:
           type: object
+    AccountListResponse_2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountResponse_2'
+    BalanceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        amount:
+          type: integer
+          description: Balance in cents.
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
     AccountResponse_2:
       type: object
       properties:
@@ -2850,53 +2740,146 @@ components:
         updated_at:
           type: string
           format: date-time
-    BalanceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        account_id:
-          type: string
-        amount:
-          type: integer
-          description: Balance in cents.
-        status:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-  headers:
-    Pagination-Total-Count:
-      description: Total number of items across all pages.
+  parameters:
+    PageCursorParam:
+      name: page_cursor
+      in: query
+      required: false
+      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
       schema:
-        type: integer
-    Pagination-Page-Limit:
+        type: string
+    expand_accounts:
+      name: expand
+      in: query
+      required: false
+      description: 'Expand related account resources inline. Supports the account expandable fields
+
+        documented by the API validator for account list and retrieve operations.
+
+        '
+      style: form
+      explode: true
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+          - sensitive
+          - balance
+          - card_brand
+          - attribute
+          - payoff
+          - transaction
+          - update
+          - payment_instrument
+          - latest_verification_session
+          - liability.mch_id
+    AccountIdParam:
+      name: accountId
+      in: path
+      required: true
+      description: Unique identifier for the account.
+      schema:
+        type: string
+        pattern: ^acc_\w+$
+    FromDateParam:
+      name: from_date
+      in: query
+      required: false
+      description: Filter results from this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    ToDateParam:
+      name: to_date
+      in: query
+      required: false
+      description: Filter results to this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
+    PageLimitParam:
+      name: page_limit
+      in: query
+      required: false
       description: Number of items per page.
       schema:
         type: integer
-    Pagination-Page:
-      description: Current page number.
+        minimum: 1
+        maximum: 100
+        default: 10
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination (1-indexed).
       schema:
         type: integer
-    Pagination-Page-Count:
-      description: Total number of pages.
+        minimum: 1
+        default: 1
+    PageLimit:
+      name: page_limit
+      in: query
+      required: false
       schema:
         type: integer
-    Pagination-Page-Cursor-Next:
-      description: Cursor for the next page, if available.
+        default: 50
+        maximum: 100
+    Page:
+      name: page
+      in: query
+      required: false
       schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page-Cursor-Prev:
-      description: Cursor for the previous page, if available.
+        type: integer
+        default: 1
+    AccountId:
+      name: acc_id
+      in: path
+      required: true
       schema:
-        type:
-        - string
-        - 'null'
+        type: string
+      description: The account identifier (e.g. acc_xxx).
   responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
       content:
         application/json:
           schema:
@@ -2912,8 +2895,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
+    InternalError:
+      description: Internal server error.
       content:
         application/json:
           schema:
@@ -2924,18 +2907,35 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+  headers:
+    Pagination-Page-Cursor-Prev:
+      description: Cursor for the previous page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Page-Cursor-Next:
+      description: Cursor for the next page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Page:
+      description: Current page number.
+      schema:
+        type: integer
+    Pagination-Page-Count:
+      description: Total number of pages.
+      schema:
+        type: integer
+    Pagination-Page-Limit:
+      description: Number of items per page.
+      schema:
+        type: integer
+    Pagination-Total-Count:
+      description: Total number of items across all pages.
+      schema:
+        type: integer
   securitySchemes:
     OpalToken:
       type: http

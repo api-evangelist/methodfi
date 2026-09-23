@@ -5,7 +5,9 @@ info:
   license:
     name: Proprietary
     url: https://methodfi.com
-  description: "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n"
+  description: 'The Method API enables you to retrieve financial data, create payments, and manage
+
+    entities and accounts programmatically.'
   contact:
     name: Method Financial
     url: https://methodfi.com
@@ -138,28 +140,9 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    ErrorEnvelope:
+    SuccessEnvelope:
       type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
+      description: Standard envelope for successful responses that return a single payload.
       required:
       - success
       - data
@@ -169,31 +152,15 @@ components:
           type: boolean
           description: Always `true` for successful responses.
         data:
-          description: Operation-specific list payload.
+          description: Operation-specific response payload.
         message:
           type:
           - string
           - 'null'
       example:
         success: true
-        data: []
+        data: {}
         message: null
-    ManagedAccountListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ManagedAccount'
-    ManagedAccountResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/ManagedAccount'
     ManagedAccount:
       type: object
       description: A Managed Account is a Method-managed financial account used for fund operations.
@@ -221,60 +188,6 @@ components:
         available_balance:
           type: number
           description: Available balance of the managed account in cents.
-    ManagedAccountTransaction:
-      type: object
-      description: A transaction on a managed account.
-      required:
-      - id
-      - description
-      - date
-      - amount
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the transaction.
-          pattern: ^macc_txn_\w+$
-          example: macc_txn_aTJMbnCjw34yQ
-        description:
-          type: string
-          description: Human-readable description of the transaction.
-        date:
-          type: string
-          format: date
-          description: Date the transaction occurred (YYYY-MM-DD).
-        amount:
-          type: number
-          description: Transaction amount in cents. Positive for inbound/credit transactions, negative for outbound/debit transactions.
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ManagedAccountTransactionListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ManagedAccountTransaction'
     ErrorObject:
       type: object
       required:
@@ -300,18 +213,140 @@ components:
         message:
           type: string
           description: Human-readable error description.
-  headers:
-    Pagination-Page-Limit:
-      description: Number of items per page.
+    ManagedAccountTransaction:
+      type: object
+      description: A transaction on a managed account.
+      required:
+      - id
+      - description
+      - date
+      - amount
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the transaction.
+          pattern: ^macc_txn_\w+$
+          example: macc_txn_aTJMbnCjw34yQ
+        description:
+          type: string
+          description: Human-readable description of the transaction.
+        date:
+          type: string
+          format: date
+          description: Date the transaction occurred (YYYY-MM-DD).
+        amount:
+          type: number
+          description: Transaction amount in cents. Positive for inbound/credit transactions, negative for outbound/debit transactions.
+    ManagedAccountResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/ManagedAccount'
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
+    ManagedAccountTransactionListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ManagedAccountTransaction'
+    ManagedAccountListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ManagedAccount'
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+  parameters:
+    PageCursorParam:
+      name: page_cursor
+      in: query
+      required: false
+      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
       schema:
-        type: integer
-    Pagination-Page-Cursor-Next:
-      description: Cursor for the next page, if available.
+        type: string
+    FromDateParam:
+      name: from_date
+      in: query
+      required: false
+      description: Filter results from this date (inclusive, YYYY-MM-DD format).
       schema:
-        type:
-        - string
-        - 'null'
+        type: string
+        format: date
+    ToDateParam:
+      name: to_date
+      in: query
+      required: false
+      description: Filter results to this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token.
       content:
@@ -329,8 +364,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
+    InternalError:
+      description: Internal server error.
       content:
         application/json:
           schema:
@@ -341,50 +376,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-  parameters:
-    ToDateParam:
-      name: to_date
-      in: query
-      required: false
-      description: Filter results to this date (inclusive, YYYY-MM-DD format).
+  headers:
+    Pagination-Page-Cursor-Next:
+      description: Cursor for the next page, if available.
       schema:
-        type: string
-        format: date
-    PageCursorParam:
-      name: page_cursor
-      in: query
-      required: false
-      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
+        type:
+        - string
+        - 'null'
+    Pagination-Page-Limit:
+      description: Number of items per page.
       schema:
-        type: string
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    FromDateParam:
-      name: from_date
-      in: query
-      required: false
-      description: Filter results from this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
+        type: integer
   securitySchemes:
     OpalToken:
       type: http

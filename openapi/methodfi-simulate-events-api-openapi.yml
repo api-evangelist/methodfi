@@ -5,7 +5,9 @@ info:
   license:
     name: Proprietary
     url: https://methodfi.com
-  description: "The Method API enables you to retrieve financial data, create payments, and manage\nentities and accounts programmatically. This specification covers the public API\nsurface for version `2025-12-01`.\n\n## Authentication\n\nMost API requests require a Bearer token in the `Authorization` header.\nUse your secret key (`sk_...`) for server-side requests and public key (`pk_...`)\nfor client-side Element requests. Public Message-Level Encryption key discovery\nendpoints are documented separately and do not require authentication.\n\n## Versioning\n\nThe API version is selected via the `Method-Version` header. This spec targets\nversion `2025-12-01`. The SDK sets this header automatically.\n\n## Response Envelope\n\nMost JSON responses are wrapped in a standard envelope:\n\n```json\n{\n  \"success\": true,\n  \"data\": { ... },\n  \"message\": null\n}\n```\n\nThe `/.well-known/jwks.json` endpoint is an exception and returns a bare JWK set.\n\n## Pagination\n\nList endpoints return pagination metadata in response headers:\n`Pagination-Page`, `Pagination-Page-Count`, `Pagination-Page-Limit`,\n`Pagination-Total-Count`, `Pagination-Page-Cursor-Prev`, `Pagination-Page-Cursor-Next`.\n\n## Expandable Fields\n\nCertain resource fields can be expanded from IDs to full objects using the\n`expand` query parameter. Maximum nesting depth is 4 levels.\n"
+  description: 'The Method API enables you to retrieve financial data, create payments, and manage
+
+    entities and accounts programmatically.'
   contact:
     name: Method Financial
     url: https://methodfi.com
@@ -32,9 +34,7 @@ paths:
         Use this to test webhook handling and event processing during development.
 
 
-        **Development only** - This endpoint is only available in the sandbox environment.
-
-        '
+        **Development only** - This endpoint is only available in the sandbox environment.'
       tags:
       - Simulate Events
       security:
@@ -72,50 +72,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    JsonObject:
-      type: object
-      description: Arbitrary JSON object.
-      additionalProperties: true
     EventResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -236,6 +192,31 @@ components:
       - entity_attribute.credit_health_soft_inquiries_value.increased
       - entity_attribute.credit_health_hard_inquiries_value.decreased
       - entity_attribute.credit_health_hard_inquiries_value.increased
+    JsonObject:
+      type: object
+      description: Arbitrary JSON object.
+      additionalProperties: true
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
     Event:
       type: object
       required:
@@ -309,13 +290,26 @@ components:
         message:
           type: string
           description: Human-readable error description.
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token.
       content:
@@ -324,6 +318,12 @@ components:
             $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
