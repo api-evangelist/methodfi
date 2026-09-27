@@ -112,87 +112,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    ForwardingResponseDetail:
-      type: object
-      description: Details of the upstream response captured for the forwarding request.
-      properties:
-        status_code:
-          type:
-          - integer
-          - 'null'
-          description: HTTP status code returned by the destination.
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: HTTP headers returned by the destination.
-        body:
-          $ref: '#/components/schemas/JsonValue'
-          description: Body returned by the destination.
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ErrorObject:
-      type: object
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
-    ForwardingRequestResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/ForwardingRequest'
-    JsonValue:
-      description: Arbitrary JSON value.
-      oneOf:
-      - type: string
-      - type: number
-      - type: boolean
-      - type: 'null'
-      - type: object
-        additionalProperties: true
-      - type: array
-        items: {}
     ForwardingRequest:
       type: object
       required:
@@ -232,19 +151,67 @@ components:
           type: string
           format: date-time
           description: Timestamp when the forwarding request was created.
-    StatusHistoryItem:
+    ForwardingResponseDetail:
       type: object
+      description: Details of the upstream response captured for the forwarding request.
       properties:
-        status:
+        status_code:
+          type:
+          - integer
+          - 'null'
+          description: HTTP status code returned by the destination.
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: HTTP headers returned by the destination.
+        body:
+          $ref: '#/components/schemas/JsonValue'
+          description: Body returned by the destination.
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
           type: string
-        timestamp:
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
           type: string
-          format: date-time
-    ForwardingRequestStatus:
-      type: string
-      enum:
-      - completed
-      - failed
+          description: Human-readable error description.
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
     ForwardingRequestDetail:
       type: object
       required:
@@ -273,6 +240,53 @@ components:
         body:
           type: string
           description: Body of the forwarded request.
+    StatusHistoryItem:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    JsonValue:
+      description: Arbitrary JSON value.
+      oneOf:
+      - type: string
+      - type: number
+      - type: boolean
+      - type: 'null'
+      - type: object
+        additionalProperties: true
+      - type: array
+        items: {}
+    ForwardingRequestResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/ForwardingRequest'
     ForwardingRequestCreateRequest:
       type: object
       required:
@@ -312,46 +326,26 @@ components:
           - object
           - 'null'
           description: Optional metadata to attach to the forwarding request.
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
+    ForwardingRequestStatus:
+      type: string
+      enum:
+      - completed
+      - failed
   responses:
-    GatewayTimeout:
-      description: Upstream timeout - the request could not be completed before the upstream deadline.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     UnprocessableEntity:
       description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -367,20 +361,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
+    GatewayTimeout:
+      description: Upstream timeout - the request could not be completed before the upstream deadline.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:

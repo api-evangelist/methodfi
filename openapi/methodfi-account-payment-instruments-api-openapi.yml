@@ -170,28 +170,55 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  headers:
+    Pagination-Page-Cursor-Next:
+      description: Cursor for the next page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Total-Count:
+      description: Total number of items across all pages.
+      schema:
+        type: integer
+    Pagination-Page-Cursor-Prev:
+      description: Cursor for the previous page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Page-Count:
+      description: Total number of pages.
+      schema:
+        type: integer
+    Pagination-Page:
+      description: Current page number.
+      schema:
+        type: integer
+    Pagination-Page-Limit:
+      description: Number of items per page.
+      schema:
+        type: integer
   schemas:
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
+    ResourceError:
+      type:
+      - object
+      - 'null'
       required:
-      - success
-      - data
+      - type
+      - code
       - message
       properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
+        type:
+          type: string
+        code:
+          type: integer
+        sub_type:
           type:
           - string
           - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
+        message:
+          type: string
     AccountPaymentInstrumentCreateRequest:
       type: object
       description: Request body for creating an account payment instrument.
@@ -205,6 +232,25 @@ components:
           - card
           - network_token
           - inbound_achwire_payment
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
     ErrorObject:
       type: object
       required:
@@ -316,6 +362,43 @@ components:
           type: string
           format: date-time
           description: Timestamp when the payment instrument was last updated.
+    AccountPaymentInstrumentListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/AccountPaymentInstrument'
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    AccountPaymentInstrumentResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/AccountPaymentInstrument'
     ListEnvelope:
       type: object
       description: Standard envelope for successful responses that return a list payload.
@@ -337,60 +420,6 @@ components:
         success: true
         data: []
         message: null
-    AccountPaymentInstrumentListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/AccountPaymentInstrument'
-    ResourceError:
-      type:
-      - object
-      - 'null'
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-        code:
-          type: integer
-        sub_type:
-          type:
-          - string
-          - 'null'
-        message:
-          type: string
-    AccountPaymentInstrumentResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/AccountPaymentInstrument'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
   parameters:
     PageCursorParam:
       name: page_cursor
@@ -407,14 +436,6 @@ components:
       schema:
         type: string
         pattern: ^pmt_ins_\w+$
-    AccountIdParam:
-      name: accountId
-      in: path
-      required: true
-      description: Unique identifier for the account.
-      schema:
-        type: string
-        pattern: ^acc_\w+$
     idempotency_key:
       name: Idempotency-Key
       in: header
@@ -427,16 +448,6 @@ components:
       schema:
         type: string
         format: uuid
-    PageLimitParam:
-      name: page_limit
-      in: query
-      required: false
-      description: Number of items per page.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
     method_version:
       name: Method-Version
       in: header
@@ -460,21 +471,33 @@ components:
         type: integer
         minimum: 1
         default: 1
+    PageLimitParam:
+      name: page_limit
+      in: query
+      required: false
+      description: Number of items per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    AccountIdParam:
+      name: accountId
+      in: path
+      required: true
+      description: Unique identifier for the account.
+      schema:
+        type: string
+        pattern: ^acc_\w+$
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     UnprocessableEntity:
       description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -490,47 +513,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-  headers:
-    Pagination-Page-Cursor-Prev:
-      description: Cursor for the previous page, if available.
-      schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page-Cursor-Next:
-      description: Cursor for the next page, if available.
-      schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page:
-      description: Current page number.
-      schema:
-        type: integer
-    Pagination-Page-Count:
-      description: Total number of pages.
-      schema:
-        type: integer
-    Pagination-Page-Limit:
-      description: Number of items per page.
-      schema:
-        type: integer
-    Pagination-Total-Count:
-      description: Total number of items across all pages.
-      schema:
-        type: integer
   securitySchemes:
     OpalToken:
       type: http

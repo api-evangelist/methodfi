@@ -139,9 +139,19 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    SuccessEnvelope:
+    AccountSensitiveCreateRequest:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
+      description: Request body for creating an account sensitive data request.
+      required:
+      - expand
+      properties:
+        expand:
+          type: array
+          description: List of sensitive field names to retrieve.
+          items:
+            type: string
+    ErrorEnvelope:
+      type: object
       required:
       - success
       - data
@@ -149,26 +159,16 @@ components:
       properties:
         success:
           type: boolean
-          description: Always `true` for successful responses.
+          description: Always `false` for error responses.
         data:
-          description: Operation-specific response payload.
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
         message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    AccountSensitiveListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/AccountSensitive'
+          type: string
     ErrorObject:
       type: object
       required:
@@ -194,45 +194,6 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    AccountSensitiveResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/AccountSensitive'
-    AccountSensitiveCreateRequest:
-      type: object
-      description: Request body for creating an account sensitive data request.
-      required:
-      - expand
-      properties:
-        expand:
-          type: array
-          description: List of sensitive field names to retrieve.
-          items:
-            type: string
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
     AccountSensitiveResourceError:
       type:
       - object
@@ -267,6 +228,64 @@ components:
         code: 17001
         sub_type: ACCOUNT_SENSITIVE_FAILED_VERIFICATION_REQUIRED
         message: Account sensitive failed due to missing required verification.
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    AccountSensitiveResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/AccountSensitive'
+    AccountSensitiveListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/AccountSensitive'
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
     AccountSensitive:
       type: object
       description: Sensitive data for an account.
@@ -320,25 +339,35 @@ components:
           type: string
           format: date-time
           description: Timestamp when the sensitive record was last updated.
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
+  headers:
+    Pagination-Page-Cursor-Next:
+      description: Cursor for the next page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Total-Count:
+      description: Total number of items across all pages.
+      schema:
+        type: integer
+    Pagination-Page-Cursor-Prev:
+      description: Cursor for the previous page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Page-Count:
+      description: Total number of pages.
+      schema:
+        type: integer
+    Pagination-Page:
+      description: Current page number.
+      schema:
+        type: integer
+    Pagination-Page-Limit:
+      description: Number of items per page.
+      schema:
+        type: integer
   parameters:
     PageCursorParam:
       name: page_cursor
@@ -347,22 +376,6 @@ components:
       description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
       schema:
         type: string
-    AccountSensitiveIdParam:
-      name: astvId
-      in: path
-      required: true
-      description: Unique identifier for the account sensitive record.
-      schema:
-        type: string
-        pattern: ^astv_\w+$
-    AccountIdParam:
-      name: accountId
-      in: path
-      required: true
-      description: Unique identifier for the account.
-      schema:
-        type: string
-        pattern: ^acc_\w+$
     idempotency_key:
       name: Idempotency-Key
       in: header
@@ -375,16 +388,6 @@ components:
       schema:
         type: string
         format: uuid
-    PageLimitParam:
-      name: page_limit
-      in: query
-      required: false
-      description: Number of items per page.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
     method_version:
       name: Method-Version
       in: header
@@ -408,21 +411,41 @@ components:
         type: integer
         minimum: 1
         default: 1
+    AccountSensitiveIdParam:
+      name: astvId
+      in: path
+      required: true
+      description: Unique identifier for the account sensitive record.
+      schema:
+        type: string
+        pattern: ^astv_\w+$
+    PageLimitParam:
+      name: page_limit
+      in: query
+      required: false
+      description: Number of items per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    AccountIdParam:
+      name: accountId
+      in: path
+      required: true
+      description: Unique identifier for the account.
+      schema:
+        type: string
+        pattern: ^acc_\w+$
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     UnprocessableEntity:
       description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -438,47 +461,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-  headers:
-    Pagination-Page-Cursor-Prev:
-      description: Cursor for the previous page, if available.
-      schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page-Cursor-Next:
-      description: Cursor for the next page, if available.
-      schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page:
-      description: Current page number.
-      schema:
-        type: integer
-    Pagination-Page-Count:
-      description: Total number of pages.
-      schema:
-        type: integer
-    Pagination-Page-Limit:
-      description: Number of items per page.
-      schema:
-        type: integer
-    Pagination-Total-Count:
-      description: Total number of items across all pages.
-      schema:
-        type: integer
   securitySchemes:
     OpalToken:
       type: http

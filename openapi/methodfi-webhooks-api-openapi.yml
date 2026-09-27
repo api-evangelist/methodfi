@@ -274,7 +274,7 @@ paths:
       security:
       - bearerAuth: []
     delete:
-      operationId: deleteWebhook
+      operationId: deleteWebhooksByWhkId
       tags:
       - Webhooks
       summary: Delete a webhook
@@ -287,6 +287,8 @@ paths:
                 $ref: '#/components/schemas/WebhookResponse_2'
       security:
       - bearerAuth: []
+      x-operation-id-source: normalized
+      x-operation-id-original: deleteWebhook
     servers:
     - url: https://production.methodfi.com
       description: Production
@@ -296,50 +298,6 @@ paths:
       description: Development (simulations enabled)
 components:
   schemas:
-    WebhookStatus:
-      type: string
-      enum:
-      - active
-      - requires_attention
-      - disabled
-      - deleted
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    WebhookListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/Webhook'
-    WebhookResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Webhook'
     WebhookCreateRequest:
       type: object
       required:
@@ -365,193 +323,13 @@ components:
           description: Whether to include the full resource data in the webhook payload.
         metadata:
           $ref: '#/components/schemas/Metadata'
-    ErrorObject:
-      type: object
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
-    Metadata:
-      type:
-      - object
-      - 'null'
-      additionalProperties: true
-      description: Arbitrary key-value metadata attached to the resource.
-    WebhookResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a webhook is disabled or requires attention.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of webhook error.
-          enum:
-          - WEBHOOK_DISABLED
-          - WEBHOOK_REQUIRES_ATTENTION
-        code:
-          type: integer
-          description: Numeric error code (25XXX range).
-          enum:
-          - 25001
-          - 25002
-          - 25003
-          - 25004
-          - 25005
-          - 25006
-          - 25007
-          - 25008
-          - 25009
-        sub_type:
-          type: string
-          description: Specific webhook error classification.
-          enum:
-          - WEBHOOK_DISABLED_FAILED_OTHER
-          - WEBHOOK_DISABLED_RECEIVED_4XX_ERROR
-          - WEBHOOK_DISABLED_RECEIVED_5XX_ERROR
-          - WEBHOOK_DISABLED_TIMEOUT_ON_RESPONSE
-          - WEBHOOK_DISABLED_BY_USER
-          - WEBHOOK_REQUIRES_ATTENTION_FAILED_OTHER
-          - WEBHOOK_REQUIRES_ATTENTION_RECEIVED_4XX_ERROR
-          - WEBHOOK_REQUIRES_ATTENTION_RECEIVED_5XX_ERROR
-          - WEBHOOK_REQUIRES_ATTENTION_TIMEOUT_ON_RESPONSE
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: WEBHOOK_DISABLED
-        code: 25002
-        sub_type: WEBHOOK_DISABLED_RECEIVED_4XX_ERROR
-        message: Webhook failed 25 times with a client error (4XX type).
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
-    WebhookDeleteResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            type:
-            - object
-            - 'null'
-            example: null
-    WebhookEventPayload:
-      type: object
-      description: The outbound payload delivered to a webhook subscription URL when an event occurs.
-      required:
-      - webhook_id
-      - id
-      - type
-      - op
-      - event
-      - refs
-      properties:
-        webhook_id:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the webhook subscription that triggered this event.
-          example: whk_cSGjA6d9N8y8R
-        id:
-          type:
-          - string
-          - 'null'
-          description: The identifier of the resource modified.
-          example: acc_BcRdHNjb9TYKV
-        type:
-          description: The webhook event type.
-          example: account.update
-          oneOf:
-          - $ref: '#/components/schemas/WebhookType'
-          - type: 'null'
-        op:
-          type:
-          - string
-          - 'null'
-          description: The operation type derived from the event type (the segment after the first dot).
-          example: update
-        path:
-          type:
-          - string
-          - 'null'
-          description: The URL path pointing to the affected resource. Make a HTTP GET request to this path to retrieve the resource. Only present when available.
-          example: /accounts/acc_BcRdHNjb9TYKV
-        event:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the event record. Can be used to retrieve the full event details via the Events API.
-          example: evt_knqJgxKUnqDVJ
-        refs:
-          description: An object containing reference IDs to related resources. Commonly includes entity and may include other resource references depending on the event type.
-          oneOf:
-          - type: object
-            additionalProperties:
-              type: string
-          - type: 'null'
-          example:
-            account: acc_BcRdHNjb9TYKV
-            entity: ent_qKNBB68bfHGNA
-      example:
-        webhook_id: whk_cSGjA6d9N8y8R
-        id: acc_BcRdHNjb9TYKV
-        type: account.update
-        op: update
-        path: /accounts/acc_BcRdHNjb9TYKV
-        event: evt_knqJgxKUnqDVJ
-        refs:
-          account: acc_BcRdHNjb9TYKV
-          entity: ent_qKNBB68bfHGNA
-    WebhookUpdateRequest:
-      type: object
-      required:
-      - status
-      properties:
-        status:
-          $ref: '#/components/schemas/WebhookStatus'
+    WebhookStatus:
+      type: string
+      enum:
+      - active
+      - requires_attention
+      - disabled
+      - deleted
     Webhook:
       type: object
       required:
@@ -591,6 +369,13 @@ components:
           type: string
           format: date-time
           description: Timestamp when the webhook was last updated.
+    WebhookResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Webhook'
     WebhookType:
       type: string
       description: The event type this webhook subscribes to.
@@ -705,6 +490,223 @@ components:
               $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
+    WebhookResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a webhook is disabled or requires attention.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of webhook error.
+          enum:
+          - WEBHOOK_DISABLED
+          - WEBHOOK_REQUIRES_ATTENTION
+        code:
+          type: integer
+          description: Numeric error code (25XXX range).
+          enum:
+          - 25001
+          - 25002
+          - 25003
+          - 25004
+          - 25005
+          - 25006
+          - 25007
+          - 25008
+          - 25009
+        sub_type:
+          type: string
+          description: Specific webhook error classification.
+          enum:
+          - WEBHOOK_DISABLED_FAILED_OTHER
+          - WEBHOOK_DISABLED_RECEIVED_4XX_ERROR
+          - WEBHOOK_DISABLED_RECEIVED_5XX_ERROR
+          - WEBHOOK_DISABLED_TIMEOUT_ON_RESPONSE
+          - WEBHOOK_DISABLED_BY_USER
+          - WEBHOOK_REQUIRES_ATTENTION_FAILED_OTHER
+          - WEBHOOK_REQUIRES_ATTENTION_RECEIVED_4XX_ERROR
+          - WEBHOOK_REQUIRES_ATTENTION_RECEIVED_5XX_ERROR
+          - WEBHOOK_REQUIRES_ATTENTION_TIMEOUT_ON_RESPONSE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: WEBHOOK_DISABLED
+        code: 25002
+        sub_type: WEBHOOK_DISABLED_RECEIVED_4XX_ERROR
+        message: Webhook failed 25 times with a client error (4XX type).
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    WebhookListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/Webhook'
+    WebhookEventPayload:
+      type: object
+      description: The outbound payload delivered to a webhook subscription URL when an event occurs.
+      required:
+      - webhook_id
+      - id
+      - type
+      - op
+      - event
+      - refs
+      properties:
+        webhook_id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the webhook subscription that triggered this event.
+          example: whk_cSGjA6d9N8y8R
+        id:
+          type:
+          - string
+          - 'null'
+          description: The identifier of the resource modified.
+          example: acc_BcRdHNjb9TYKV
+        type:
+          description: The webhook event type.
+          example: account.update
+          oneOf:
+          - $ref: '#/components/schemas/WebhookType'
+          - type: 'null'
+        op:
+          type:
+          - string
+          - 'null'
+          description: The operation type derived from the event type (the segment after the first dot).
+          example: update
+        path:
+          type:
+          - string
+          - 'null'
+          description: The URL path pointing to the affected resource. Make a HTTP GET request to this path to retrieve the resource. Only present when available.
+          example: /accounts/acc_BcRdHNjb9TYKV
+        event:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the event record. Can be used to retrieve the full event details via the Events API.
+          example: evt_knqJgxKUnqDVJ
+        refs:
+          description: An object containing reference IDs to related resources. Commonly includes entity and may include other resource references depending on the event type.
+          oneOf:
+          - type: object
+            additionalProperties:
+              type: string
+          - type: 'null'
+          example:
+            account: acc_BcRdHNjb9TYKV
+            entity: ent_qKNBB68bfHGNA
+      example:
+        webhook_id: whk_cSGjA6d9N8y8R
+        id: acc_BcRdHNjb9TYKV
+        type: account.update
+        op: update
+        path: /accounts/acc_BcRdHNjb9TYKV
+        event: evt_knqJgxKUnqDVJ
+        refs:
+          account: acc_BcRdHNjb9TYKV
+          entity: ent_qKNBB68bfHGNA
+    WebhookUpdateRequest:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          $ref: '#/components/schemas/WebhookStatus'
+    WebhookDeleteResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            type:
+            - object
+            - 'null'
+            example: null
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
+    Metadata:
+      type:
+      - object
+      - 'null'
+      additionalProperties: true
+      description: Arbitrary key-value metadata attached to the resource.
     WebhookResponse_2:
       type: object
       properties:
@@ -739,56 +741,21 @@ components:
           description: Optional token Method includes when delivering events.
         metadata:
           type: object
-  parameters:
-    WebhookIdParam:
-      name: webhookId
-      in: path
-      required: true
-      description: Unique identifier for the webhook.
-      schema:
-        type: string
-        pattern: ^whk_\w+$
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     UnprocessableEntity:
       description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -804,8 +771,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
@@ -816,12 +789,41 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    WebhookIdParam:
+      name: webhookId
+      in: path
+      required: true
+      description: Unique identifier for the webhook.
+      schema:
+        type: string
+        pattern: ^whk_\w+$
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   securitySchemes:
     OpalToken:
       type: http

@@ -137,7 +137,40 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  parameters:
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
   responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     RateLimited:
       description: Too many requests - rate limit exceeded.
       headers:
@@ -145,12 +178,6 @@ components:
           description: Number of seconds to wait before retrying.
           schema:
             type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
       content:
         application/json:
           schema:
@@ -167,42 +194,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    ReportCreateRequest:
-      type: object
-      description: Request body for creating a report.
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          description: The type of report to generate.
-          enum:
-          - payments.created.current
-          - payments.created.previous
-          - payments.created.previous_day
-          - payments.updated.current
-          - payments.updated.previous
-          - payments.failed.previous_day
-          - ach.pull.upcoming
-          - ach.pull.previous
-          - ach.pull.nightly
-          - ach.reversals.nightly
-          - ach.debit.daily
-          - entities.created.previous_day
-          - reserve_fbo_balance.created.previous_day
     ReportResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -210,12 +214,25 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/Report'
-    Metadata:
-      type:
-      - object
-      - 'null'
-      additionalProperties: true
-      description: Arbitrary key-value metadata attached to the resource.
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -237,25 +254,6 @@ components:
         success: true
         data: {}
         message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     ErrorObject:
       type: object
       required:
@@ -281,6 +279,35 @@ components:
         message:
           type: string
           description: Human-readable error description.
+    Metadata:
+      type:
+      - object
+      - 'null'
+      additionalProperties: true
+      description: Arbitrary key-value metadata attached to the resource.
+    ReportCreateRequest:
+      type: object
+      description: Request body for creating a report.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          description: The type of report to generate.
+          enum:
+          - payments.created.current
+          - payments.created.previous
+          - payments.created.previous_day
+          - payments.updated.current
+          - payments.updated.previous
+          - payments.failed.previous_day
+          - ach.pull.upcoming
+          - ach.pull.previous
+          - ach.pull.nightly
+          - ach.reversals.nightly
+          - ach.debit.daily
+          - entities.created.previous_day
+          - reserve_fbo_balance.created.previous_day
     Report:
       type: object
       description: A Report is a downloadable file containing aggregated data about payments, entities, or other resources.
@@ -336,33 +363,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the report was last updated.
-  parameters:
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
   securitySchemes:
     OpalToken:
       type: http

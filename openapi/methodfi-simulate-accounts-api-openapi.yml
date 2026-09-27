@@ -166,59 +166,185 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  parameters:
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    ErrorObject:
+    AccountTransaction:
       type: object
+      description: A transaction for an account.
       required:
-      - type
-      - code
-      - message
+      - id
+      - account_id
+      - merchant
+      - amount
+      - auth_amount
+      - currency_code
+      - transaction_amount
+      - transaction_auth_amount
+      - transaction_currency_code
+      - status
+      - descriptor
+      - transacted_at
+      - posted_at
+      - voided_at
+      - original_txn_id
+      - created_at
+      - updated_at
       properties:
-        type:
+        id:
           type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
+          pattern: ^txn_\w+$
+          description: Unique identifier for the transaction.
+          example: txn_aTJMbnCjw34yQ
+        account_id:
+          type: string
+          description: The ID of the account this transaction belongs to.
+        merchant:
+          type:
+          - object
+          - 'null'
+          description: Merchant information for this transaction.
+          properties:
+            name:
+              type:
+              - string
+              - 'null'
+              description: The merchant name.
+            logo:
+              type:
+              - string
+              - 'null'
+              description: URL of the merchant logo.
+        amount:
+          type:
+          - number
+          - 'null'
+          description: The transaction amount in cents.
+        auth_amount:
+          type:
+          - number
+          - 'null'
+          description: The authorized amount in cents.
+        currency_code:
           type:
           - string
           - 'null'
-          description: More specific error classification.
+          description: The ISO 4217 currency code.
+        transaction_amount:
+          type:
+          - number
+          - 'null'
+          description: The transaction amount in the transaction currency.
+        transaction_auth_amount:
+          type:
+          - number
+          - 'null'
+          description: The authorized amount in the transaction currency.
+        transaction_currency_code:
+          type:
+          - string
+          - 'null'
+          description: The ISO 4217 currency code of the transaction currency.
+        status:
+          type: string
+          description: The current status of the transaction.
+          enum:
+          - pending
+          - posted
+          - voided
+        descriptor:
+          type:
+          - string
+          - 'null'
+          description: The transaction descriptor.
+        transacted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the transaction occurred.
+        posted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the transaction was posted.
+        voided_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the transaction was voided.
+        original_txn_id:
+          type:
+          - string
+          - 'null'
+          description: The ID of the original transaction if this is a related transaction.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the transaction record was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the transaction record was last updated.
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
-          description: Human-readable error description.
-    AccountVerificationSessionAmountsResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            properties:
-              amounts:
-                type: array
-                description: The micro deposit amounts.
-                items:
-                  type: integer
-    AccountCardBrandResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/AccountCardBrand'
-    AccountTransactionResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/AccountTransaction'
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -367,184 +493,58 @@ components:
           - 'null'
         message:
           type: string
-    AccountTransaction:
-      type: object
-      description: A transaction for an account.
-      required:
-      - id
-      - account_id
-      - merchant
-      - amount
-      - auth_amount
-      - currency_code
-      - transaction_amount
-      - transaction_auth_amount
-      - transaction_currency_code
-      - status
-      - descriptor
-      - transacted_at
-      - posted_at
-      - voided_at
-      - original_txn_id
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          pattern: ^txn_\w+$
-          description: Unique identifier for the transaction.
-          example: txn_aTJMbnCjw34yQ
-        account_id:
-          type: string
-          description: The ID of the account this transaction belongs to.
-        merchant:
-          type:
-          - object
-          - 'null'
-          description: Merchant information for this transaction.
-          properties:
-            name:
-              type:
-              - string
-              - 'null'
-              description: The merchant name.
-            logo:
-              type:
-              - string
-              - 'null'
-              description: URL of the merchant logo.
-        amount:
-          type:
-          - number
-          - 'null'
-          description: The transaction amount in cents.
-        auth_amount:
-          type:
-          - number
-          - 'null'
-          description: The authorized amount in cents.
-        currency_code:
-          type:
-          - string
-          - 'null'
-          description: The ISO 4217 currency code.
-        transaction_amount:
-          type:
-          - number
-          - 'null'
-          description: The transaction amount in the transaction currency.
-        transaction_auth_amount:
-          type:
-          - number
-          - 'null'
-          description: The authorized amount in the transaction currency.
-        transaction_currency_code:
-          type:
-          - string
-          - 'null'
-          description: The ISO 4217 currency code of the transaction currency.
-        status:
-          type: string
-          description: The current status of the transaction.
-          enum:
-          - pending
-          - posted
-          - voided
-        descriptor:
-          type:
-          - string
-          - 'null'
-          description: The transaction descriptor.
-        transacted_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the transaction occurred.
-        posted_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the transaction was posted.
-        voided_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the transaction was voided.
-        original_txn_id:
-          type:
-          - string
-          - 'null'
-          description: The ID of the original transaction if this is a related transaction.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the transaction record was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the transaction record was last updated.
-    ErrorEnvelope:
+    AccountTransactionResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/AccountTransaction'
+    AccountCardBrandResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/AccountCardBrand'
+    AccountVerificationSessionAmountsResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            properties:
+              amounts:
+                type: array
+                description: The micro deposit amounts.
+                items:
+                  type: integer
+    ErrorObject:
       type: object
       required:
-      - success
-      - data
+      - type
+      - code
       - message
       properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
         message:
           type: string
-  responses:
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-  parameters:
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
+          description: Human-readable error description.
   securitySchemes:
     OpalToken:
       type: http
