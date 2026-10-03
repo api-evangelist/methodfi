@@ -251,6 +251,48 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
     Team:
       type: object
@@ -320,6 +362,62 @@ components:
           type: string
           format: date-time
           description: Timestamp when the team was last updated.
+    MLEPublicKey:
+      type: object
+      description: An MLE (Message-Level Encryption) public key for the team.
+      required:
+      - id
+      - jwk
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the public key.
+        jwk:
+          type: object
+          description: JSON Web Key (JWK) representation of the public key.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the public key was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the public key was last updated.
+    MLEPublicKeyResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/MLEPublicKey'
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
     TeamProduct:
       type: object
       properties:
@@ -329,23 +427,6 @@ components:
         enabled:
           type: boolean
           description: Whether this product is enabled for the team.
-    MLEPublicKeyCreateRequest:
-      type: object
-      description: Request body for creating an MLE public key.
-      required:
-      - jwk
-      properties:
-        jwk:
-          type: object
-          description: JSON Web Key (JWK) to register.
-          additionalProperties: true
-    MLEPublicKeyResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/MLEPublicKey'
     TeamResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -376,8 +457,9 @@ components:
           created_at: '2026-01-15T18:30:00.000Z'
           updated_at: '2026-01-15T18:30:00.000Z'
         message: null
-    ErrorEnvelope:
+    ListEnvelope:
       type: object
+      description: Standard envelope for successful responses that return a list payload.
       required:
       - success
       - data
@@ -385,50 +467,17 @@ components:
       properties:
         success:
           type: boolean
-          description: Always `false` for error responses.
+          description: Always `true` for successful responses.
         data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
+          description: Operation-specific list payload.
         message:
-          type: string
-    TeamEncryptionKeyRequest:
-      type: object
-      description: Request body for setting the default encryption key.
-      required:
-      - key
-      properties:
-        key:
-          type: string
-          description: The encryption key value.
-    ErrorObject:
-      type: object
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
           type:
           - string
           - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
+      example:
+        success: true
+        data: []
+        message: null
     TeamCreateRequest:
       type: object
       description: Request body for creating a child team.
@@ -438,6 +487,16 @@ components:
         name:
           type: string
           description: Display name for the new child team.
+    MLEPublicKeyCreateRequest:
+      type: object
+      description: Request body for creating an MLE public key.
+      required:
+      - jwk
+      properties:
+        jwk:
+          type: object
+          description: JSON Web Key (JWK) to register.
+          additionalProperties: true
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -468,9 +527,17 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/MLEPublicKey'
-    ListEnvelope:
+    TeamEncryptionKeyRequest:
       type: object
-      description: Standard envelope for successful responses that return a list payload.
+      description: Request body for setting the default encryption key.
+      required:
+      - key
+      properties:
+        key:
+          type: string
+          description: The encryption key value.
+    ErrorEnvelope:
+      type: object
       required:
       - success
       - data
@@ -478,17 +545,16 @@ components:
       properties:
         success:
           type: boolean
-          description: Always `true` for successful responses.
+          description: Always `false` for error responses.
         data:
-          description: Operation-specific list payload.
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
         message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
+          type: string
     TeamKey:
       type: object
       properties:
@@ -518,72 +584,6 @@ components:
           - 'null'
           format: date-time
           description: Timestamp when the key was last used, if ever.
-    MLEPublicKey:
-      type: object
-      description: An MLE (Message-Level Encryption) public key for the team.
-      required:
-      - id
-      - jwk
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the public key.
-        jwk:
-          type: object
-          description: JSON Web Key (JWK) representation of the public key.
-          additionalProperties: true
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the public key was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the public key was last updated.
-  responses:
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   parameters:
     idempotency_key:
       name: Idempotency-Key

@@ -128,33 +128,98 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    EntityIdParam:
+      name: entityId
+      in: path
+      required: true
+      description: Unique identifier for the entity.
+      schema:
+        type: string
+        pattern: ^ent_\w+$
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    EntityVehicleIdParam:
+      name: vhlId
+      in: path
+      required: true
+      description: Unique identifier for the entity vehicle.
+      schema:
+        type: string
+        pattern: ^vhl_\w+$
   schemas:
-    ResourceError:
-      type:
-      - object
-      - 'null'
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-        code:
-          type: integer
-        sub_type:
-          type:
-          - string
-          - 'null'
-        message:
-          type: string
-    EntityVehicleResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/EntityVehicle'
     EntityVehicleListResponse:
       allOf:
       - $ref: '#/components/schemas/ListEnvelope'
@@ -164,25 +229,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/EntityVehicle'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     ErrorObject:
       type: object
       required:
@@ -208,9 +254,9 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    SuccessEnvelope:
+    ListEnvelope:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
+      description: Standard envelope for successful responses that return a list payload.
       required:
       - success
       - data
@@ -220,15 +266,25 @@ components:
           type: boolean
           description: Always `true` for successful responses.
         data:
-          description: Operation-specific response payload.
+          description: Operation-specific list payload.
         message:
           type:
           - string
           - 'null'
       example:
         success: true
-        data: {}
+        data: []
         message: null
+    EntityVehicleResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/EntityVehicle'
+    SearchEntityVehiclesRequest:
+      type: object
+      description: Request body for searching entity vehicles. Treated as a product execution.
     EntityVehicle:
       type: object
       required:
@@ -313,9 +369,9 @@ components:
           type: string
           format: date-time
           description: Timestamp when the vehicle record was last updated.
-    ListEnvelope:
+    SuccessEnvelope:
       type: object
-      description: Standard envelope for successful responses that return a list payload.
+      description: Standard envelope for successful responses that return a single payload.
       required:
       - success
       - data
@@ -325,109 +381,53 @@ components:
           type: boolean
           description: Always `true` for successful responses.
         data:
-          description: Operation-specific list payload.
+          description: Operation-specific response payload.
         message:
           type:
           - string
           - 'null'
       example:
         success: true
-        data: []
+        data: {}
         message: null
-    SearchEntityVehiclesRequest:
+    ErrorEnvelope:
       type: object
-      description: Request body for searching entity vehicles. Treated as a product execution.
-  responses:
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-  parameters:
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    EntityVehicleIdParam:
-      name: vhlId
-      in: path
-      required: true
-      description: Unique identifier for the entity vehicle.
-      schema:
-        type: string
-        pattern: ^vhl_\w+$
-    EntityIdParam:
-      name: entityId
-      in: path
-      required: true
-      description: Unique identifier for the entity.
-      schema:
-        type: string
-        pattern: ^ent_\w+$
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    ResourceError:
+      type:
+      - object
+      - 'null'
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+        code:
+          type: integer
+        sub_type:
+          type:
+          - string
+          - 'null'
+        message:
+          type: string
   securitySchemes:
     OpalToken:
       type: http

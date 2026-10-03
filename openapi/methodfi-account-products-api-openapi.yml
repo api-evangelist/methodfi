@@ -86,20 +86,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   parameters:
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
     AccountIdParam:
       name: accountId
       in: path
@@ -116,43 +102,88 @@ components:
       schema:
         type: string
         pattern: ^prd_\w+$
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   schemas:
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    AccountProduct:
+      type: object
+      description: A product associated with an account.
+      required:
+      - id
+      - name
+      - status
+      - status_error
+      - capabilities
+      - reportable
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the product.
+          pattern: ^prd_\w+$
+          example: prd_aTJMbnCjw34yQ
+        name:
+          type: string
+          description: Name of the product.
+        status:
+          type: string
+          description: Current status of the product.
+          enum:
+          - available
+          - unavailable
+          - restricted
+        status_error:
+          $ref: '#/components/schemas/ProductResourceError'
+        capabilities:
+          type: array
+          description: Capabilities provided by this product.
+          items:
+            type: string
+        reportable:
+          type: boolean
+          description: Whether this product generates reportable data.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the product was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the product was last updated.
     ProductResourceError:
       type:
       - object
@@ -216,27 +247,6 @@ components:
             description: Object keyed by product name.
             additionalProperties:
               $ref: '#/components/schemas/AccountProduct'
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
     AccountProductResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -244,52 +254,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/AccountProduct'
-    AccountProduct:
-      type: object
-      description: A product associated with an account.
-      required:
-      - id
-      - name
-      - status
-      - status_error
-      - capabilities
-      - reportable
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the product.
-          pattern: ^prd_\w+$
-          example: prd_aTJMbnCjw34yQ
-        name:
-          type: string
-          description: Name of the product.
-        status:
-          type: string
-          description: Current status of the product.
-          enum:
-          - available
-          - unavailable
-          - restricted
-        status_error:
-          $ref: '#/components/schemas/ProductResourceError'
-        capabilities:
-          type: array
-          description: Capabilities provided by this product.
-          items:
-            type: string
-        reportable:
-          type: boolean
-          description: Whether this product generates reportable data.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the product was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the product was last updated.
     ErrorObject:
       type: object
       required:
@@ -315,6 +279,42 @@ components:
         message:
           type: string
           description: Human-readable error description.
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   securitySchemes:
     OpalToken:
       type: http

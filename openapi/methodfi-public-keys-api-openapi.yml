@@ -102,52 +102,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    MethodPublicKeyResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/MethodPublicKey'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -169,6 +124,25 @@ components:
         success: true
         data: {}
         message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
     MethodPublicKey:
       type: object
       required:
@@ -203,6 +177,45 @@ components:
           type: string
           format: date-time
           description: Timestamp when the key was last updated.
+    JwkPublic:
+      type: object
+      required:
+      - kid
+      - kty
+      - alg
+      - use
+      - n
+      - e
+      properties:
+        kid:
+          type: string
+          description: Key identifier.
+          example: mthd_jwk_abc123
+        kty:
+          type: string
+          description: Key type.
+          example: RSA
+        alg:
+          type: string
+          description: JWK algorithm.
+          example: RSA-OAEP-256
+        use:
+          type: string
+          description: Intended key use.
+          example: enc
+        n:
+          type: string
+          description: RSA modulus.
+        e:
+          type: string
+          description: RSA public exponent.
+    MethodPublicKeyResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/MethodPublicKey'
     WellKnownJwksResponse:
       type: object
       required:
@@ -237,38 +250,25 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    JwkPublic:
-      type: object
-      required:
-      - kid
-      - kty
-      - alg
-      - use
-      - n
-      - e
-      properties:
-        kid:
-          type: string
-          description: Key identifier.
-          example: mthd_jwk_abc123
-        kty:
-          type: string
-          description: Key type.
-          example: RSA
-        alg:
-          type: string
-          description: JWK algorithm.
-          example: RSA-OAEP-256
-        use:
-          type: string
-          description: Intended key use.
-          example: enc
-        n:
-          type: string
-          description: RSA modulus.
-        e:
-          type: string
-          description: RSA public exponent.
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   parameters:
     MethodJwkIdParam:
       name: jwk_id

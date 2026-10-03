@@ -135,15 +135,6 @@ paths:
       description: Development (simulations enabled)
 components:
   schemas:
-    MerchantListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/Merchant'
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -165,6 +156,32 @@ components:
         success: true
         data: {}
         message: null
+    MerchantResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Merchant'
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
     MerchantType:
       type: string
       enum:
@@ -196,6 +213,36 @@ components:
       - utility
       - waste_utility
       - water_utility
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
+    MerchantListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/Merchant'
     MerchantProviderIds:
       type: object
       properties:
@@ -219,27 +266,6 @@ components:
           type: array
           items:
             type: string
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
     Merchant:
       type: object
       required:
@@ -281,32 +307,6 @@ components:
           items:
             type: string
           description: Accepted account number formats.
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    MerchantResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Merchant'
     ErrorObject:
       type: object
       required:
@@ -358,39 +358,21 @@ components:
           type: array
           items:
             type: string
-  parameters:
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    Page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 1
-    PageLimit:
-      name: page_limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 50
-        maximum: 100
   responses:
     BadRequest:
       description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
       content:
         application/json:
           schema:
@@ -412,24 +394,42 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    PageLimit:
+      name: page_limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 100
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
   securitySchemes:
     OpalToken:
       type: http

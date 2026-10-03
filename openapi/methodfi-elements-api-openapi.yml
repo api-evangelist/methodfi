@@ -211,66 +211,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  parameters:
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -304,6 +245,25 @@ components:
         data:
           id: obj_123
         message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
     ErrorObject:
       type: object
       required:
@@ -333,6 +293,46 @@ components:
       type: object
       description: Arbitrary JSON object.
       additionalProperties: true
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   securitySchemes:
     OpalToken:
       type: http

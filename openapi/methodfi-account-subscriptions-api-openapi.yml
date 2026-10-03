@@ -155,28 +155,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   parameters:
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    AccountSubscriptionIdParam:
-      name: subId
-      in: path
-      required: true
-      description: Unique identifier for the account subscription.
-      schema:
-        type: string
-        pattern: ^sub_\w+$
     AccountIdParam:
       name: accountId
       in: path
@@ -197,7 +175,66 @@ components:
       schema:
         type: string
         format: uuid
+    AccountSubscriptionIdParam:
+      name: subId
+      in: path
+      required: true
+      description: Unique identifier for the account subscription.
+      schema:
+        type: string
+        pattern: ^sub_\w+$
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   schemas:
+    AccountSubscriptionResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/AccountSubscription'
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    AccountSubscriptionCreateRequest:
+      type: object
+      description: Request body for creating an account subscription.
+      required:
+      - enroll
+      properties:
+        enroll:
+          type: string
+          description: Subscription name to enroll.
     AccountSubscription:
       type: object
       description: A subscription for an account.
@@ -236,16 +273,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the subscription was last updated.
-    AccountSubscriptionListResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            description: Object keyed by subscription name.
-            additionalProperties:
-              $ref: '#/components/schemas/AccountSubscription'
     ErrorEnvelope:
       type: object
       required:
@@ -265,34 +292,16 @@ components:
               $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    AccountSubscriptionResponse:
+    AccountSubscriptionListResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
       - type: object
         properties:
           data:
-            $ref: '#/components/schemas/AccountSubscription'
+            type: object
+            description: Object keyed by subscription name.
+            additionalProperties:
+              $ref: '#/components/schemas/AccountSubscription'
     ErrorObject:
       type: object
       required:
@@ -318,35 +327,9 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    AccountSubscriptionCreateRequest:
-      type: object
-      description: Request body for creating an account subscription.
-      required:
-      - enroll
-      properties:
-        enroll:
-          type: string
-          description: Subscription name to enroll.
   responses:
     BadRequest:
       description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -359,6 +342,23 @@ components:
             $ref: '#/components/schemas/ErrorEnvelope'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
       content:
         application/json:
           schema:

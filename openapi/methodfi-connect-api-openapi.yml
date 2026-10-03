@@ -38,36 +38,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ConnectResponse'
 components:
-  parameters:
-    EntityId:
-      name: ent_id
-      in: path
-      required: true
-      schema:
-        type: string
-      description: The entity identifier (e.g. ent_xxx).
   schemas:
-    ConnectResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        entity_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - in_progress
-          - completed
-          - failed
-        accounts:
-          type: array
-          description: Liability accounts discovered for the entity.
-          items:
-            $ref: '#/components/schemas/AccountResponse'
-        created_at:
-          type: string
-          format: date-time
     AccountResponse:
       type: object
       properties:
@@ -105,6 +76,35 @@ components:
         updated_at:
           type: string
           format: date-time
+    ConnectResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - in_progress
+          - completed
+          - failed
+        accounts:
+          type: array
+          description: Liability accounts discovered for the entity.
+          items:
+            $ref: '#/components/schemas/AccountResponse'
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    EntityId:
+      name: ent_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The entity identifier (e.g. ent_xxx).
   securitySchemes:
     bearerAuth:
       type: http

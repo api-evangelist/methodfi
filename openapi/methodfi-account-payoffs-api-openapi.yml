@@ -132,51 +132,49 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  headers:
-    Pagination-Page-Cursor-Next:
-      description: Cursor for the next page, if available.
-      schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Total-Count:
-      description: Total number of items across all pages.
-      schema:
-        type: integer
-    Pagination-Page-Cursor-Prev:
-      description: Cursor for the previous page, if available.
-      schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page-Count:
-      description: Total number of pages.
-      schema:
-        type: integer
-    Pagination-Page:
-      description: Current page number.
-      schema:
-        type: integer
-    Pagination-Page-Limit:
-      description: Number of items per page.
-      schema:
-        type: integer
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   parameters:
-    AccountPayoffIdParam:
-      name: pyfId
-      in: path
-      required: true
-      description: Unique identifier for the account payoff.
-      schema:
-        type: string
-        pattern: ^pyf_\w+$
-    PageCursorParam:
-      name: page_cursor
-      in: query
-      required: false
-      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
-      schema:
-        type: string
     idempotency_key:
       name: Idempotency-Key
       in: header
@@ -189,20 +187,6 @@ components:
       schema:
         type: string
         format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
     PageParam:
       name: page
       in: query
@@ -230,111 +214,36 @@ components:
       schema:
         type: string
         pattern: ^acc_\w+$
-  responses:
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    AccountPayoffIdParam:
+      name: pyfId
+      in: path
+      required: true
+      description: Unique identifier for the account payoff.
+      schema:
+        type: string
+        pattern: ^pyf_\w+$
+    PageCursorParam:
+      name: page_cursor
+      in: query
+      required: false
+      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
+      schema:
+        type: string
   schemas:
-    PayoffResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a payoff sync fails.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of payoff error.
-          enum:
-          - PAYOFF_FAILED
-        code:
-          type: integer
-          description: Numeric error code (18XXX range).
-          enum:
-          - 18001
-        sub_type:
-          type: string
-          description: Specific payoff error classification.
-          enum:
-          - PAYOFF_TEMPORARILY_UNAVAILABLE
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: PAYOFF_FAILED
-        code: 18001
-        sub_type: PAYOFF_TEMPORARILY_UNAVAILABLE
-        message: Payoff is temporarily unavailable for this account.
-    AccountPayoffListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/AccountPayoff'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     ErrorObject:
       type: object
       required:
@@ -360,27 +269,6 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
     AccountPayoffResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -388,27 +276,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/AccountPayoff'
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
     AccountPayoff:
       type: object
       description: A payoff record for an account.
@@ -463,6 +330,139 @@ components:
           type: string
           format: date-time
           description: Timestamp when the payoff was last updated.
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
+    AccountPayoffListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/AccountPayoff'
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    PayoffResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a payoff sync fails.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of payoff error.
+          enum:
+          - PAYOFF_FAILED
+        code:
+          type: integer
+          description: Numeric error code (18XXX range).
+          enum:
+          - 18001
+        sub_type:
+          type: string
+          description: Specific payoff error classification.
+          enum:
+          - PAYOFF_TEMPORARILY_UNAVAILABLE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: PAYOFF_FAILED
+        code: 18001
+        sub_type: PAYOFF_TEMPORARILY_UNAVAILABLE
+        message: Payoff is temporarily unavailable for this account.
+  headers:
+    Pagination-Page-Limit:
+      description: Number of items per page.
+      schema:
+        type: integer
+    Pagination-Page:
+      description: Current page number.
+      schema:
+        type: integer
+    Pagination-Page-Cursor-Prev:
+      description: Cursor for the previous page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Total-Count:
+      description: Total number of items across all pages.
+      schema:
+        type: integer
+    Pagination-Page-Count:
+      description: Total number of pages.
+      schema:
+        type: integer
+    Pagination-Page-Cursor-Next:
+      description: Cursor for the next page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
   securitySchemes:
     OpalToken:
       type: http

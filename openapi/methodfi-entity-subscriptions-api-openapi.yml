@@ -177,14 +177,6 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
-    EntityIdParam:
-      name: entityId
-      in: path
-      required: true
-      description: Unique identifier for the entity.
-      schema:
-        type: string
-        pattern: ^ent_\w+$
     idempotency_key:
       name: Idempotency-Key
       in: header
@@ -205,7 +197,62 @@ components:
       schema:
         type: string
         pattern: ^sub_\w+$
+    EntityIdParam:
+      name: entityId
+      in: path
+      required: true
+      description: Unique identifier for the entity.
+      schema:
+        type: string
+        pattern: ^ent_\w+$
   schemas:
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    EntitySubscriptionResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/EntitySubscription'
     EntitySubscription:
       type: object
       required:
@@ -273,27 +320,6 @@ components:
                   description: List of attribute names to request.
                   items:
                     type: string
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
     ErrorObject:
       type: object
       required:
@@ -319,25 +345,6 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     EntitySubscriptionListResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -348,16 +355,27 @@ components:
             description: Object keyed by subscription name with EntitySubscription values.
             additionalProperties:
               $ref: '#/components/schemas/EntitySubscription'
-    EntitySubscriptionResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/EntitySubscription'
   responses:
     BadRequest:
       description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
       content:
         application/json:
           schema:
@@ -379,26 +397,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     InternalError:
       description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
       content:
         application/json:
           schema:

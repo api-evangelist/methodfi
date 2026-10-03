@@ -156,16 +156,140 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  parameters:
+    ToDateParam:
+      name: to_date
+      in: query
+      required: false
+      description: Filter results to this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination (1-indexed).
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageLimitParam:
+      name: page_limit
+      in: query
+      required: false
+      description: Number of items per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    EntityIdParam:
+      name: entityId
+      in: path
+      required: true
+      description: Unique identifier for the entity.
+      schema:
+        type: string
+        pattern: ^ent_\w+$
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    EntityCreditScoreIdParam:
+      name: crsId
+      in: path
+      required: true
+      description: Unique identifier for the entity credit score.
+      schema:
+        type: string
+        pattern: ^crs_\w+$
+    PageCursorParam:
+      name: page_cursor
+      in: query
+      required: false
+      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
+      schema:
+        type: string
+    FromDateParam:
+      name: from_date
+      in: query
+      required: false
+      description: Filter results from this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
+  responses:
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    EntityCreditScoreListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/EntityCreditScore'
     EntityCreditScoreResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -173,38 +297,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/EntityCreditScore'
-    EntityCreditScoreFactor:
-      type: object
-      properties:
-        code:
-          type:
-          - string
-          - 'null'
-          description: Factor code.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Human-readable description of the factor.
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     ErrorObject:
       type: object
       required:
@@ -230,9 +322,22 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    SuccessEnvelope:
+    EntityCreditScoreFactor:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          description: Factor code.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Human-readable description of the factor.
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
       required:
       - success
       - data
@@ -242,15 +347,24 @@ components:
           type: boolean
           description: Always `true` for successful responses.
         data:
-          description: Operation-specific response payload.
+          description: Operation-specific list payload.
         message:
           type:
           - string
           - 'null'
       example:
         success: true
-        data: {}
+        data: []
         message: null
+    EntityCreditScoreListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/EntityCreditScore'
     EntityCreditScore:
       type: object
       required:
@@ -332,27 +446,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the credit score was last updated.
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
     CreditScoreResourceError:
       type:
       - object
@@ -387,139 +480,46 @@ components:
         code: 23001
         sub_type: CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE
         message: Credit Score is temporarily unavailable for this entity.
-  parameters:
-    EntityCreditScoreIdParam:
-      name: crsId
-      in: path
-      required: true
-      description: Unique identifier for the entity credit score.
-      schema:
-        type: string
-        pattern: ^crs_\w+$
-    PageCursorParam:
-      name: page_cursor
-      in: query
-      required: false
-      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
-      schema:
-        type: string
-    ToDateParam:
-      name: to_date
-      in: query
-      required: false
-      description: Filter results to this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    PageParam:
-      name: page
-      in: query
-      required: false
-      description: Page number for pagination (1-indexed).
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    PageLimitParam:
-      name: page_limit
-      in: query
-      required: false
-      description: Number of items per page.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    FromDateParam:
-      name: from_date
-      in: query
-      required: false
-      description: Filter results from this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
-    EntityIdParam:
-      name: entityId
-      in: path
-      required: true
-      description: Unique identifier for the entity.
-      schema:
-        type: string
-        pattern: ^ent_\w+$
-  responses:
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
   securitySchemes:
     OpalToken:
       type: http
