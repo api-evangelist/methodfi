@@ -135,84 +135,6 @@ paths:
       description: Development (simulations enabled)
 components:
   schemas:
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    MerchantResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Merchant'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    MerchantType:
-      type: string
-      enum:
-      - auto_loan
-      - bank
-      - bnpl
-      - business_loan
-      - city
-      - collection
-      - county
-      - credit_builder
-      - credit_card
-      - electric_utility
-      - fintech
-      - home_equity_loan
-      - home_loan
-      - insurance
-      - internet_utility
-      - loan
-      - medical
-      - mortgage
-      - personal_loan
-      - student_loan
-      - student_loans
-      - subscription
-      - telephone_utility
-      - television_utility
-      - unknown
-      - utility
-      - waste_utility
-      - water_utility
     ListEnvelope:
       type: object
       description: Standard envelope for successful responses that return a list payload.
@@ -243,29 +165,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/Merchant'
-    MerchantProviderIds:
-      type: object
-      properties:
-        plaid:
-          type: array
-          items:
-            type: string
-        mx:
-          type: array
-          items:
-            type: string
-        finicity:
-          type: array
-          items:
-            type: string
-        dpp:
-          type: array
-          items:
-            type: string
-        rpps:
-          type: array
-          items:
-            type: string
     Merchant:
       type: object
       required:
@@ -307,6 +206,36 @@ components:
           items:
             type: string
           description: Accepted account number formats.
+    MerchantResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Merchant'
+    MerchantProviderIds:
+      type: object
+      properties:
+        plaid:
+          type: array
+          items:
+            type: string
+        mx:
+          type: array
+          items:
+            type: string
+        finicity:
+          type: array
+          items:
+            type: string
+        dpp:
+          type: array
+          items:
+            type: string
+        rpps:
+          type: array
+          items:
+            type: string
     ErrorObject:
       type: object
       required:
@@ -332,6 +261,77 @@ components:
         message:
           type: string
           description: Human-readable error description.
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    MerchantType:
+      type: string
+      enum:
+      - auto_loan
+      - bank
+      - bnpl
+      - business_loan
+      - city
+      - collection
+      - county
+      - credit_builder
+      - credit_card
+      - electric_utility
+      - fintech
+      - home_equity_loan
+      - home_loan
+      - insurance
+      - internet_utility
+      - loan
+      - medical
+      - mortgage
+      - personal_loan
+      - student_loan
+      - student_loans
+      - subscription
+      - telephone_utility
+      - television_utility
+      - unknown
+      - utility
+      - waste_utility
+      - water_utility
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
     MerchantListResponse_2:
       type: object
       properties:
@@ -359,6 +359,18 @@ components:
           items:
             type: string
   responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     BadRequest:
       description: Bad request - invalid parameters or request body.
       content:
@@ -367,18 +379,6 @@ components:
             $ref: '#/components/schemas/ErrorEnvelope'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -394,8 +394,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -415,6 +415,13 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
     PageLimit:
       name: page_limit
       in: query
@@ -423,13 +430,6 @@ components:
         type: integer
         default: 50
         maximum: 100
-    Page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 1
   securitySchemes:
     OpalToken:
       type: http

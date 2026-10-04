@@ -41,13 +41,6 @@ paths:
                 $ref: '#/components/schemas/TransactionListResponse'
 components:
   schemas:
-    TransactionListResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransactionResponse'
     TransactionResponse:
       type: object
       properties:
@@ -64,6 +57,13 @@ components:
         created_at:
           type: string
           format: date-time
+    TransactionListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionResponse'
   parameters:
     AccountId:
       name: acc_id
@@ -72,6 +72,13 @@ components:
       schema:
         type: string
       description: The account identifier (e.g. acc_xxx).
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
     PageLimit:
       name: page_limit
       in: query
@@ -80,13 +87,6 @@ components:
         type: integer
         default: 50
         maximum: 100
-    Page:
-      name: page
-      in: query
-      required: false
-      schema:
-        type: integer
-        default: 1
   securitySchemes:
     bearerAuth:
       type: http

@@ -90,6 +90,16 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
+    EntityProductListResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            description: Object keyed by product name with EntityProduct values.
+            additionalProperties:
+              $ref: '#/components/schemas/EntityProduct'
     EntityProductResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -97,46 +107,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/EntityProduct'
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     EntityProduct:
       type: object
       required:
@@ -181,16 +151,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when the product was last updated.
-    EntityProductListResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            description: Object keyed by product name with EntityProduct values.
-            additionalProperties:
-              $ref: '#/components/schemas/EntityProduct'
     ErrorObject:
       type: object
       required:
@@ -216,7 +176,55 @@ components:
         message:
           type: string
           description: Human-readable error description.
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
   parameters:
+    EntityIdParam:
+      name: entityId
+      in: path
+      required: true
+      description: Unique identifier for the entity.
+      schema:
+        type: string
+        pattern: ^ent_\w+$
     method_version:
       name: Method-Version
       in: header
@@ -239,15 +247,19 @@ components:
       schema:
         type: string
         pattern: ^prd_\w+$
-    EntityIdParam:
-      name: entityId
-      in: path
-      required: true
-      description: Unique identifier for the entity.
-      schema:
-        type: string
-        pattern: ^ent_\w+$
   responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     BadRequest:
       description: Bad request - invalid parameters or request body.
       content:
@@ -256,18 +268,6 @@ components:
             $ref: '#/components/schemas/ErrorEnvelope'
     Unauthorized:
       description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
@@ -283,8 +283,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:

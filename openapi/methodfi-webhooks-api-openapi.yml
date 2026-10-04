@@ -297,6 +297,41 @@ paths:
     - url: https://dev.methodfi.com
       description: Development (simulations enabled)
 components:
+  parameters:
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    WebhookIdParam:
+      name: webhookId
+      in: path
+      required: true
+      description: Unique identifier for the webhook.
+      schema:
+        type: string
+        pattern: ^whk_\w+$
   responses:
     BadRequest:
       description: Bad request - invalid parameters or request body.
@@ -306,12 +341,6 @@ components:
             $ref: '#/components/schemas/ErrorEnvelope'
     NotFound:
       description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
       content:
         application/json:
           schema:
@@ -345,83 +374,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-  parameters:
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    WebhookIdParam:
-      name: webhookId
-      in: path
-      required: true
-      description: Unique identifier for the webhook.
-      schema:
-        type: string
-        pattern: ^whk_\w+$
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    ErrorObject:
-      type: object
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
-    WebhookStatus:
-      type: string
-      enum:
-      - active
-      - requires_attention
-      - disabled
-      - deleted
-    WebhookListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/Webhook'
     WebhookEventPayload:
       type: object
       description: The outbound payload delivered to a webhook subscription URL when an event occurs.
@@ -489,47 +448,6 @@ components:
         refs:
           account: acc_BcRdHNjb9TYKV
           entity: ent_qKNBB68bfHGNA
-    Metadata:
-      type:
-      - object
-      - 'null'
-      additionalProperties: true
-      description: Arbitrary key-value metadata attached to the resource.
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
-    WebhookUpdateRequest:
-      type: object
-      required:
-      - status
-      properties:
-        status:
-          $ref: '#/components/schemas/WebhookStatus'
-    WebhookResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Webhook'
     Webhook:
       type: object
       required:
@@ -569,6 +487,124 @@ components:
           type: string
           format: date-time
           description: Timestamp when the webhook was last updated.
+    Metadata:
+      type:
+      - object
+      - 'null'
+      additionalProperties: true
+      description: Arbitrary key-value metadata attached to the resource.
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
+    WebhookStatus:
+      type: string
+      enum:
+      - active
+      - requires_attention
+      - disabled
+      - deleted
+    WebhookDeleteResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            type:
+            - object
+            - 'null'
+            example: null
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    WebhookListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/Webhook'
     WebhookCreateRequest:
       type: object
       required:
@@ -594,107 +630,6 @@ components:
           description: Whether to include the full resource data in the webhook payload.
         metadata:
           $ref: '#/components/schemas/Metadata'
-    WebhookDeleteResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            type:
-            - object
-            - 'null'
-            example: null
-    WebhookResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when a webhook is disabled or requires attention.
-      required:
-      - type
-      - code
-      - sub_type
-      - message
-      properties:
-        type:
-          type: string
-          description: The category of webhook error.
-          enum:
-          - WEBHOOK_DISABLED
-          - WEBHOOK_REQUIRES_ATTENTION
-        code:
-          type: integer
-          description: Numeric error code (25XXX range).
-          enum:
-          - 25001
-          - 25002
-          - 25003
-          - 25004
-          - 25005
-          - 25006
-          - 25007
-          - 25008
-          - 25009
-        sub_type:
-          type: string
-          description: Specific webhook error classification.
-          enum:
-          - WEBHOOK_DISABLED_FAILED_OTHER
-          - WEBHOOK_DISABLED_RECEIVED_4XX_ERROR
-          - WEBHOOK_DISABLED_RECEIVED_5XX_ERROR
-          - WEBHOOK_DISABLED_TIMEOUT_ON_RESPONSE
-          - WEBHOOK_DISABLED_BY_USER
-          - WEBHOOK_REQUIRES_ATTENTION_FAILED_OTHER
-          - WEBHOOK_REQUIRES_ATTENTION_RECEIVED_4XX_ERROR
-          - WEBHOOK_REQUIRES_ATTENTION_RECEIVED_5XX_ERROR
-          - WEBHOOK_REQUIRES_ATTENTION_TIMEOUT_ON_RESPONSE
-        message:
-          type: string
-          description: Human-readable error description.
-      example:
-        type: WEBHOOK_DISABLED
-        code: 25002
-        sub_type: WEBHOOK_DISABLED_RECEIVED_4XX_ERROR
-        message: Webhook failed 25 times with a client error (4XX type).
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     WebhookType:
       type: string
       description: The event type this webhook subscribes to.
@@ -790,6 +725,71 @@ components:
       - entity_attribute.credit_health_soft_inquiries_value.increased
       - entity_attribute.credit_health_hard_inquiries_value.decreased
       - entity_attribute.credit_health_hard_inquiries_value.increased
+    WebhookResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when a webhook is disabled or requires attention.
+      required:
+      - type
+      - code
+      - sub_type
+      - message
+      properties:
+        type:
+          type: string
+          description: The category of webhook error.
+          enum:
+          - WEBHOOK_DISABLED
+          - WEBHOOK_REQUIRES_ATTENTION
+        code:
+          type: integer
+          description: Numeric error code (25XXX range).
+          enum:
+          - 25001
+          - 25002
+          - 25003
+          - 25004
+          - 25005
+          - 25006
+          - 25007
+          - 25008
+          - 25009
+        sub_type:
+          type: string
+          description: Specific webhook error classification.
+          enum:
+          - WEBHOOK_DISABLED_FAILED_OTHER
+          - WEBHOOK_DISABLED_RECEIVED_4XX_ERROR
+          - WEBHOOK_DISABLED_RECEIVED_5XX_ERROR
+          - WEBHOOK_DISABLED_TIMEOUT_ON_RESPONSE
+          - WEBHOOK_DISABLED_BY_USER
+          - WEBHOOK_REQUIRES_ATTENTION_FAILED_OTHER
+          - WEBHOOK_REQUIRES_ATTENTION_RECEIVED_4XX_ERROR
+          - WEBHOOK_REQUIRES_ATTENTION_RECEIVED_5XX_ERROR
+          - WEBHOOK_REQUIRES_ATTENTION_TIMEOUT_ON_RESPONSE
+        message:
+          type: string
+          description: Human-readable error description.
+      example:
+        type: WEBHOOK_DISABLED
+        code: 25002
+        sub_type: WEBHOOK_DISABLED_RECEIVED_4XX_ERROR
+        message: Webhook failed 25 times with a client error (4XX type).
+    WebhookUpdateRequest:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          $ref: '#/components/schemas/WebhookStatus'
+    WebhookResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Webhook'
     WebhookCreateRequest_2:
       type: object
       required:

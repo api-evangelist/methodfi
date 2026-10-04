@@ -163,6 +163,26 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   parameters:
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    EntityIdParam:
+      name: entityId
+      in: path
+      required: true
+      description: Unique identifier for the entity.
+      schema:
+        type: string
+        pattern: ^ent_\w+$
     method_version:
       name: Method-Version
       in: header
@@ -177,18 +197,6 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
     EntitySubscriptionIdParam:
       name: subId
       in: path
@@ -197,55 +205,7 @@ components:
       schema:
         type: string
         pattern: ^sub_\w+$
-    EntityIdParam:
-      name: entityId
-      in: path
-      required: true
-      description: Unique identifier for the entity.
-      schema:
-        type: string
-        pattern: ^ent_\w+$
   schemas:
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     EntitySubscriptionResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -293,6 +253,16 @@ components:
           type: string
           format: date-time
           description: Timestamp when the subscription was last updated.
+    EntitySubscriptionListResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            type: object
+            description: Object keyed by subscription name with EntitySubscription values.
+            additionalProperties:
+              $ref: '#/components/schemas/EntitySubscription'
     CreateEntitySubscriptionRequest:
       type: object
       required:
@@ -345,17 +315,59 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    EntitySubscriptionListResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            type: object
-            description: Object keyed by subscription name with EntitySubscription values.
-            additionalProperties:
-              $ref: '#/components/schemas/EntitySubscription'
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
   responses:
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     BadRequest:
       description: Bad request - invalid parameters or request body.
       content:
@@ -374,18 +386,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     RateLimited:
       description: Too many requests - rate limit exceeded.
       headers:
@@ -397,8 +397,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:

@@ -137,77 +137,34 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  parameters:
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   schemas:
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ReportResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/Report'
-    ReportCreateRequest:
-      type: object
-      description: Request body for creating a report.
-      required:
-      - type
-      properties:
-        type:
-          type: string
-          description: The type of report to generate.
-          enum:
-          - payments.created.current
-          - payments.created.previous
-          - payments.created.previous_day
-          - payments.updated.current
-          - payments.updated.previous
-          - payments.failed.previous_day
-          - ach.pull.upcoming
-          - ach.pull.previous
-          - ach.pull.nightly
-          - ach.reversals.nightly
-          - ach.debit.daily
-          - entities.created.previous_day
-          - reserve_fbo_balance.created.previous_day
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     Report:
       type: object
       description: A Report is a downloadable file containing aggregated data about payments, entities, or other resources.
@@ -263,12 +220,36 @@ components:
           type: string
           format: date-time
           description: Timestamp when the report was last updated.
-    Metadata:
-      type:
-      - object
-      - 'null'
-      additionalProperties: true
-      description: Arbitrary key-value metadata attached to the resource.
+    ReportCreateRequest:
+      type: object
+      description: Request body for creating a report.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          description: The type of report to generate.
+          enum:
+          - payments.created.current
+          - payments.created.previous
+          - payments.created.previous_day
+          - payments.updated.current
+          - payments.updated.previous
+          - payments.failed.previous_day
+          - ach.pull.upcoming
+          - ach.pull.previous
+          - ach.pull.nightly
+          - ach.reversals.nightly
+          - ach.debit.daily
+          - entities.created.previous_day
+          - reserve_fbo_balance.created.previous_day
+    ReportResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/Report'
     ErrorObject:
       type: object
       required:
@@ -294,7 +275,59 @@ components:
         message:
           type: string
           description: Human-readable error description.
+    Metadata:
+      type:
+      - object
+      - 'null'
+      additionalProperties: true
+      description: Arbitrary key-value metadata attached to the resource.
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
   responses:
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
     BadRequest:
       description: Bad request - invalid parameters or request body.
       content:
@@ -313,12 +346,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     RateLimited:
       description: Too many requests - rate limit exceeded.
       headers:
@@ -330,39 +357,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
+    NotFound:
+      description: Not found - the requested resource does not exist.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-  parameters:
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
   securitySchemes:
     OpalToken:
       type: http

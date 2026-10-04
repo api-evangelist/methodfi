@@ -139,44 +139,6 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  parameters:
-    ToDateParam:
-      name: to_date
-      in: query
-      required: false
-      description: Filter results to this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    PageCursorParam:
-      name: page_cursor
-      in: query
-      required: false
-      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
-      schema:
-        type: string
-    FromDateParam:
-      name: from_date
-      in: query
-      required: false
-      description: Filter results from this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
   responses:
     BadRequest:
       description: Bad request - invalid parameters or request body.
@@ -213,32 +175,52 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
+    PageCursorParam:
+      name: page_cursor
+      in: query
+      required: false
+      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
+      schema:
+        type: string
+    ToDateParam:
+      name: to_date
+      in: query
+      required: false
+      description: Filter results to this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
+    FromDateParam:
+      name: from_date
+      in: query
+      required: false
+      description: Filter results from this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
   schemas:
-    ErrorObject:
-      type: object
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-          description: Error type category.
-          enum:
-          - invalid_request
-          - api_error
-          - resource_error
-        code:
-          type: integer
-          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
-        sub_type:
-          type:
-          - string
-          - 'null'
-          description: More specific error classification.
-        message:
-          type: string
-          description: Human-readable error description.
+    ManagedAccountResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/ManagedAccount'
     ManagedAccountListResponse:
       allOf:
       - $ref: '#/components/schemas/ListEnvelope'
@@ -248,13 +230,25 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/ManagedAccount'
-    ManagedAccountResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/ManagedAccount'
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
     ListEnvelope:
       type: object
       description: Standard envelope for successful responses that return a list payload.
@@ -276,30 +270,6 @@ components:
         success: true
         data: []
         message: null
-    ManagedAccountTransaction:
-      type: object
-      description: A transaction on a managed account.
-      required:
-      - id
-      - description
-      - date
-      - amount
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the transaction.
-          pattern: ^macc_txn_\w+$
-          example: macc_txn_aTJMbnCjw34yQ
-        description:
-          type: string
-          description: Human-readable description of the transaction.
-        date:
-          type: string
-          format: date
-          description: Date the transaction occurred (YYYY-MM-DD).
-        amount:
-          type: number
-          description: Transaction amount in cents. Positive for inbound/credit transactions, negative for outbound/debit transactions.
     ManagedAccount:
       type: object
       description: A Managed Account is a Method-managed financial account used for fund operations.
@@ -327,6 +297,40 @@ components:
         available_balance:
           type: number
           description: Available balance of the managed account in cents.
+    ManagedAccountTransactionListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ManagedAccountTransaction'
+    ErrorObject:
+      type: object
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+          description: Error type category.
+          enum:
+          - invalid_request
+          - api_error
+          - resource_error
+        code:
+          type: integer
+          description: Numeric error code. Common codes include 400 (bad request), 401 (unauthorized), 403 (forbidden), 404 (not found), 422 (unprocessable entity), 429 (rate limited), and 500 (internal error).
+        sub_type:
+          type:
+          - string
+          - 'null'
+          description: More specific error classification.
+        message:
+          type: string
+          description: Human-readable error description.
     SuccessEnvelope:
       type: object
       description: Standard envelope for successful responses that return a single payload.
@@ -348,45 +352,41 @@ components:
         success: true
         data: {}
         message: null
-    ErrorEnvelope:
+    ManagedAccountTransaction:
       type: object
+      description: A transaction on a managed account.
       required:
-      - success
-      - data
-      - message
+      - id
+      - description
+      - date
+      - amount
       properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
+        id:
           type: string
-    ManagedAccountTransactionListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ManagedAccountTransaction'
+          description: Unique identifier for the transaction.
+          pattern: ^macc_txn_\w+$
+          example: macc_txn_aTJMbnCjw34yQ
+        description:
+          type: string
+          description: Human-readable description of the transaction.
+        date:
+          type: string
+          format: date
+          description: Date the transaction occurred (YYYY-MM-DD).
+        amount:
+          type: number
+          description: Transaction amount in cents. Positive for inbound/credit transactions, negative for outbound/debit transactions.
   headers:
-    Pagination-Page-Limit:
-      description: Number of items per page.
-      schema:
-        type: integer
     Pagination-Page-Cursor-Next:
       description: Cursor for the next page, if available.
       schema:
         type:
         - string
         - 'null'
+    Pagination-Page-Limit:
+      description: Number of items per page.
+      schema:
+        type: integer
   securitySchemes:
     OpalToken:
       type: http

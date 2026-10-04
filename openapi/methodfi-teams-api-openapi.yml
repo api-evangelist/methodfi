@@ -251,6 +251,33 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  parameters:
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   responses:
     BadRequest:
       description: Bad request - invalid parameters or request body.
@@ -260,12 +287,6 @@ components:
             $ref: '#/components/schemas/ErrorEnvelope'
     NotFound:
       description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
       content:
         application/json:
           schema:
@@ -293,7 +314,37 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
+    MLEPublicKey:
+      type: object
+      description: An MLE (Message-Level Encryption) public key for the team.
+      required:
+      - id
+      - jwk
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the public key.
+        jwk:
+          type: object
+          description: JSON Web Key (JWK) representation of the public key.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the public key was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the public key was last updated.
     Team:
       type: object
       description: A Team represents your organization and its API configuration.
@@ -362,37 +413,64 @@ components:
           type: string
           format: date-time
           description: Timestamp when the team was last updated.
-    MLEPublicKey:
+    ErrorEnvelope:
       type: object
-      description: An MLE (Message-Level Encryption) public key for the team.
       required:
-      - id
-      - jwk
-      - created_at
-      - updated_at
+      - success
+      - data
+      - message
       properties:
-        id:
-          type: string
-          description: Unique identifier for the public key.
-        jwk:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
           type: object
-          description: JSON Web Key (JWK) representation of the public key.
-          additionalProperties: true
-        created_at:
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
           type: string
-          format: date-time
-          description: Timestamp when the public key was created.
-        updated_at:
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
+    TeamEncryptionKeyRequest:
+      type: object
+      description: Request body for setting the default encryption key.
+      required:
+      - key
+      properties:
+        key:
           type: string
-          format: date-time
-          description: Timestamp when the public key was last updated.
-    MLEPublicKeyResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/MLEPublicKey'
+          description: The encryption key value.
+    TeamProduct:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The product type.
+        enabled:
+          type: boolean
+          description: Whether this product is enabled for the team.
     ErrorObject:
       type: object
       required:
@@ -418,15 +496,27 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    TeamProduct:
+    SuccessEnvelope:
       type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
       properties:
-        type:
-          type: string
-          description: The product type.
-        enabled:
+        success:
           type: boolean
-          description: Whether this product is enabled for the team.
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
     TeamResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -457,27 +547,13 @@ components:
           created_at: '2026-01-15T18:30:00.000Z'
           updated_at: '2026-01-15T18:30:00.000Z'
         message: null
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
+    MLEPublicKeyResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/MLEPublicKey'
     TeamCreateRequest:
       type: object
       description: Request body for creating a child team.
@@ -487,37 +563,6 @@ components:
         name:
           type: string
           description: Display name for the new child team.
-    MLEPublicKeyCreateRequest:
-      type: object
-      description: Request body for creating an MLE public key.
-      required:
-      - jwk
-      properties:
-        jwk:
-          type: object
-          description: JSON Web Key (JWK) to register.
-          additionalProperties: true
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
     MLEPublicKeyListResponse:
       allOf:
       - $ref: '#/components/schemas/ListEnvelope'
@@ -527,34 +572,6 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/MLEPublicKey'
-    TeamEncryptionKeyRequest:
-      type: object
-      description: Request body for setting the default encryption key.
-      required:
-      - key
-      properties:
-        key:
-          type: string
-          description: The encryption key value.
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
     TeamKey:
       type: object
       properties:
@@ -584,33 +601,16 @@ components:
           - 'null'
           format: date-time
           description: Timestamp when the key was last used, if ever.
-  parameters:
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
+    MLEPublicKeyCreateRequest:
+      type: object
+      description: Request body for creating an MLE public key.
+      required:
+      - jwk
+      properties:
+        jwk:
+          type: object
+          description: JSON Web Key (JWK) to register.
+          additionalProperties: true
   securitySchemes:
     OpalToken:
       type: http

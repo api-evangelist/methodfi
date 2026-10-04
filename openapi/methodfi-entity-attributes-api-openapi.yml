@@ -169,14 +169,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   parameters:
-    ToDateParam:
-      name: to_date
-      in: query
-      required: false
-      description: Filter results to this date (inclusive, YYYY-MM-DD format).
-      schema:
-        type: string
-        format: date
     idempotency_key:
       name: Idempotency-Key
       in: header
@@ -189,33 +181,6 @@ components:
       schema:
         type: string
         format: uuid
-    PageParam:
-      name: page
-      in: query
-      required: false
-      description: Page number for pagination (1-indexed).
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    EntityAttributeIdParam:
-      name: attrId
-      in: path
-      required: true
-      description: Unique identifier for the entity attribute.
-      schema:
-        type: string
-        pattern: ^attr_\w+$
-    PageLimitParam:
-      name: page_limit
-      in: query
-      required: false
-      description: Number of items per page.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
     EntityIdParam:
       name: entityId
       in: path
@@ -245,6 +210,41 @@ components:
       description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
       schema:
         type: string
+    PageLimitParam:
+      name: page_limit
+      in: query
+      required: false
+      description: Number of items per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    ToDateParam:
+      name: to_date
+      in: query
+      required: false
+      description: Filter results to this date (inclusive, YYYY-MM-DD format).
+      schema:
+        type: string
+        format: date
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination (1-indexed).
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    EntityAttributeIdParam:
+      name: attrId
+      in: path
+      required: true
+      description: Unique identifier for the entity attribute.
+      schema:
+        type: string
+        pattern: ^attr_\w+$
     FromDateParam:
       name: from_date
       in: query
@@ -262,12 +262,6 @@ components:
             $ref: '#/components/schemas/ErrorEnvelope'
     NotFound:
       description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
       content:
         application/json:
           schema:
@@ -301,7 +295,72 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
+    ResourceError:
+      type:
+      - object
+      - 'null'
+      required:
+      - type
+      - code
+      - message
+      properties:
+        type:
+          type: string
+        code:
+          type: integer
+        sub_type:
+          type:
+          - string
+          - 'null'
+        message:
+          type: string
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
     EntityAttributeListResponse:
       allOf:
       - $ref: '#/components/schemas/ListEnvelope'
@@ -336,6 +395,70 @@ components:
         message:
           type: string
           description: Human-readable error description.
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    EntityAttribute:
+      type: object
+      required:
+      - id
+      - entity_id
+      - status
+      - attributes
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the entity attribute.
+          example: attr_QwMjMDEwMTY1
+        entity_id:
+          type: string
+          description: The ID of the entity this attribute belongs to.
+          example: ent_au22b1fbFJbp8
+        status:
+          type: string
+          description: Status of the attribute retrieval.
+          enum:
+          - completed
+          - in_progress
+          - pending
+          - failed
+        attributes:
+          $ref: '#/components/schemas/EntityAttributeData'
+        error:
+          type:
+          - object
+          - 'null'
+          description: Error details if the resource encountered an error.
+          allOf:
+          - $ref: '#/components/schemas/ResourceError'
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the attribute was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the attribute was last updated.
     EntityAttributeData:
       type:
       - object
@@ -513,27 +636,6 @@ components:
               - object
               - 'null'
               description: Additional metadata.
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
     EntityAttributeResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -541,108 +643,6 @@ components:
         properties:
           data:
             $ref: '#/components/schemas/EntityAttribute'
-    EntityAttribute:
-      type: object
-      required:
-      - id
-      - entity_id
-      - status
-      - attributes
-      - created_at
-      - updated_at
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the entity attribute.
-          example: attr_QwMjMDEwMTY1
-        entity_id:
-          type: string
-          description: The ID of the entity this attribute belongs to.
-          example: ent_au22b1fbFJbp8
-        status:
-          type: string
-          description: Status of the attribute retrieval.
-          enum:
-          - completed
-          - in_progress
-          - pending
-          - failed
-        attributes:
-          $ref: '#/components/schemas/EntityAttributeData'
-        error:
-          type:
-          - object
-          - 'null'
-          description: Error details if the resource encountered an error.
-          allOf:
-          - $ref: '#/components/schemas/ResourceError'
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the attribute was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the attribute was last updated.
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    ResourceError:
-      type:
-      - object
-      - 'null'
-      required:
-      - type
-      - code
-      - message
-      properties:
-        type:
-          type: string
-        code:
-          type: integer
-        sub_type:
-          type:
-          - string
-          - 'null'
-        message:
-          type: string
   securitySchemes:
     OpalToken:
       type: http
