@@ -115,3 +115,30 @@ plans:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - metered
+  units:
+  - request
+  - transaction
+  plans:
+  - name: Development
+    access: free
+    model: free
+    model_how: derived
+    units:
+    - request
+    periods:
+    - month
+  - name: Production
+    access: enterprise
+    model: metered
+    model_how: derived
+    units:
+    - request
+    - transaction
+    periods:
+    - month
