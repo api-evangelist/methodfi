@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-mlepublic-key-list-response-schema.json",
+  "title": "MLEPublicKeyListResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-teams-api-openapi.yml#/components/schemas/MLEPublicKeyListResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ListEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MLEPublicKey"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "ListEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a list payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific list payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "MLEPublicKey": {
+      "type": "object",
+      "description": "An MLE (Message-Level Encryption) public key for the team.",
+      "required": [
+        "id",
+        "jwk",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the public key."
+        },
+        "jwk": {
+          "type": "object",
+          "description": "JSON Web Key (JWK) representation of the public key.",
+          "additionalProperties": true
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the public key was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the public key was last updated."
+        }
+      }
+    }
+  }
+}

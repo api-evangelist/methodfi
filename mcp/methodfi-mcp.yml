@@ -1,16 +1,38 @@
-generated: '2026-07-20'
-method: derived
-status: candidate
-source: openapi/methodfi-openapi-original.yml
-description: No official hosted/remote Method MCP server was found (no @methodfi MCP package, no documented
-  MCP endpoint). This is a DERIVED candidate tool surface mapping marquee Method operations to MCP tools,
-  one tool per operationId. Read/list tools are the agent-safe starting set; money-movement tools (createPayment,
-  updatePaymentReversal) should require elevated, human-in-the-loop authorization (see agentic-access/).
+generated: '2026-10-12'
+method: searched
+status: live-docs-server
+source: https://docs.methodfi.com/mcp
+description: 'Method serves a remote MCP server on its own docs host (https://docs.methodfi.com/mcp, Mintlify-hosted). A probed
+  tools/list (2026-10-12, HTTP 200, no auth) returned three DOCUMENTATION tools: search_method_api_docs, query_docs_filesystem_method_api_docs,
+  submit_feedback. It searches the docs; it does not invoke the Method REST API. The candidate_tools below remain a DERIVED
+  mapping of REST operations to tools that no server ships.'
 server:
-  name: methodfi
-  transport: http
-  url: null
-tools:
+  name: Method API Docs
+  transport: streamable-http
+  url: https://docs.methodfi.com/mcp
+note: "Candidate only \u2014 128 operations exist in the OpenAPI; this is a representative subset. See agentic-access/methodfi-agentic-access.yml\
+  \ for per-operation execution contracts."
+deployment:
+  mode: remote
+  endpoint: https://docs.methodfi.com/mcp
+  auth: none
+  verified: probed
+  scope: documentation search only (no REST API invocation)
+  checked: '2026-10-12'
+live_tools:
+- name: search_method_api_docs
+  inputs:
+  - query
+  - version
+- name: query_docs_filesystem_method_api_docs
+  inputs:
+  - command
+- name: submit_feedback
+  inputs:
+  - path
+  - feedback
+live_tools_list: mcp/methodfi-docs-mcp-tools-list.json
+candidate_tools:
 - name: ping
   description: Health check.
   source_operation: openapi/methodfi-openapi-original.yml#ping
@@ -66,11 +88,3 @@ tools:
 - name: create_webhook
   description: Register a webhook endpoint.
   source_operation: openapi/methodfi-openapi-original.yml#createWebhook
-note: Candidate only — 128 operations exist in the OpenAPI; this is a representative subset. See agentic-access/methodfi-agentic-access.yml
-  for per-operation execution contracts.
-deployment:
-  mode: none
-  verified: derived
-  tools: 18
-  checked: '2026-08-12'
-  source: catalog MCP census

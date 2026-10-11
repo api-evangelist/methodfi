@@ -1,5 +1,5 @@
 ---
-name: Monitor accounts with subscriptions and webhooks
+name: monitor-with-subscriptions-and-webhooks
 description: Keep liability data fresh with Updates/Connect subscriptions and receive change notifications over webhooks.
 api: openapi/methodfi-openapi-original.yml
 operations: [createEntitySubscription, createAccountSubscription, createAccountUpdate, createWebhook, listEvents, retrieveEvent]

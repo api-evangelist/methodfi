@@ -1,11 +1,15 @@
 generated: '2026-07-20'
 method: searched
 source: https://docs.methodfi.com/2026-03-30/reference/rate-limiting
+name: Method Financial API Rate Limits
 scope: per API key
 window: 60-second rolling window
 signal: HTTP 429 with body sub_type TOO_MANY_REQUESTS
 block_duration: 60 seconds
-applies_to_environments: [development, sandbox, production]
+applies_to_environments:
+- development
+- sandbox
+- production
 tiers:
 - name: Payment creation
   limit_count: 120
@@ -32,7 +36,56 @@ tiers:
   unit: requests/minute
   scope: per IP address, requests without an API key
 handling:
-  - Wait at least 60 seconds before retrying.
-  - Use exponential backoff with jitter.
-  - Combine with Idempotency-Key on POSTs so retried requests are not processed twice.
+- Wait at least 60 seconds before retrying.
+- Use exponential backoff with jitter.
+- Combine with Idempotency-Key on POSTs so retried requests are not processed twice.
 enterprise_overrides: Custom rate limits available via Method CSM.
+limits:
+- name: Payment creation
+  max: 120
+  window: 1 minute
+  endpoint: POST /payments
+  scope: per API key
+  limit_text: '120'
+  limit_unit_text: Limit (requests per minute)
+  description: '`POST /payments`'
+- name: Critical operations
+  max: 60
+  window: 1 minute
+  endpoint: payment deletion and report generation
+  scope: per API key
+  limit_text: '60'
+  limit_unit_text: Limit (requests per minute)
+  description: Payment deletion and report generation
+- name: Standard writes
+  max: 6000
+  window: 1 minute
+  endpoint: entity and account operations (create, update, connect, subscriptions); independent buckets per resource
+  scope: per API key
+  limit_text: 6,000
+  limit_unit_text: Limit (requests per minute)
+  description: Entity and Account operations (create, update, connect, subscriptions)
+- name: Other writes
+  max: 1800
+  window: 1 minute
+  endpoint: all other write operations
+  scope: per API key
+  limit_text: 1,800
+  limit_unit_text: Limit (requests per minute)
+  description: All other write operations
+- name: Reads
+  max: 6000
+  window: 1 minute
+  endpoint: all GET requests
+  scope: per API key
+  limit_text: 6,000
+  limit_unit_text: Limit (requests per minute)
+  description: All `GET` requests
+- name: Unauthenticated
+  max: 60
+  window: 1 minute
+  endpoint: per IP address, requests without an API key
+  scope: per IP address
+  limit_text: '60'
+  limit_unit_text: Limit (requests per minute)
+  description: Per IP address, requests without an API key

@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-entity-identity-response-schema.json",
+  "title": "EntityIdentityResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entity-identities-api-openapi.yml#/components/schemas/EntityIdentityResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/EntityIdentity"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "EntityIdentity": {
+      "type": "object",
+      "required": [
+        "id",
+        "entity_id",
+        "status",
+        "identities",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the identity record."
+        },
+        "entity_id": {
+          "type": "string",
+          "description": "The ID of the entity this identity belongs to."
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the identity retrieval.",
+          "enum": [
+            "completed",
+            "in_progress",
+            "pending",
+            "failed"
+          ]
+        },
+        "identities": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Array of identity records found for this entity.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "first_name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "First name."
+              },
+              "last_name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Last name."
+              },
+              "phone": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Phone number."
+              },
+              "dob": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Date of birth."
+              },
+              "address": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "description": "Address information.",
+                "properties": {
+                  "address": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "Street address."
+                  },
+                  "city": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "City."
+                  },
+                  "state": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "State."
+                  },
+                  "zip": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "ZIP code."
+                  }
+                }
+              },
+              "ssn": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Social security number (masked)."
+              }
+            }
+          }
+        },
+        "error": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Error details if the resource encountered an error.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/ResourceError"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the identity record was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the identity record was last updated."
+        }
+      }
+    },
+    "ResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "type",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "sub_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

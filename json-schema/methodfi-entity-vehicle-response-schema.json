@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-entity-vehicle-response-schema.json",
+  "title": "EntityVehicleResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entity-vehicles-api-openapi.yml#/components/schemas/EntityVehicleResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/EntityVehicle"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "EntityVehicle": {
+      "type": "object",
+      "required": [
+        "id",
+        "entity_id",
+        "status",
+        "vehicles",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the vehicle record."
+        },
+        "entity_id": {
+          "type": "string",
+          "description": "The ID of the entity this vehicle belongs to."
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the vehicle data retrieval.",
+          "enum": [
+            "completed",
+            "in_progress",
+            "pending",
+            "failed"
+          ]
+        },
+        "vehicles": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Array of vehicles associated with this entity.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "vin": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Vehicle identification number."
+              },
+              "year": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Model year."
+              },
+              "make": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Vehicle make."
+              },
+              "model": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Vehicle model."
+              },
+              "series": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Vehicle series."
+              },
+              "major_color": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Primary color of the vehicle."
+              },
+              "style": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Body style."
+              }
+            }
+          }
+        },
+        "error": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Error details if the resource encountered an error.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/ResourceError"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the vehicle record was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the vehicle record was last updated."
+        }
+      }
+    },
+    "ResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "type",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "sub_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

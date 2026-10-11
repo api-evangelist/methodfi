@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-entity-create-request-schema.json",
+  "title": "EntityCreateRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entities-api-openapi.yml#/components/schemas/EntityCreateRequest",
+  "type": "object",
+  "required": [
+    "type"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "individual",
+        "c_corporation",
+        "receive_only"
+      ]
+    },
+    "individual": {
+      "$ref": "#/$defs/Individual"
+    },
+    "corporation": {
+      "$ref": "#/$defs/Corporation"
+    },
+    "address": {
+      "$ref": "#/$defs/Address_2"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "Address_2": {
+      "type": "object",
+      "properties": {
+        "line1": {
+          "type": "string"
+        },
+        "line2": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        }
+      }
+    },
+    "Corporation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dba": {
+          "type": "string"
+        },
+        "ein": {
+          "type": "string"
+        },
+        "owners": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "Individual": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    }
+  }
+}

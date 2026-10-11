@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-update-request-schema.json",
+  "title": "AccountUpdateRequest",
+  "description": "Request body for updating an account.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-accounts-api-openapi.yml#/components/schemas/AccountUpdateRequest",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "$ref": "#/$defs/Metadata"
+    },
+    "liability": {
+      "type": "object",
+      "description": "Liability-specific update fields. Use either mortgage or credit_card (mutually exclusive).",
+      "properties": {
+        "mortgage": {
+          "type": "object",
+          "description": "Mortgage address update.",
+          "properties": {
+            "address_street": {
+              "type": "string"
+            },
+            "address_city": {
+              "type": "string"
+            },
+            "address_state": {
+              "type": "string"
+            },
+            "address_zip": {
+              "type": "string"
+            }
+          }
+        },
+        "credit_card": {
+          "type": "object",
+          "description": "Credit card update. Provide either number alone, or expiration + CVV.",
+          "properties": {
+            "number": {
+              "type": "string",
+              "description": "The credit card number."
+            },
+            "expiration_month": {
+              "type": "string",
+              "description": "Card expiration month."
+            },
+            "expiration_year": {
+              "type": "string",
+              "description": "Card expiration year."
+            },
+            "cvv": {
+              "type": "string",
+              "description": "Card CVV."
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Metadata": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "description": "Arbitrary key-value metadata attached to the resource."
+    }
+  }
+}

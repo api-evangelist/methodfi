@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-opal-token-response-schema.json",
+  "title": "OpalTokenResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-opal-api-openapi.yml#/components/schemas/OpalTokenResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/OpalToken"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "OpalToken": {
+      "type": "object",
+      "description": "A short-lived token used to authenticate an Opal session from a client application.",
+      "required": [
+        "token",
+        "session_id",
+        "valid_until"
+      ],
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "The bearer token value used for Opal client authentication."
+        },
+        "session_id": {
+          "type": "string",
+          "description": "Unique identifier for the associated Opal session."
+        },
+        "valid_until": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when this token expires (30 minutes after creation)."
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

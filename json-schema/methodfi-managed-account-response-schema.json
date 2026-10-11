@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-managed-account-response-schema.json",
+  "title": "ManagedAccountResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-managed-accounts-api-openapi.yml#/components/schemas/ManagedAccountResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/ManagedAccount"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "ManagedAccount": {
+      "type": "object",
+      "description": "A Managed Account is a Method-managed financial account used for fund operations.",
+      "required": [
+        "id",
+        "routing",
+        "number",
+        "current_balance",
+        "available_balance"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the managed account.",
+          "pattern": "^macc_\\w+$"
+        },
+        "routing": {
+          "type": "string",
+          "description": "Bank routing number for the managed account."
+        },
+        "number": {
+          "type": "string",
+          "description": "Bank account number for the managed account."
+        },
+        "current_balance": {
+          "type": "number",
+          "description": "Current balance of the managed account in cents."
+        },
+        "available_balance": {
+          "type": "number",
+          "description": "Available balance of the managed account in cents."
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

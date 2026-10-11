@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-sensitive-list-response-schema.json",
+  "title": "AccountSensitiveListResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-sensitive-api-openapi.yml#/components/schemas/AccountSensitiveListResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ListEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AccountSensitive"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AccountSensitive": {
+      "type": "object",
+      "description": "Sensitive data for an account.",
+      "required": [
+        "id",
+        "account_id",
+        "status",
+        "type",
+        "fields",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the sensitive record.",
+          "pattern": "^astv_\\w+$"
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The account this sensitive data belongs to.",
+          "pattern": "^acc_\\w+$"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the sensitive data request.",
+          "enum": [
+            "completed",
+            "pending",
+            "failed"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of sensitive data."
+        },
+        "fields": {
+          "type": "array",
+          "description": "List of sensitive data fields retrieved.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the field."
+              },
+              "value": {
+                "type": "string",
+                "description": "Value of the field."
+              }
+            }
+          }
+        },
+        "error": {
+          "$ref": "#/$defs/AccountSensitiveResourceError"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the sensitive record was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the sensitive record was last updated."
+        }
+      }
+    },
+    "AccountSensitiveResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Error details when retrieving account sensitive data fails.",
+      "required": [
+        "type",
+        "code",
+        "sub_type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The category of sensitive data error.",
+          "enum": [
+            "ACCOUNT_SENSITIVE_FAILED"
+          ]
+        },
+        "code": {
+          "type": "integer",
+          "description": "Numeric error code (17XXX range).",
+          "enum": [
+            17001
+          ]
+        },
+        "sub_type": {
+          "type": "string",
+          "description": "Specific sensitive data error classification.",
+          "enum": [
+            "ACCOUNT_SENSITIVE_FAILED_VERIFICATION_REQUIRED"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description."
+        }
+      }
+    },
+    "ListEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a list payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific list payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-opal-session-response-schema.json",
+  "title": "OpalSessionResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-opal-api-openapi.yml#/components/schemas/OpalSessionResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/OpalSession"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "OpalSession": {
+      "type": "object",
+      "description": "An Opal session representing a client-side workflow for identity verification, account connection, or account verification.",
+      "required": [
+        "id",
+        "config",
+        "entity",
+        "mode",
+        "idv",
+        "cxn",
+        "avf",
+        "txn",
+        "completed_at",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the session."
+        },
+        "config": {
+          "type": "object",
+          "description": "Team-level configuration snapshot for the session.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Team display name."
+            },
+            "logo": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Team logo URL."
+            },
+            "opal_should_prefill_entities": {
+              "type": "boolean",
+              "description": "Whether to prefill entity information."
+            },
+            "primary_color": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Primary brand color."
+            },
+            "event_channel": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Event channel identifier."
+            },
+            "accounts_liability_allow_number_update": {
+              "type": "boolean",
+              "description": "Whether account number updates are allowed."
+            },
+            "appearance": {
+              "type": "string",
+              "enum": [
+                "light",
+                "dark",
+                "system"
+              ],
+              "description": "UI appearance theme."
+            }
+          }
+        },
+        "entity": {
+          "type": "object",
+          "description": "Minimal entity representation for the session.",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Entity identifier."
+            },
+            "individual": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Individual entity details."
+            },
+            "address": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Entity address."
+            },
+            "status": {
+              "type": "string",
+              "description": "Entity status."
+            },
+            "verification": {
+              "type": "object",
+              "description": "Entity verification state.",
+              "properties": {
+                "identity": {
+                  "type": "object",
+                  "properties": {
+                    "matched": {
+                      "type": "boolean"
+                    },
+                    "verified": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "phone": {
+                  "type": "object",
+                  "properties": {
+                    "verified": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "mode": {
+          "$ref": "#/$defs/OpalSessionMode"
+        },
+        "idv": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Identity verification flow configuration and state."
+        },
+        "cxn": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Account connection flow configuration and state."
+        },
+        "avf": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Account verification flow configuration and state."
+        },
+        "txn": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Transactions flow configuration and state."
+        },
+        "completed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp when the session was completed, or null if still in progress."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the session was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the session was last updated."
+        }
+      }
+    },
+    "OpalSessionMode": {
+      "type": "string",
+      "description": "The mode that determines which flows are configured for the session.",
+      "enum": [
+        "identity_verification",
+        "card_connect",
+        "connect",
+        "account_verification",
+        "transactions"
+      ]
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

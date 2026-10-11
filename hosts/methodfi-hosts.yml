@@ -1,0 +1,113 @@
+generated: '2026-10-12'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 8
+  own: 4
+  other_domain: 1
+  platform: 3
+  roles:
+  - collections
+  - identity
+  - other
+  - portal
+  - source
+  - status
+  - website
+hosts:
+- host: dashboard.methodfi.com
+  found_by:
+  - pointer
+  types:
+  - SignUp
+  serves: []
+  registrable_domain: methodfi.com
+  role: identity
+  relation: own
+- host: docs.methodfi.com
+  found_by:
+  - pointer
+  - apis[]
+  - vendor-detect
+  types:
+  - DeveloperPortal
+  - Documentation
+  - APIReference
+  - GettingStarted
+  serves:
+  - docs
+  - cdn
+  - hosting
+  vendor: cloudflare
+  registrable_domain: methodfi.com
+  role: portal
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubOrganization
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: methodfi.com
+  found_by:
+  - pointer
+  types:
+  - Newsroom
+  - Leadership
+  - Blog
+  - Compliance
+  - Website
+  - Support
+  - TermsOfService
+  - PrivacyPolicy
+  serves: []
+  registrable_domain: methodfi.com
+  role: website
+  relation: own
+- host: methodfi.statuspage.io
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - StatusPage
+  serves:
+  - status-page
+  vendor: statuspage
+  registrable_domain: statuspage.io
+  role: status
+  relation: other-domain
+- host: production.methodfi.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: methodfi.com
+  role: other
+  relation: own
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: www.postman.com
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - PostmanWorkspace
+  - Postman
+  serves:
+  - api-collections
+  vendor: postman
+  registrable_domain: postman.com
+  role: collections
+  relation: platform

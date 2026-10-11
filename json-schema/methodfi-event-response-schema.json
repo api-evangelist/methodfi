@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-event-response-schema.json",
+  "title": "EventResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-events-api-openapi.yml#/components/schemas/EventResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/Event"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Event": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "resource_id",
+        "resource_type",
+        "related_ids",
+        "data",
+        "diff",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the event."
+        },
+        "type": {
+          "description": "The webhook event type.",
+          "$ref": "#/$defs/WebhookType"
+        },
+        "resource_id": {
+          "type": "string",
+          "description": "Identifier of the resource that triggered the event."
+        },
+        "resource_type": {
+          "type": "string",
+          "description": "Type of the resource that triggered the event."
+        },
+        "related_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Identifiers of related resources."
+        },
+        "data": {
+          "description": "Current state of the resource at the time of the event.",
+          "$ref": "#/$defs/JsonObject"
+        },
+        "diff": {
+          "description": "Changes from the previous state of the resource.",
+          "$ref": "#/$defs/JsonObject"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the event was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the event was last updated."
+        }
+      }
+    },
+    "JsonObject": {
+      "type": "object",
+      "description": "Arbitrary JSON object.",
+      "additionalProperties": true
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "WebhookType": {
+      "type": "string",
+      "description": "The event type this webhook subscribes to.",
+      "enum": [
+        "payment.create",
+        "payment.update",
+        "account.create",
+        "account.update",
+        "account.opened",
+        "account.closed",
+        "account.balance_increased",
+        "account.balance_decreased",
+        "account.credit_limit_increased",
+        "account.credit_limit_decreased",
+        "account.number.update",
+        "entity.create",
+        "entity.update",
+        "entity.new_accounts_pending_consent",
+        "account_verification.create",
+        "account_verification.update",
+        "entity_verification_session.create",
+        "entity_verification_session.update",
+        "payment_reversal.create",
+        "payment_reversal.update",
+        "connection.create",
+        "connection.update",
+        "connect.create",
+        "connect.available",
+        "connect.update",
+        "manual_connect.create",
+        "manual_connect.update",
+        "report.create",
+        "report.update",
+        "product.create",
+        "product.update",
+        "subscription.create",
+        "subscription.update",
+        "credit_score.create",
+        "credit_score.update",
+        "credit_score.available",
+        "credit_score.increased",
+        "credit_score.decreased",
+        "payoff.create",
+        "payoff.update",
+        "balance.create",
+        "balance.update",
+        "identity.create",
+        "identity.update",
+        "account_verification_session.create",
+        "account_verification_session.update",
+        "card_brand.create",
+        "card_brand.available",
+        "card_brand.update",
+        "payment_instrument.create",
+        "payment_instrument.update",
+        "sensitive.create",
+        "sensitive.update",
+        "update.create",
+        "update.update",
+        "attribute.create",
+        "attribute.update",
+        "entity_attribute.create",
+        "entity_attribute.update",
+        "account_attribute.create",
+        "account_attribute.update",
+        "transaction.create",
+        "transaction.update",
+        "entity_vehicle.create",
+        "entity_vehicle.update",
+        "method_jwk.create",
+        "method_jwk.update",
+        "attribute.credit_health_credit_card_usage.increased",
+        "attribute.credit_health_credit_card_usage.decreased",
+        "attribute.credit_health_derogatory_marks.increased",
+        "attribute.credit_health_derogatory_marks.decreased",
+        "attribute.credit_health_hard_inquiries.increased",
+        "attribute.credit_health_hard_inquiries.decreased",
+        "attribute.credit_health_total_accounts.increased",
+        "attribute.credit_health_total_accounts.decreased",
+        "attribute.credit_health_credit_age.increased",
+        "attribute.credit_health_credit_age.decreased",
+        "attribute.credit_health_payment_history.increased",
+        "attribute.credit_health_payment_history.decreased",
+        "attribute.credit_health_open_accounts.increased",
+        "attribute.credit_health_open_accounts.decreased",
+        "entity_attribute.credit_health_open_accounts_value.decreased",
+        "entity_attribute.credit_health_open_accounts_value.increased",
+        "entity_attribute.credit_health_total_accounts_value.decreased",
+        "entity_attribute.credit_health_total_accounts_value.increased",
+        "entity_attribute.credit_health_credit_card_usage_value.decreased",
+        "entity_attribute.credit_health_credit_card_usage_value.increased",
+        "entity_attribute.credit_health_soft_inquiries_value.decreased",
+        "entity_attribute.credit_health_soft_inquiries_value.increased",
+        "entity_attribute.credit_health_hard_inquiries_value.decreased",
+        "entity_attribute.credit_health_hard_inquiries_value.increased"
+      ]
+    }
+  }
+}

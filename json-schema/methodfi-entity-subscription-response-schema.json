@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-entity-subscription-response-schema.json",
+  "title": "EntitySubscriptionResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entity-subscriptions-api-openapi.yml#/components/schemas/EntitySubscriptionResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/EntitySubscription"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "EntitySubscription": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "status",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the entity subscription."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the subscription."
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the subscription.",
+          "enum": [
+            "active",
+            "inactive"
+          ]
+        },
+        "payload": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Subscription payload data."
+        },
+        "latest_request_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "ID of the latest request for this subscription."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the subscription was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the subscription was last updated."
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-card-brand-list-response-schema.json",
+  "title": "AccountCardBrandListResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-card-brands-api-openapi.yml#/components/schemas/AccountCardBrandListResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ListEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AccountCardBrand"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AccountCardBrand": {
+      "type": "object",
+      "description": "Card brand information for an account.",
+      "required": [
+        "id",
+        "account_id",
+        "status",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the card brand.",
+          "pattern": "^cbrd_\\w+$"
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The account this card brand belongs to.",
+          "pattern": "^acc_\\w+$"
+        },
+        "brands": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Array of card brand entries for this account.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the brand entry."
+              },
+              "card_product_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Associated card product ID."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the brand."
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of the brand."
+              },
+              "issuer": {
+                "type": "string",
+                "description": "The card issuer."
+              },
+              "network": {
+                "type": "string",
+                "description": "The card network."
+              },
+              "network_tier": {
+                "type": "string",
+                "description": "The tier of the card network."
+              },
+              "type": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The brand type."
+              },
+              "url": {
+                "type": "string",
+                "description": "URL for the brand image."
+              }
+            }
+          }
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Source of the card brand data.",
+          "enum": [
+            "network",
+            "method",
+            null
+          ]
+        },
+        "shared": {
+          "type": "boolean",
+          "description": "Whether this card brand record is shared."
+        },
+        "network": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The card network. Deprecated in favor of brands[].network.",
+          "enum": [
+            "visa",
+            "mastercard",
+            "amex",
+            "discover",
+            null
+          ]
+        },
+        "issuer": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The card issuer. Deprecated in favor of brands[].issuer."
+        },
+        "last4": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Last 4 digits of the card number. Deprecated in favor of brands[]."
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the card brand request.",
+          "enum": [
+            "completed",
+            "pending",
+            "failed"
+          ]
+        },
+        "error": {
+          "$ref": "#/$defs/ResourceError"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the card brand was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the card brand was last updated."
+        }
+      }
+    },
+    "ListEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a list payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific list payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "type",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "sub_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

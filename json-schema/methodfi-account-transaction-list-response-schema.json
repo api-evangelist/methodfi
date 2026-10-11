@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-transaction-list-response-schema.json",
+  "title": "AccountTransactionListResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-transactions-api-openapi.yml#/components/schemas/AccountTransactionListResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ListEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AccountTransaction"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AccountTransaction": {
+      "type": "object",
+      "description": "A transaction for an account.",
+      "required": [
+        "id",
+        "account_id",
+        "merchant",
+        "amount",
+        "auth_amount",
+        "currency_code",
+        "transaction_amount",
+        "transaction_auth_amount",
+        "transaction_currency_code",
+        "status",
+        "descriptor",
+        "transacted_at",
+        "posted_at",
+        "voided_at",
+        "original_txn_id",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^txn_\\w+$",
+          "description": "Unique identifier for the transaction."
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The ID of the account this transaction belongs to."
+        },
+        "merchant": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Merchant information for this transaction.",
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "The merchant name."
+            },
+            "logo": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "URL of the merchant logo."
+            }
+          }
+        },
+        "amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The transaction amount in cents."
+        },
+        "auth_amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The authorized amount in cents."
+        },
+        "currency_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The ISO 4217 currency code."
+        },
+        "transaction_amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The transaction amount in the transaction currency."
+        },
+        "transaction_auth_amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The authorized amount in the transaction currency."
+        },
+        "transaction_currency_code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The ISO 4217 currency code of the transaction currency."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the transaction.",
+          "enum": [
+            "pending",
+            "posted",
+            "voided"
+          ]
+        },
+        "descriptor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The transaction descriptor."
+        },
+        "transacted_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp when the transaction occurred."
+        },
+        "posted_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp when the transaction was posted."
+        },
+        "voided_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp when the transaction was voided."
+        },
+        "original_txn_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The ID of the original transaction if this is a related transaction."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the transaction record was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the transaction record was last updated."
+        }
+      }
+    },
+    "ListEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a list payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific list payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

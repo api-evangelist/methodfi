@@ -1,5 +1,5 @@
 ---
-name: Enrich cards and compute financial attributes
+name: enrich-cards-and-attributes
 description: Pull card-brand details and credit scores, and compute Entity/Account financial attributes for PFM and lending insights.
 api: openapi/methodfi-openapi-original.yml
 operations: [createEntityCreditScore, retrieveEntityCreditScore, createAccountCardBrand, retrieveAccountCardBrand, createEntityAttributes, retrieveEntityAttribute, createAccountAttribute]

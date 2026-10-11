@@ -8,16 +8,18 @@ packages:
   url: https://www.npmjs.com/package/method-node
   repo: https://github.com/MethodFi/method-node
   install: npm install method-node
-  official: true
+  official: false
   kind: server-sdk
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
 - language: python
   registry: pypi
   name: method-python
   url: https://pypi.org/project/method-python/
   repo: https://github.com/MethodFi/method-python
   install: pip install method-python
-  official: true
+  official: false
   kind: server-sdk
+  ownership_audit: 'registry metadata names neither the provider''s domain nor its GitHub org: official downgraded (harvest-packages.py --audit)'
 - language: javascript
   registry: npm
   name: react-method-elements
@@ -26,6 +28,7 @@ packages:
   install: npm install react-method-elements
   official: true
   kind: frontend-elements
+  ownership_audit: metadata names methodfi.com
 - language: javascript
   registry: npm
   name: react-native-method-elements
@@ -34,26 +37,27 @@ packages:
   install: npm install react-native-method-elements
   official: true
   kind: frontend-elements
+  ownership_audit: metadata names methodfi.com
 - language: javascript
   registry: npm
-  name: "@methodfi/opal-react"
+  name: '@methodfi/opal-react'
   url: https://www.npmjs.com/package/@methodfi/opal-react
   install: npm install @methodfi/opal-react
   official: true
   kind: frontend-opal
+  ownership_audit: metadata names methodfi.com
 - language: javascript
   registry: npm
-  name: "@methodfi/opal-react-native"
+  name: '@methodfi/opal-react-native'
   url: https://www.npmjs.com/package/@methodfi/opal-react-native
   install: npm install @methodfi/opal-react-native
   official: true
   kind: frontend-opal
+  ownership_audit: metadata names methodfi.com
 sources_of_truth:
 - name: OpenAPI specification
   repo: https://github.com/MethodFi/openapi
   official: true
-notes: >-
-  Server SDKs (method-node, method-python) are version-locked to a dated Method API
-  version. Frontend Element/Opal libraries are catalogued as embedded components in
-  components/methodfi-components.yml. The Opal vanilla-JS loader is hosted at
-  https://static.methodfi.com/opal/v1/stable/init.js (not a registry package).
+notes: Server SDKs (method-node, method-python) are version-locked to a dated Method API version. Frontend Element/Opal libraries are catalogued
+  as embedded components in components/methodfi-components.yml. The Opal vanilla-JS loader is hosted at https://static.methodfi.com/opal/v1/stable/init.js
+  (not a registry package).

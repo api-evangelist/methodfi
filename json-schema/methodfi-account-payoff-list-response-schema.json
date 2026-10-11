@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-payoff-list-response-schema.json",
+  "title": "AccountPayoffListResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-payoffs-api-openapi.yml#/components/schemas/AccountPayoffListResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ListEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AccountPayoff"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AccountPayoff": {
+      "type": "object",
+      "description": "A payoff record for an account.",
+      "required": [
+        "id",
+        "account_id",
+        "status",
+        "amount",
+        "term",
+        "per_diem_amount",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the payoff.",
+          "pattern": "^pyf_\\w+$"
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The account this payoff belongs to.",
+          "pattern": "^acc_\\w+$"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the payoff request.",
+          "enum": [
+            "completed",
+            "pending",
+            "failed"
+          ]
+        },
+        "amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The payoff amount in cents."
+        },
+        "term": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Number of days the payoff amount is valid."
+        },
+        "per_diem_amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Per diem interest amount in cents."
+        },
+        "error": {
+          "$ref": "#/$defs/PayoffResourceError"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the payoff was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the payoff was last updated."
+        }
+      }
+    },
+    "ListEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a list payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific list payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "PayoffResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Error details when a payoff sync fails.",
+      "required": [
+        "type",
+        "code",
+        "sub_type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The category of payoff error.",
+          "enum": [
+            "PAYOFF_FAILED"
+          ]
+        },
+        "code": {
+          "type": "integer",
+          "description": "Numeric error code (18XXX range).",
+          "enum": [
+            18001
+          ]
+        },
+        "sub_type": {
+          "type": "string",
+          "description": "Specific payoff error classification.",
+          "enum": [
+            "PAYOFF_TEMPORARILY_UNAVAILABLE"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description."
+        }
+      }
+    }
+  }
+}

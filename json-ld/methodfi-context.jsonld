@@ -1,0 +1,938 @@
+{
+  "@context": {
+    "@vocab": "https://methodfi.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "methodfi": "https://methodfi.com/schema#",
+    "ResourceError": "methodfi:ResourceError",
+    "type": {
+      "@id": "methodfi:type",
+      "@type": "xsd:string"
+    },
+    "code": {
+      "@id": "methodfi:code",
+      "@type": "xsd:integer"
+    },
+    "sub_type": {
+      "@id": "methodfi:sub_type",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "methodfi:message",
+      "@type": "xsd:string"
+    },
+    "ErrorEnvelope": "methodfi:ErrorEnvelope",
+    "success": {
+      "@id": "methodfi:success",
+      "@type": "xsd:boolean"
+    },
+    "data": {
+      "@id": "methodfi:data"
+    },
+    "ListEnvelope": "methodfi:ListEnvelope",
+    "ErrorObject": "methodfi:ErrorObject",
+    "SuccessEnvelope": "methodfi:SuccessEnvelope",
+    "AccountAttribute": "methodfi:AccountAttribute",
+    "id": {
+      "@id": "methodfi:id",
+      "@type": "xsd:string"
+    },
+    "account_id": {
+      "@id": "methodfi:account_id",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "methodfi:status",
+      "@type": "xsd:string"
+    },
+    "attributes": {
+      "@id": "methodfi:attributes"
+    },
+    "error": {
+      "@id": "methodfi:error",
+      "@type": "@id"
+    },
+    "created_at": {
+      "@id": "methodfi:created_at",
+      "@type": "xsd:dateTime"
+    },
+    "updated_at": {
+      "@id": "methodfi:updated_at",
+      "@type": "xsd:dateTime"
+    },
+    "AccountBalance": "methodfi:AccountBalance",
+    "amount": {
+      "@id": "methodfi:amount",
+      "@type": "xsd:decimal"
+    },
+    "BalanceResourceError": "methodfi:BalanceResourceError",
+    "AccountCardBrand": "methodfi:AccountCardBrand",
+    "brands": {
+      "@id": "methodfi:brands",
+      "@container": "@list"
+    },
+    "source": {
+      "@id": "methodfi:source",
+      "@type": "xsd:string"
+    },
+    "shared": {
+      "@id": "methodfi:shared",
+      "@type": "xsd:boolean"
+    },
+    "network": {
+      "@id": "methodfi:network",
+      "@type": "xsd:string"
+    },
+    "issuer": {
+      "@id": "methodfi:issuer",
+      "@type": "xsd:string"
+    },
+    "last4": {
+      "@id": "methodfi:last4",
+      "@type": "xsd:string"
+    },
+    "UpdateResourceError": "methodfi:UpdateResourceError",
+    "AccountUpdate": "methodfi:AccountUpdate",
+    "data_as_of": {
+      "@id": "methodfi:data_as_of",
+      "@type": "xsd:dateTime"
+    },
+    "credit_card": {
+      "@id": "methodfi:credit_card"
+    },
+    "auto_loan": {
+      "@id": "methodfi:auto_loan"
+    },
+    "mortgage": {
+      "@id": "methodfi:mortgage"
+    },
+    "personal_loan": {
+      "@id": "methodfi:personal_loan"
+    },
+    "student_loan": {
+      "@id": "methodfi:student_loan"
+    },
+    "student_loans": {
+      "@id": "methodfi:student_loans"
+    },
+    "bnpl": {
+      "@id": "methodfi:bnpl"
+    },
+    "fintech": {
+      "@id": "methodfi:fintech"
+    },
+    "Account": "methodfi:Account",
+    "holder_id": {
+      "@id": "methodfi:holder_id",
+      "@type": "xsd:string"
+    },
+    "consent_status": {
+      "@id": "methodfi:consent_status",
+      "@type": "xsd:string"
+    },
+    "ach": {
+      "@id": "methodfi:ach",
+      "@type": "@id"
+    },
+    "liability": {
+      "@id": "methodfi:liability",
+      "@type": "@id"
+    },
+    "clearing": {
+      "@id": "methodfi:clearing",
+      "@type": "@id"
+    },
+    "debit_card": {
+      "@id": "methodfi:debit_card",
+      "@type": "@id"
+    },
+    "metadata": {
+      "@id": "methodfi:metadata",
+      "@type": "@id"
+    },
+    "products": {
+      "@id": "methodfi:products",
+      "@container": "@list"
+    },
+    "restricted_products": {
+      "@id": "methodfi:restricted_products",
+      "@container": "@list"
+    },
+    "subscriptions": {
+      "@id": "methodfi:subscriptions",
+      "@container": "@list"
+    },
+    "available_subscriptions": {
+      "@id": "methodfi:available_subscriptions",
+      "@container": "@list"
+    },
+    "restricted_subscriptions": {
+      "@id": "methodfi:restricted_subscriptions",
+      "@container": "@list"
+    },
+    "latest_verification_session": {
+      "@id": "methodfi:latest_verification_session"
+    },
+    "balance": {
+      "@id": "methodfi:balance",
+      "@type": "@id"
+    },
+    "payoff": {
+      "@id": "methodfi:payoff",
+      "@type": "@id"
+    },
+    "payment_instrument": {
+      "@id": "methodfi:payment_instrument",
+      "@type": "@id"
+    },
+    "card_brand": {
+      "@id": "methodfi:card_brand",
+      "@type": "@id"
+    },
+    "update": {
+      "@id": "methodfi:update",
+      "@type": "@id"
+    },
+    "attribute": {
+      "@id": "methodfi:attribute",
+      "@type": "@id"
+    },
+    "sensitive": {
+      "@id": "methodfi:sensitive",
+      "@type": "@id"
+    },
+    "AccountClearing": "methodfi:AccountClearing",
+    "routing": {
+      "@id": "methodfi:routing",
+      "@type": "xsd:string"
+    },
+    "number": {
+      "@id": "methodfi:number",
+      "@type": "xsd:string"
+    },
+    "MerchantProviderIds": "methodfi:MerchantProviderIds",
+    "plaid": {
+      "@id": "methodfi:plaid",
+      "@container": "@list"
+    },
+    "mx": {
+      "@id": "methodfi:mx",
+      "@container": "@list"
+    },
+    "finicity": {
+      "@id": "methodfi:finicity",
+      "@container": "@list"
+    },
+    "dpp": {
+      "@id": "methodfi:dpp",
+      "@container": "@list"
+    },
+    "rpps": {
+      "@id": "methodfi:rpps",
+      "@container": "@list"
+    },
+    "PayoffResourceError": "methodfi:PayoffResourceError",
+    "AccountSensitiveResourceError": "methodfi:AccountSensitiveResourceError",
+    "AccountDebitCard": "methodfi:AccountDebitCard",
+    "mask": {
+      "@id": "methodfi:mask",
+      "@type": "xsd:string"
+    },
+    "MerchantType": "methodfi:MerchantType",
+    "AccountVerificationSessionResourceError": "methodfi:AccountVerificationSessionResourceError",
+    "Merchant": "methodfi:Merchant",
+    "parent_name": {
+      "@id": "methodfi:parent_name",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "methodfi:name",
+      "@type": "xsd:string"
+    },
+    "logo": {
+      "@id": "methodfi:logo",
+      "@type": "xsd:string"
+    },
+    "provider_ids": {
+      "@id": "methodfi:provider_ids",
+      "@type": "@id"
+    },
+    "is_temp": {
+      "@id": "methodfi:is_temp",
+      "@type": "xsd:boolean"
+    },
+    "account_number_formats": {
+      "@id": "methodfi:account_number_formats",
+      "@container": "@list"
+    },
+    "AccountPayoff": "methodfi:AccountPayoff",
+    "term": {
+      "@id": "methodfi:term",
+      "@type": "xsd:decimal"
+    },
+    "per_diem_amount": {
+      "@id": "methodfi:per_diem_amount",
+      "@type": "xsd:decimal"
+    },
+    "AccountLiability": "methodfi:AccountLiability",
+    "mch_id": {
+      "@id": "methodfi:mch_id"
+    },
+    "ownership": {
+      "@id": "methodfi:ownership",
+      "@type": "xsd:string"
+    },
+    "fingerprint": {
+      "@id": "methodfi:fingerprint",
+      "@type": "xsd:string"
+    },
+    "AccountConsentUpdateRequest": "methodfi:AccountConsentUpdateRequest",
+    "reason": {
+      "@id": "methodfi:reason",
+      "@type": "xsd:string"
+    },
+    "AccountResourceError": "methodfi:AccountResourceError",
+    "AccountACH": "methodfi:AccountACH",
+    "AccountPaymentInstrument": "methodfi:AccountPaymentInstrument",
+    "chargeable": {
+      "@id": "methodfi:chargeable",
+      "@type": "xsd:boolean"
+    },
+    "card": {
+      "@id": "methodfi:card"
+    },
+    "network_token": {
+      "@id": "methodfi:network_token"
+    },
+    "inbound_achwire_payment": {
+      "@id": "methodfi:inbound_achwire_payment"
+    },
+    "AccountSensitive": "methodfi:AccountSensitive",
+    "fields": {
+      "@id": "methodfi:fields",
+      "@container": "@list"
+    },
+    "AccountVerificationSession": "methodfi:AccountVerificationSession",
+    "micro_deposits": {
+      "@id": "methodfi:micro_deposits"
+    },
+    "teller": {
+      "@id": "methodfi:teller"
+    },
+    "auto_verify": {
+      "@id": "methodfi:auto_verify"
+    },
+    "trusted_provisioner": {
+      "@id": "methodfi:trusted_provisioner"
+    },
+    "standard": {
+      "@id": "methodfi:standard"
+    },
+    "pre_auth": {
+      "@id": "methodfi:pre_auth"
+    },
+    "instant": {
+      "@id": "methodfi:instant"
+    },
+    "AccountPaymentInstrumentCreateRequest": "methodfi:AccountPaymentInstrumentCreateRequest",
+    "ProductResourceError": "methodfi:ProductResourceError",
+    "AccountProduct": "methodfi:AccountProduct",
+    "status_error": {
+      "@id": "methodfi:status_error",
+      "@type": "@id"
+    },
+    "capabilities": {
+      "@id": "methodfi:capabilities",
+      "@container": "@list"
+    },
+    "reportable": {
+      "@id": "methodfi:reportable",
+      "@type": "xsd:boolean"
+    },
+    "AccountSensitiveCreateRequest": "methodfi:AccountSensitiveCreateRequest",
+    "expand": {
+      "@id": "methodfi:expand",
+      "@container": "@list"
+    },
+    "AccountSubscriptionCreateRequest": "methodfi:AccountSubscriptionCreateRequest",
+    "enroll": {
+      "@id": "methodfi:enroll",
+      "@type": "xsd:string"
+    },
+    "AccountSubscription": "methodfi:AccountSubscription",
+    "latest_request_id": {
+      "@id": "methodfi:latest_request_id",
+      "@type": "xsd:string"
+    },
+    "AccountTransaction": "methodfi:AccountTransaction",
+    "merchant": {
+      "@id": "methodfi:merchant"
+    },
+    "auth_amount": {
+      "@id": "methodfi:auth_amount",
+      "@type": "xsd:decimal"
+    },
+    "currency_code": {
+      "@id": "methodfi:currency_code",
+      "@type": "xsd:string"
+    },
+    "transaction_amount": {
+      "@id": "methodfi:transaction_amount",
+      "@type": "xsd:decimal"
+    },
+    "transaction_auth_amount": {
+      "@id": "methodfi:transaction_auth_amount",
+      "@type": "xsd:decimal"
+    },
+    "transaction_currency_code": {
+      "@id": "methodfi:transaction_currency_code",
+      "@type": "xsd:string"
+    },
+    "descriptor": {
+      "@id": "methodfi:descriptor",
+      "@type": "xsd:string"
+    },
+    "transacted_at": {
+      "@id": "methodfi:transacted_at",
+      "@type": "xsd:dateTime"
+    },
+    "posted_at": {
+      "@id": "methodfi:posted_at",
+      "@type": "xsd:dateTime"
+    },
+    "voided_at": {
+      "@id": "methodfi:voided_at",
+      "@type": "xsd:dateTime"
+    },
+    "original_txn_id": {
+      "@id": "methodfi:original_txn_id",
+      "@type": "xsd:string"
+    },
+    "AccountVerificationSessionUpdateRequest": "methodfi:AccountVerificationSessionUpdateRequest",
+    "AccountVerificationSessionCreateRequest": "methodfi:AccountVerificationSessionCreateRequest",
+    "AccountUpdateRequest": "methodfi:AccountUpdateRequest",
+    "CreateLiabilityAccountRequest": "methodfi:CreateLiabilityAccountRequest",
+    "CreateDebitCardAccountRequest": "methodfi:CreateDebitCardAccountRequest",
+    "CreateAchAccountRequest": "methodfi:CreateAchAccountRequest",
+    "CreateClearingAccountRequest": "methodfi:CreateClearingAccountRequest",
+    "BalanceResponse": "methodfi:BalanceResponse",
+    "AccountCreateRequest_2": "methodfi:AccountCreateRequest_2",
+    "AccountResponse_2": "methodfi:AccountResponse_2",
+    "AccountListResponse_2": "methodfi:AccountListResponse_2",
+    "CardProduct": "methodfi:CardProduct",
+    "AccountResponse": "methodfi:AccountResponse",
+    "ConnectResponse": "methodfi:ConnectResponse",
+    "entity_id": {
+      "@id": "methodfi:entity_id",
+      "@type": "xsd:string"
+    },
+    "accounts": {
+      "@id": "methodfi:accounts",
+      "@container": "@list"
+    },
+    "EntityVehicle": "methodfi:EntityVehicle",
+    "vehicles": {
+      "@id": "methodfi:vehicles",
+      "@container": "@list"
+    },
+    "EntityVerification": "methodfi:EntityVerification",
+    "identity": {
+      "@id": "methodfi:identity",
+      "@type": "@id"
+    },
+    "phone": {
+      "@id": "methodfi:phone",
+      "@type": "@id"
+    },
+    "CreateEntityIndividual": "methodfi:CreateEntityIndividual",
+    "first_name": {
+      "@id": "methodfi:first_name",
+      "@type": "xsd:string"
+    },
+    "last_name": {
+      "@id": "methodfi:last_name",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "methodfi:email",
+      "@type": "xsd:string"
+    },
+    "dob": {
+      "@id": "methodfi:dob",
+      "@type": "xsd:date"
+    },
+    "ssn": {
+      "@id": "methodfi:ssn",
+      "@type": "xsd:string"
+    },
+    "ssn_4": {
+      "@id": "methodfi:ssn_4",
+      "@type": "xsd:string"
+    },
+    "EntityVerificationIdentity": "methodfi:EntityVerificationIdentity",
+    "verified": {
+      "@id": "methodfi:verified",
+      "@type": "xsd:boolean"
+    },
+    "matched": {
+      "@id": "methodfi:matched",
+      "@type": "xsd:boolean"
+    },
+    "methods": {
+      "@id": "methodfi:methods",
+      "@container": "@list"
+    },
+    "EntityConnect": "methodfi:EntityConnect",
+    "requested_products": {
+      "@id": "methodfi:requested_products",
+      "@container": "@list"
+    },
+    "requested_subscriptions": {
+      "@id": "methodfi:requested_subscriptions",
+      "@container": "@list"
+    },
+    "EntityBase": "methodfi:EntityBase",
+    "address": {
+      "@id": "methodfi:address"
+    },
+    "EntityAttribute": "methodfi:EntityAttribute",
+    "Address": "methodfi:Address",
+    "line1": {
+      "@id": "methodfi:line1",
+      "@type": "xsd:string"
+    },
+    "line2": {
+      "@id": "methodfi:line2",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "methodfi:city",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "methodfi:state",
+      "@type": "xsd:string"
+    },
+    "zip": {
+      "@id": "methodfi:zip",
+      "@type": "xsd:string"
+    },
+    "EntityCreditScoreFactor": "methodfi:EntityCreditScoreFactor",
+    "description": {
+      "@id": "methodfi:description",
+      "@type": "xsd:string"
+    },
+    "ConnectResourceError": "methodfi:ConnectResourceError",
+    "EntityCreditScore": "methodfi:EntityCreditScore",
+    "scores": {
+      "@id": "methodfi:scores",
+      "@container": "@list"
+    },
+    "VerificationSessionResourceError": "methodfi:VerificationSessionResourceError",
+    "EntityIndividual": "methodfi:EntityIndividual",
+    "CreateIndividualEntityRequest": "methodfi:CreateIndividualEntityRequest",
+    "individual": {
+      "@id": "methodfi:individual",
+      "@type": "@id"
+    },
+    "EntityCorporation": "methodfi:EntityCorporation",
+    "dba": {
+      "@id": "methodfi:dba",
+      "@type": "xsd:string"
+    },
+    "ein": {
+      "@id": "methodfi:ein",
+      "@type": "xsd:string"
+    },
+    "owners": {
+      "@id": "methodfi:owners",
+      "@container": "@list"
+    },
+    "EntityVerificationPhone": "methodfi:EntityVerificationPhone",
+    "EntityResourceError": "methodfi:EntityResourceError",
+    "CreateCorporationEntityRequest": "methodfi:CreateCorporationEntityRequest",
+    "corporation": {
+      "@id": "methodfi:corporation",
+      "@type": "@id"
+    },
+    "CreateEntityCorporation": "methodfi:CreateEntityCorporation",
+    "CreditScoreResourceError": "methodfi:CreditScoreResourceError",
+    "UpdateEntityRequest": "methodfi:UpdateEntityRequest",
+    "EntityCorporationOwner": "methodfi:EntityCorporationOwner",
+    "EntityAttributeData": "methodfi:EntityAttributeData",
+    "credit_health_credit_card_usage": {
+      "@id": "methodfi:credit_health_credit_card_usage"
+    },
+    "credit_health_derogatory_marks": {
+      "@id": "methodfi:credit_health_derogatory_marks"
+    },
+    "credit_health_hard_inquiries": {
+      "@id": "methodfi:credit_health_hard_inquiries"
+    },
+    "credit_health_soft_inquiries": {
+      "@id": "methodfi:credit_health_soft_inquiries"
+    },
+    "credit_health_total_accounts": {
+      "@id": "methodfi:credit_health_total_accounts"
+    },
+    "credit_health_open_accounts": {
+      "@id": "methodfi:credit_health_open_accounts"
+    },
+    "credit_health_credit_age": {
+      "@id": "methodfi:credit_health_credit_age"
+    },
+    "credit_health_payment_history": {
+      "@id": "methodfi:credit_health_payment_history"
+    },
+    "credit_health_entity_delinquent": {
+      "@id": "methodfi:credit_health_entity_delinquent"
+    },
+    "EntityVerificationSession": "methodfi:EntityVerificationSession",
+    "method": {
+      "@id": "methodfi:method",
+      "@type": "xsd:string"
+    },
+    "expired_at": {
+      "@id": "methodfi:expired_at",
+      "@type": "xsd:dateTime"
+    },
+    "sms": {
+      "@id": "methodfi:sms"
+    },
+    "sna": {
+      "@id": "methodfi:sna"
+    },
+    "byo_sms": {
+      "@id": "methodfi:byo_sms"
+    },
+    "byo_kyc": {
+      "@id": "methodfi:byo_kyc"
+    },
+    "kba": {
+      "@id": "methodfi:kba"
+    },
+    "element": {
+      "@id": "methodfi:element"
+    },
+    "opal": {
+      "@id": "methodfi:opal"
+    },
+    "Corporation": "methodfi:Corporation",
+    "EntityCreateRequest": "methodfi:EntityCreateRequest",
+    "EntityListResponse_2": "methodfi:EntityListResponse_2",
+    "Individual": "methodfi:Individual",
+    "EntityVerificationSessionResponse": "methodfi:EntityVerificationSessionResponse",
+    "EntityVerificationSessionRequest": "methodfi:EntityVerificationSessionRequest",
+    "EntityResponse_2": "methodfi:EntityResponse_2",
+    "verification": {
+      "@id": "methodfi:verification"
+    },
+    "Address_2": "methodfi:Address_2",
+    "UpdateEntityConsentRequest": "methodfi:UpdateEntityConsentRequest",
+    "EntityIdentity": "methodfi:EntityIdentity",
+    "identities": {
+      "@id": "methodfi:identities",
+      "@container": "@list"
+    },
+    "EntityProduct": "methodfi:EntityProduct",
+    "latest_successful_request_id": {
+      "@id": "methodfi:latest_successful_request_id",
+      "@type": "xsd:string"
+    },
+    "is_subscribable": {
+      "@id": "methodfi:is_subscribable",
+      "@type": "xsd:boolean"
+    },
+    "EntitySubscription": "methodfi:EntitySubscription",
+    "payload": {
+      "@id": "methodfi:payload"
+    },
+    "CreateEntitySubscriptionRequest": "methodfi:CreateEntitySubscriptionRequest",
+    "UpdateEntityVerificationSessionRequest": "methodfi:UpdateEntityVerificationSessionRequest",
+    "CreateEntityVerificationSessionRequest": "methodfi:CreateEntityVerificationSessionRequest",
+    "Event": "methodfi:Event",
+    "resource_id": {
+      "@id": "methodfi:resource_id",
+      "@type": "xsd:string"
+    },
+    "resource_type": {
+      "@id": "methodfi:resource_type",
+      "@type": "xsd:string"
+    },
+    "related_ids": {
+      "@id": "methodfi:related_ids",
+      "@container": "@list"
+    },
+    "diff": {
+      "@id": "methodfi:diff",
+      "@type": "@id"
+    },
+    "WebhookType": "methodfi:WebhookType",
+    "StatusHistoryItem": "methodfi:StatusHistoryItem",
+    "timestamp": {
+      "@id": "methodfi:timestamp",
+      "@type": "xsd:dateTime"
+    },
+    "ForwardingRequest": "methodfi:ForwardingRequest",
+    "bindings": {
+      "@id": "methodfi:bindings"
+    },
+    "request": {
+      "@id": "methodfi:request",
+      "@type": "@id"
+    },
+    "response": {
+      "@id": "methodfi:response",
+      "@type": "@id"
+    },
+    "duration_ms": {
+      "@id": "methodfi:duration_ms",
+      "@type": "xsd:decimal"
+    },
+    "status_history": {
+      "@id": "methodfi:status_history",
+      "@container": "@list"
+    },
+    "ForwardingResponseDetail": "methodfi:ForwardingResponseDetail",
+    "status_code": {
+      "@id": "methodfi:status_code",
+      "@type": "xsd:integer"
+    },
+    "headers": {
+      "@id": "methodfi:headers"
+    },
+    "body": {
+      "@id": "methodfi:body",
+      "@type": "@id"
+    },
+    "ForwardingRequestCreateRequest": "methodfi:ForwardingRequestCreateRequest",
+    "url": {
+      "@id": "methodfi:url",
+      "@type": "xsd:string"
+    },
+    "ForwardingRequestDetail": "methodfi:ForwardingRequestDetail",
+    "ForwardingRequestStatus": "methodfi:ForwardingRequestStatus",
+    "ManagedAccount": "methodfi:ManagedAccount",
+    "current_balance": {
+      "@id": "methodfi:current_balance",
+      "@type": "xsd:decimal"
+    },
+    "available_balance": {
+      "@id": "methodfi:available_balance",
+      "@type": "xsd:decimal"
+    },
+    "ManagedAccountTransaction": "methodfi:ManagedAccountTransaction",
+    "date": {
+      "@id": "methodfi:date",
+      "@type": "xsd:date"
+    },
+    "MerchantListResponse_2": "methodfi:MerchantListResponse_2",
+    "MerchantResponse_2": "methodfi:MerchantResponse_2",
+    "account_prefixes": {
+      "@id": "methodfi:account_prefixes",
+      "@container": "@list"
+    },
+    "OpalCardConnectAccountFilters": "methodfi:OpalCardConnectAccountFilters",
+    "exclude": {
+      "@id": "methodfi:exclude"
+    },
+    "OpalConnectAccountFilters": "methodfi:OpalConnectAccountFilters",
+    "include": {
+      "@id": "methodfi:include"
+    },
+    "OpalSessionMode": "methodfi:OpalSessionMode",
+    "OpalTokenCreateRequest": "methodfi:OpalTokenCreateRequest",
+    "entity": {
+      "@id": "methodfi:entity"
+    },
+    "session_id": {
+      "@id": "methodfi:session_id",
+      "@type": "xsd:string"
+    },
+    "mode": {
+      "@id": "methodfi:mode",
+      "@type": "@id"
+    },
+    "appearance": {
+      "@id": "methodfi:appearance",
+      "@type": "xsd:string"
+    },
+    "identity_verification": {
+      "@id": "methodfi:identity_verification"
+    },
+    "card_connect": {
+      "@id": "methodfi:card_connect"
+    },
+    "connect": {
+      "@id": "methodfi:connect"
+    },
+    "account_verification": {
+      "@id": "methodfi:account_verification"
+    },
+    "transactions": {
+      "@id": "methodfi:transactions"
+    },
+    "OpalSession": "methodfi:OpalSession",
+    "config": {
+      "@id": "methodfi:config"
+    },
+    "idv": {
+      "@id": "methodfi:idv"
+    },
+    "cxn": {
+      "@id": "methodfi:cxn"
+    },
+    "avf": {
+      "@id": "methodfi:avf"
+    },
+    "txn": {
+      "@id": "methodfi:txn"
+    },
+    "completed_at": {
+      "@id": "methodfi:completed_at",
+      "@type": "xsd:dateTime"
+    },
+    "OpalToken": "methodfi:OpalToken",
+    "token": {
+      "@id": "methodfi:token",
+      "@type": "xsd:string"
+    },
+    "valid_until": {
+      "@id": "methodfi:valid_until",
+      "@type": "xsd:dateTime"
+    },
+    "PaymentReversalUpdateRequest": "methodfi:PaymentReversalUpdateRequest",
+    "PaymentReversalResourceError": "methodfi:PaymentReversalResourceError",
+    "PaymentReversal": "methodfi:PaymentReversal",
+    "pmt_id": {
+      "@id": "methodfi:pmt_id",
+      "@type": "xsd:string"
+    },
+    "direction": {
+      "@id": "methodfi:direction",
+      "@type": "xsd:string"
+    },
+    "trace_id": {
+      "@id": "methodfi:trace_id",
+      "@type": "xsd:string"
+    },
+    "target_account": {
+      "@id": "methodfi:target_account",
+      "@type": "xsd:string"
+    },
+    "fee": {
+      "@id": "methodfi:fee"
+    },
+    "PaymentCreateRequest": "methodfi:PaymentCreateRequest",
+    "destination": {
+      "@id": "methodfi:destination",
+      "@type": "xsd:string"
+    },
+    "reversal_account": {
+      "@id": "methodfi:reversal_account",
+      "@type": "xsd:string"
+    },
+    "dry_run": {
+      "@id": "methodfi:dry_run",
+      "@type": "xsd:boolean"
+    },
+    "Payment": "methodfi:Payment",
+    "reversal_id": {
+      "@id": "methodfi:reversal_id",
+      "@type": "xsd:string"
+    },
+    "source_trace_id": {
+      "@id": "methodfi:source_trace_id",
+      "@type": "xsd:string"
+    },
+    "destination_trace_id": {
+      "@id": "methodfi:destination_trace_id",
+      "@type": "xsd:string"
+    },
+    "fund_status": {
+      "@id": "methodfi:fund_status",
+      "@type": "xsd:string"
+    },
+    "estimated_completion_date": {
+      "@id": "methodfi:estimated_completion_date",
+      "@type": "xsd:date"
+    },
+    "source_settlement_date": {
+      "@id": "methodfi:source_settlement_date",
+      "@type": "xsd:date"
+    },
+    "destination_settlement_date": {
+      "@id": "methodfi:destination_settlement_date",
+      "@type": "xsd:date"
+    },
+    "source_status": {
+      "@id": "methodfi:source_status",
+      "@type": "xsd:string"
+    },
+    "destination_status": {
+      "@id": "methodfi:destination_status",
+      "@type": "xsd:string"
+    },
+    "destination_payment_method": {
+      "@id": "methodfi:destination_payment_method",
+      "@type": "xsd:string"
+    },
+    "PaymentResourceError": "methodfi:PaymentResourceError",
+    "PaymentCreateRequest_2": "methodfi:PaymentCreateRequest_2",
+    "PaymentListResponse_2": "methodfi:PaymentListResponse_2",
+    "PaymentResponse_2": "methodfi:PaymentResponse_2",
+    "WellKnownJwksResponse": "methodfi:WellKnownJwksResponse",
+    "keys": {
+      "@id": "methodfi:keys",
+      "@container": "@list"
+    },
+    "MethodPublicKey": "methodfi:MethodPublicKey",
+    "jwk": {
+      "@id": "methodfi:jwk",
+      "@type": "@id"
+    },
+    "jwk_thumbprint": {
+      "@id": "methodfi:jwk_thumbprint",
+      "@type": "xsd:string"
+    },
+    "JwkPublic": "methodfi:JwkPublic",
+    "kid": {
+      "@id": "methodfi:kid",
+      "@type": "xsd:string"
+    },
+    "kty": {
+      "@id": "methodfi:kty",
+      "@type": "xsd:string"
+    },
+    "alg": {
+      "@id": "methodfi:alg",
+      "@type": "xsd:string"
+    },
+    "use": {
+      "@id": "methodfi:use",
+      "@type": "xsd:string"
+    },
+    "n": {
+      "@id": "methodfi:n",
+      "@type": "xsd:string"
+    },
+    "e": {
+      "@id": "methodfi:e",
+      "@type": "xsd:string"
+    },
+    "Report": "methodfi:Report",
+    "ReportCreateRequest": "methodfi:ReportCreateRequest"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "Method Financial API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects Method Financial's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-12) from openapi/methodfi-account-attributes-api-openapi.yml, openapi/methodfi-account-balances-api-openapi.yml, openapi/methodfi-account-card-brands-api-openapi.yml.",
+  "dcterms:created": "2026-10-12",
+  "dcterms:source": [
+    "openapi/methodfi-account-attributes-api-openapi.yml",
+    "openapi/methodfi-account-balances-api-openapi.yml",
+    "openapi/methodfi-account-card-brands-api-openapi.yml",
+    "openapi/methodfi-account-consent-api-openapi.yml",
+    "openapi/methodfi-account-payment-instruments-api-openapi.yml"
+  ]
+}

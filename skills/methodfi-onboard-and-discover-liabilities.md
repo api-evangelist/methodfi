@@ -1,5 +1,5 @@
 ---
-name: Onboard an entity and discover liabilities
+name: onboard-and-discover-liabilities
 description: Create a Method entity, verify identity, and run Connect to discover the user's complete liability picture.
 api: openapi/methodfi-openapi-original.yml
 operations: [createEntity, createEntityVerificationSession, updateEntityVerificationSession, createEntityConnect, retrieveEntityConnect, listAccounts]

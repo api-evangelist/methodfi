@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-balance-response-schema.json",
+  "title": "AccountBalanceResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-balances-api-openapi.yml#/components/schemas/AccountBalanceResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/AccountBalance"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AccountBalance": {
+      "type": "object",
+      "description": "A balance record for an account.",
+      "required": [
+        "id",
+        "account_id",
+        "status",
+        "amount",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the balance.",
+          "pattern": "^bal_\\w+$"
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The account this balance belongs to.",
+          "pattern": "^acc_\\w+$"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the balance request.",
+          "enum": [
+            "completed",
+            "pending",
+            "failed"
+          ]
+        },
+        "amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "The balance amount in cents."
+        },
+        "error": {
+          "$ref": "#/$defs/BalanceResourceError"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the balance was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the balance was last updated."
+        }
+      }
+    },
+    "BalanceResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Error details when a balance sync fails.",
+      "required": [
+        "type",
+        "code",
+        "sub_type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The category of balance error.",
+          "enum": [
+            "BALANCE_FAILED"
+          ]
+        },
+        "code": {
+          "type": "integer",
+          "description": "Numeric error code (20XXX range).",
+          "enum": [
+            20001
+          ]
+        },
+        "sub_type": {
+          "type": "string",
+          "description": "Specific balance error classification.",
+          "enum": [
+            "BALANCE_TEMPORARILY_UNAVAILABLE"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description."
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-method-public-key-response-schema.json",
+  "title": "MethodPublicKeyResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-public-keys-api-openapi.yml#/components/schemas/MethodPublicKeyResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/MethodPublicKey"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "JwkPublic": {
+      "type": "object",
+      "required": [
+        "kid",
+        "kty",
+        "alg",
+        "use",
+        "n",
+        "e"
+      ],
+      "properties": {
+        "kid": {
+          "type": "string",
+          "description": "Key identifier."
+        },
+        "kty": {
+          "type": "string",
+          "description": "Key type."
+        },
+        "alg": {
+          "type": "string",
+          "description": "JWK algorithm."
+        },
+        "use": {
+          "type": "string",
+          "description": "Intended key use."
+        },
+        "n": {
+          "type": "string",
+          "description": "RSA modulus."
+        },
+        "e": {
+          "type": "string",
+          "description": "RSA public exponent."
+        }
+      }
+    },
+    "MethodPublicKey": {
+      "type": "object",
+      "required": [
+        "id",
+        "jwk",
+        "jwk_thumbprint",
+        "status",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Method JWK.",
+          "pattern": "^mthd_jwk_\\w+$"
+        },
+        "jwk": {
+          "$ref": "#/$defs/JwkPublic"
+        },
+        "jwk_thumbprint": {
+          "type": "string",
+          "description": "SHA-256 thumbprint for the public JWK."
+        },
+        "status": {
+          "type": "string",
+          "description": "Lifecycle status of the public key.",
+          "enum": [
+            "active",
+            "deprecated",
+            "disabled"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the key was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the key was last updated."
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

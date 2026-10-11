@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-entity-verification-session-list-response-schema.json",
+  "title": "EntityVerificationSessionListResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entity-verification-sessions-api-openapi.yml#/components/schemas/EntityVerificationSessionListResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ListEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityVerificationSession"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "EntityVerificationSession": {
+      "type": "object",
+      "required": [
+        "id",
+        "entity_id",
+        "status",
+        "type",
+        "method",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the verification session."
+        },
+        "entity_id": {
+          "type": "string",
+          "description": "The ID of the entity this verification session belongs to."
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the verification session.",
+          "enum": [
+            "pending",
+            "in_progress",
+            "verified",
+            "failed"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of verification being performed.",
+          "enum": [
+            "identity",
+            "phone"
+          ]
+        },
+        "method": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The verification method used.",
+          "enum": [
+            "sms",
+            "sna",
+            "byo_sms",
+            "byo_kyc",
+            "kba",
+            "element",
+            "opal",
+            "method_verified",
+            null
+          ]
+        },
+        "error": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Error details if the resource encountered an error.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/VerificationSessionResourceError"
+            }
+          ]
+        },
+        "expired_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "Timestamp when the verification session expired."
+        },
+        "sms": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "SMS verification details. Present when method is sms."
+        },
+        "sna": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "SNA verification details. Present when method is sna."
+        },
+        "byo_sms": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "BYO SMS verification details. Present when method is byo_sms."
+        },
+        "byo_kyc": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "BYO KYC verification details. Present when method is byo_kyc."
+        },
+        "kba": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "KBA verification details. Present when method is kba."
+        },
+        "element": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Element verification details. Present when method is element."
+        },
+        "opal": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Opal verification details. Present when method is opal."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the verification session was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the verification session was last updated."
+        }
+      }
+    },
+    "ListEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a list payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific list payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "VerificationSessionResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Error details when an entity verification session fails.",
+      "required": [
+        "type",
+        "code",
+        "sub_type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The category of verification session error.",
+          "enum": [
+            "VERIFICATION_SESSION_FAILED"
+          ]
+        },
+        "code": {
+          "type": "integer",
+          "description": "Numeric error code (19XXX range).",
+          "enum": [
+            19001,
+            19002,
+            19003,
+            19004
+          ]
+        },
+        "sub_type": {
+          "type": "string",
+          "description": "Specific verification session error classification.",
+          "enum": [
+            "VERIFICATION_SESSION_EXPIRED",
+            "VERIFICATION_SESSION_INCORRECT_SMS_CODE",
+            "VERIFICATION_SESSION_FAILED_SNA",
+            "VERIFICATION_SESSION_FAILED_INVALID_ANSWER"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description."
+        }
+      }
+    }
+  }
+}

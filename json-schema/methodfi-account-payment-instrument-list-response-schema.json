@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-payment-instrument-list-response-schema.json",
+  "title": "AccountPaymentInstrumentListResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-payment-instruments-api-openapi.yml#/components/schemas/AccountPaymentInstrumentListResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ListEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AccountPaymentInstrument"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AccountPaymentInstrument": {
+      "type": "object",
+      "description": "A payment instrument for an account.",
+      "required": [
+        "id",
+        "account_id",
+        "status",
+        "type",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the payment instrument.",
+          "pattern": "^pmt_inst_\\w+$"
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The account this payment instrument belongs to.",
+          "pattern": "^acc_\\w+$"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the payment instrument.",
+          "enum": [
+            "pending",
+            "in_progress",
+            "completed"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of payment instrument.",
+          "enum": [
+            "card",
+            "network_token",
+            "inbound_achwire_payment"
+          ]
+        },
+        "chargeable": {
+          "type": "boolean",
+          "description": "Whether this payment instrument is currently chargeable."
+        },
+        "card": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Card details. Present when type is card.",
+          "properties": {
+            "number": {
+              "type": "string",
+              "description": "The card number."
+            },
+            "exp_month": {
+              "type": "string",
+              "description": "Card expiration month."
+            },
+            "exp_year": {
+              "type": "string",
+              "description": "Card expiration year."
+            },
+            "billing_zip_code": {
+              "type": "string",
+              "description": "Billing zip code."
+            }
+          }
+        },
+        "network_token": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Network token details. Present when type is network_token.",
+          "properties": {
+            "token": {
+              "type": "string",
+              "description": "The network token value."
+            }
+          }
+        },
+        "inbound_achwire_payment": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "ACH/wire payment details. Present when type is inbound_achwire_payment.",
+          "properties": {
+            "account_number": {
+              "type": "string",
+              "description": "The account number."
+            },
+            "routing_number": {
+              "type": "string",
+              "description": "The routing number."
+            }
+          }
+        },
+        "error": {
+          "$ref": "#/$defs/ResourceError"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the payment instrument was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the payment instrument was last updated."
+        }
+      }
+    },
+    "ListEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a list payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific list payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "type",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "sub_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

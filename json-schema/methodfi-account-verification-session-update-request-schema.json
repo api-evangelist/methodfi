@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-verification-session-update-request-schema.json",
+  "title": "AccountVerificationSessionUpdateRequest",
+  "description": "Request body for updating an account verification session.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-verification-sessions-api-openapi.yml#/components/schemas/AccountVerificationSessionUpdateRequest",
+  "type": "object",
+  "properties": {
+    "micro_deposits": {
+      "type": "object",
+      "description": "Micro deposit verification amounts. Required for micro_deposits type.",
+      "properties": {
+        "amounts": {
+          "type": "array",
+          "description": "The micro deposit amounts to verify.",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "plaid": {
+      "type": "object",
+      "description": "Plaid verification data. Required for plaid type.",
+      "properties": {
+        "balances": {
+          "type": "object",
+          "description": "The raw balance data received from Plaid."
+        },
+        "transactions": {
+          "type": "array",
+          "description": "The raw transaction data received from Plaid.",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "mx": {
+      "type": "object",
+      "description": "MX verification data. Required for mx type.",
+      "properties": {
+        "account": {
+          "type": "object",
+          "description": "The raw account data received from MX."
+        },
+        "transactions": {
+          "type": "array",
+          "description": "The raw transaction data received from MX.",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "teller": {
+      "type": "object",
+      "description": "Teller verification data. Required for teller type.",
+      "properties": {
+        "balances": {
+          "type": "object",
+          "description": "The raw balance data received from Teller."
+        },
+        "transactions": {
+          "type": "array",
+          "description": "The raw transaction data received from Teller.",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "standard": {
+      "type": "object",
+      "description": "Standard verification data. Required for standard type.",
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "The full card number."
+        }
+      }
+    },
+    "pre_auth": {
+      "type": "object",
+      "description": "Pre-auth verification data. Required for pre_auth type.",
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "The full card number. Required if the number on the session is null."
+        },
+        "exp_month": {
+          "type": "string",
+          "description": "The card expiration month. Required if null or exp_check is fail."
+        },
+        "exp_year": {
+          "type": "string",
+          "description": "The card expiration year. Required if null or exp_check is fail."
+        },
+        "cvv": {
+          "type": "string",
+          "description": "The card CVV. Required if null or cvv_check is fail."
+        }
+      }
+    },
+    "network": {
+      "type": "object",
+      "description": "Network verification data. Required for network type.",
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "The full card number. Required if the number on the session is null."
+        },
+        "exp_month": {
+          "type": "string",
+          "description": "The card expiration month. Required if null or exp_check is fail."
+        },
+        "exp_year": {
+          "type": "string",
+          "description": "The card expiration year. Required if null or exp_check is fail."
+        },
+        "cvv": {
+          "type": "string",
+          "description": "The card CVV. Required if null or cvv_check is fail."
+        }
+      }
+    },
+    "instant": {
+      "type": "object",
+      "description": "Instant verification data. Required for instant type.",
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "The full card number. Required if the number on the session is null."
+        },
+        "exp_month": {
+          "type": "string",
+          "description": "The card expiration month. Required if null or exp_check is fail."
+        },
+        "exp_year": {
+          "type": "string",
+          "description": "The card expiration year. Required if null or exp_check is fail."
+        }
+      }
+    }
+  }
+}

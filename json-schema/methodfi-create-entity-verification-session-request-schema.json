@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-create-entity-verification-session-request-schema.json",
+  "title": "CreateEntityVerificationSessionRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entity-verification-sessions-api-openapi.yml#/components/schemas/CreateEntityVerificationSessionRequest",
+  "type": "object",
+  "required": [
+    "type",
+    "method"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The type of verification to perform.",
+      "enum": [
+        "identity",
+        "phone"
+      ]
+    },
+    "method": {
+      "type": "string",
+      "description": "The verification method to use.",
+      "enum": [
+        "sms",
+        "sna",
+        "byo_sms",
+        "byo_kyc",
+        "kba",
+        "element",
+        "opal"
+      ]
+    },
+    "sms": {
+      "type": "object",
+      "description": "SMS-specific options. Required when method is sms."
+    },
+    "sna": {
+      "type": "object",
+      "description": "SNA-specific options. Required when method is sna."
+    },
+    "byo_sms": {
+      "type": "object",
+      "description": "BYO SMS-specific options. Required when method is byo_sms.",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of the SMS verification."
+        }
+      }
+    },
+    "byo_kyc": {
+      "type": "object",
+      "description": "BYO KYC-specific options. Required when method is byo_kyc."
+    },
+    "kba": {
+      "type": "object",
+      "description": "KBA-specific options. Required when method is kba."
+    }
+  }
+}

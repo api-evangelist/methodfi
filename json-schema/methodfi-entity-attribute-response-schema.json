@@ -1,0 +1,384 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-entity-attribute-response-schema.json",
+  "title": "EntityAttributeResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entity-attributes-api-openapi.yml#/components/schemas/EntityAttributeResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/EntityAttribute"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "EntityAttribute": {
+      "type": "object",
+      "required": [
+        "id",
+        "entity_id",
+        "status",
+        "attributes",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the entity attribute."
+        },
+        "entity_id": {
+          "type": "string",
+          "description": "The ID of the entity this attribute belongs to."
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the attribute retrieval.",
+          "enum": [
+            "completed",
+            "in_progress",
+            "pending",
+            "failed"
+          ]
+        },
+        "attributes": {
+          "$ref": "#/$defs/EntityAttributeData"
+        },
+        "error": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Error details if the resource encountered an error.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/ResourceError"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the attribute was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the attribute was last updated."
+        }
+      }
+    },
+    "EntityAttributeData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Financial health and credit attribute data.",
+      "properties": {
+        "credit_health_credit_card_usage": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Credit card usage health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        },
+        "credit_health_derogatory_marks": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Derogatory marks health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        },
+        "credit_health_hard_inquiries": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Hard inquiries health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        },
+        "credit_health_soft_inquiries": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Soft inquiries health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        },
+        "credit_health_total_accounts": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Total accounts health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        },
+        "credit_health_open_accounts": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Open accounts health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        },
+        "credit_health_credit_age": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Credit age health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        },
+        "credit_health_payment_history": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Payment history health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        },
+        "credit_health_entity_delinquent": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Entity delinquency health indicator.",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "description": "The attribute value."
+            },
+            "rating": {
+              "type": "string",
+              "description": "Rating for this attribute."
+            },
+            "metadata": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "description": "Additional metadata."
+            }
+          }
+        }
+      }
+    },
+    "ResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "type",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "sub_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -8,9 +8,8 @@ envelope:
   request_error: '{ success: false, data: { error: { type, code, sub_type, message } }, message }'
   resource_error: 'set on the resource object''s `error` property: { type, code, sub_type, message }'
   fields:
-    type: >-
-      High-level error class. Request errors: INVALID_AUTHORIZATION, INVALID_REQUEST,
-      API_ERROR. Resource errors use resource-specific types (e.g. PAYMENT_FAILED).
+    type: 'High-level error class. Request errors: INVALID_AUTHORIZATION, INVALID_REQUEST, API_ERROR. Resource errors use
+      resource-specific types (e.g. PAYMENT_FAILED).'
     code: HTTP status code (request errors) or a 5-digit resource error code (resource errors).
     sub_type: Fine-grained machine-readable identifier of the specific error.
     message: Human-readable description.
@@ -79,6 +78,24 @@ common_request_sub_types:
   meaning: An entity with the same details already exists.
 - sub_type: RESTRICTED_ENTITY_DETAILS
   meaning: Entity information violates the organization's configured restrictions.
-notes: >-
-  Payment/reversal/account/entity RESOURCE failure codes (the money-movement decline
-  set) are catalogued separately in errors/methodfi-decline-codes.yml.
+notes: Payment/reversal/account/entity RESOURCE failure codes (the money-movement decline set) are catalogued separately in
+  errors/methodfi-decline-codes.yml.
+problems:
+- status: 400
+  title: Bad Request — unacceptable request, often a missing/invalid parameter.
+- status: 401
+  title: Unauthorized — no valid API key provided.
+- status: 403
+  title: Forbidden — API key lacks permission for the request.
+- status: 404
+  title: Not Found — the requested resource does not exist.
+- status: 422
+  title: Unprocessable Entity — validation failed (present in OpenAPI responses).
+- status: 429
+  title: Too Many Requests — rate limit exceeded (sub_type TOO_MANY_REQUESTS).
+- status: 500
+  title: Server Error — something went wrong on Method's end.
+- status: 503
+  title: Service Unavailable — idempotency store unavailable (sub_type IDEMPOTENCY_UNAVAILABLE).
+- status: 504
+  title: Gateway Timeout (present in OpenAPI responses).

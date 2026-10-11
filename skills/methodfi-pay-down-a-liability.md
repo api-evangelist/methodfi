@@ -1,5 +1,5 @@
 ---
-name: Pay down a liability
+name: pay-down-a-liability
 description: Move money from a funding source account to a discovered liability account, idempotently, and track settlement.
 api: openapi/methodfi-openapi-original.yml
 operations: [createAccount, createAccountPayoff, createPayment, retrievePayment, listPayments]

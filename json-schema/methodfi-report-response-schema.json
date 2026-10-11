@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-report-response-schema.json",
+  "title": "ReportResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-reports-api-openapi.yml#/components/schemas/ReportResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/Report"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Metadata": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "description": "Arbitrary key-value metadata attached to the resource."
+    },
+    "Report": {
+      "type": "object",
+      "description": "A Report is a downloadable file containing aggregated data about payments, entities, or other resources.",
+      "required": [
+        "id",
+        "type",
+        "url",
+        "status",
+        "metadata",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the report.",
+          "pattern": "^rpt_\\w+$"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of report.",
+          "enum": [
+            "payments.created.current",
+            "payments.created.previous",
+            "payments.created.previous_day",
+            "payments.updated.current",
+            "payments.updated.previous",
+            "payments.failed.previous_day",
+            "ach.pull.upcoming",
+            "ach.pull.previous",
+            "ach.pull.nightly",
+            "ach.reversals.nightly",
+            "ach.debit.daily",
+            "entities.created.previous_day",
+            "reserve_fbo_balance.created.previous_day"
+          ]
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Download URL for the completed report. Only available when status is `completed`."
+        },
+        "status": {
+          "type": "string",
+          "description": "Current processing status of the report.",
+          "enum": [
+            "processing",
+            "completed"
+          ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the report was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the report was last updated."
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

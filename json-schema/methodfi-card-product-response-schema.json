@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-card-product-response-schema.json",
+  "title": "CardProductResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-card-products-api-openapi.yml#/components/schemas/CardProductResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/CardProduct"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "CardProduct": {
+      "type": "object",
+      "description": "A Card Product represents a specific card program from a network and issuer.",
+      "required": [
+        "id",
+        "network",
+        "issuer",
+        "name",
+        "type",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the card product."
+        },
+        "network": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Card network (e.g., Visa, Mastercard)."
+        },
+        "issuer": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Card issuing institution."
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Display name of the card product."
+        },
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The card product type.",
+          "enum": [
+            "specific",
+            "generic",
+            "in_review",
+            null
+          ]
+        },
+        "brands": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Array of brand entries for this card product.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique identifier for the brand."
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the brand."
+              },
+              "network": {
+                "type": "string",
+                "description": "Card network for this brand."
+              },
+              "network_tier": {
+                "type": "string",
+                "description": "Network tier for this brand."
+              },
+              "default_image": {
+                "type": "string",
+                "description": "URL of the default image for this brand."
+              }
+            }
+          }
+        },
+        "error": {
+          "$ref": "#/$defs/ResourceError"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the card product was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the card product was last updated."
+        }
+      }
+    },
+    "ResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "type",
+        "code",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer"
+        },
+        "sub_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

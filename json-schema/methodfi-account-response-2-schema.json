@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-response-2-schema.json",
+  "title": "AccountResponse_2",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-accounts-api-openapi.yml#/components/schemas/AccountResponse_2",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "holder_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "disabled",
+        "closed",
+        "processing"
+      ]
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "ach",
+        "liability"
+      ]
+    },
+    "ach": {
+      "type": "object"
+    },
+    "liability": {
+      "type": "object"
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "error": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

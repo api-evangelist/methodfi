@@ -2,36 +2,38 @@ generated: '2026-07-20'
 method: searched
 source: https://docs.methodfi.com/2026-03-30/reference
 docs: https://docs.methodfi.com/guides/platform-fundamentals
-summary: >-
-  Cross-cutting request/response semantics for the Method API: bearer API-key auth,
-  a dated version header, idempotency keys on all POSTs, page/cursor pagination, a
-  standard success/error response envelope, resource metadata, and request-id tracing.
+summary: 'Cross-cutting request/response semantics for the Method API: bearer API-key auth, a dated version header, idempotency
+  keys on all POSTs, page/cursor pagination, a standard success/error response envelope, resource metadata, and request-id
+  tracing.'
 authentication:
   style: bearer-api-key
   header: Authorization
-  format: 'Bearer sk_...'
+  format: Bearer sk_...
   version_header: Method-Version
   ref: authentication/methodfi-authentication.yml
 idempotency:
   supported: true
   header: Idempotency-Key
-  scope: all POST requests
+  scope:
+  - all POST requests (per docs); PUT/DELETE not covered
   key_format: any unique string up to 255 characters (V4 UUID recommended)
-  retention: >-
-    Method stores the status code and body of the first request for a given key and
-    replays it for subsequent requests with the same key, including 500 errors.
-  unavailable_behavior: >-
-    Returns HTTP 503 with sub_type IDEMPOTENCY_UNAVAILABLE when the idempotency store
-    is unavailable; retry later or fall back to non-idempotent processing.
+  retention: Method stores the status code and body of the first request for a given key and replays it for subsequent requests
+    with the same key, including 500 errors.
+  unavailable_behavior: Returns HTTP 503 with sub_type IDEMPOTENCY_UNAVAILABLE when the idempotency store is unavailable;
+    retry later or fall back to non-idempotent processing.
   docs: https://docs.methodfi.com/2026-03-30/reference/idempotency
+  coverage: partial
+  mechanism: request header / body token declared in the OpenAPI
+  evidence: Idempotency-Key on 42 of 61 mutating operations
+  verified: derived
 pagination:
   style: page-and-cursor
   request_params:
-  - page            # 1-indexed page number
-  - page_cursor     # resource id to start/end from; mutually exclusive with page
-  - page_limit      # default and maximum 100 (OpenAPI param default 10)
-  - from_date       # ISO 8601 YYYY-MM-DD, inclusive
-  - to_date         # ISO 8601 YYYY-MM-DD, inclusive
+  - page
+  - page_cursor
+  - page_limit
+  - from_date
+  - to_date
   response_envelope_field: data
   response_headers:
   - Pagination-Page
@@ -45,10 +47,8 @@ pagination:
 expansion:
   supported: true
   style: expand[]
-  description: >-
-    Many resources expose expandable sub-resources (e.g. account balance, payoff,
-    payment_instrument, card_brand, latest_verification_session) that can be inflated
-    inline rather than returning only the id.
+  description: Many resources expose expandable sub-resources (e.g. account balance, payoff, payment_instrument, card_brand,
+    latest_verification_session) that can be inflated inline rather than returning only the id.
   docs: https://docs.methodfi.com/2026-03-30/reference/expanding
 metadata:
   supported: true
@@ -70,7 +70,10 @@ error_envelope:
   format: method-envelope
   is_rfc9457: false
   shape: '{ success: false, data: { error: { type, code, sub_type, message } }, message }'
-  request_error_types: [INVALID_AUTHORIZATION, INVALID_REQUEST, API_ERROR]
+  request_error_types:
+  - INVALID_AUTHORIZATION
+  - INVALID_REQUEST
+  - API_ERROR
   resource_error_field: error
   ref: errors/methodfi-problem-types.yml
 rate_limiting:

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-payment-create-request-schema.json",
+  "title": "PaymentCreateRequest",
+  "description": "Request body for creating a payment.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-payments-api-openapi.yml#/components/schemas/PaymentCreateRequest",
+  "type": "object",
+  "required": [
+    "source",
+    "destination",
+    "amount",
+    "description"
+  ],
+  "properties": {
+    "source": {
+      "type": "string",
+      "description": "The source account ID.",
+      "pattern": "^acc_\\w+$"
+    },
+    "destination": {
+      "type": "string",
+      "description": "The destination account ID.",
+      "pattern": "^acc_\\w+$"
+    },
+    "amount": {
+      "type": "integer",
+      "description": "Payment amount in cents.",
+      "minimum": 1
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description for the payment."
+    },
+    "reversal_account": {
+      "type": "string",
+      "description": "Account ID to use for the reversal leg of the payment, if applicable.",
+      "pattern": "^acc_\\w+$"
+    },
+    "metadata": {
+      "$ref": "#/$defs/Metadata"
+    },
+    "dry_run": {
+      "type": "boolean",
+      "description": "Validate the payment request without moving funds."
+    },
+    "fee": {
+      "type": "object",
+      "description": "Optional fee configuration for the payment.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The fee type.",
+          "enum": [
+            "total"
+          ]
+        },
+        "amount": {
+          "type": "integer",
+          "description": "Fee amount in cents.",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Metadata": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "description": "Arbitrary key-value metadata attached to the resource."
+    }
+  }
+}

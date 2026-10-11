@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-forwarding-request-create-request-schema.json",
+  "title": "ForwardingRequestCreateRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-forwarding-requests-api-openapi.yml#/components/schemas/ForwardingRequestCreateRequest",
+  "type": "object",
+  "required": [
+    "url",
+    "method",
+    "bindings",
+    "headers",
+    "body"
+  ],
+  "properties": {
+    "url": {
+      "type": "string",
+      "description": "The destination URL for the forwarded request."
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ],
+      "description": "HTTP method to use."
+    },
+    "headers": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "HTTP headers to include in the forwarded request."
+    },
+    "body": {
+      "type": "string",
+      "description": "Body to send with the forwarded request."
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Key-value map of secret bindings to inject into the request."
+    },
+    "metadata": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Optional metadata to attach to the forwarding request."
+    }
+  }
+}

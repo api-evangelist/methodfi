@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-merchant-response-schema.json",
+  "title": "MerchantResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-merchants-api-openapi.yml#/components/schemas/MerchantResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/Merchant"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Merchant": {
+      "type": "object",
+      "required": [
+        "id",
+        "parent_name",
+        "name",
+        "logo",
+        "type",
+        "provider_ids",
+        "is_temp",
+        "account_number_formats"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the merchant."
+        },
+        "parent_name": {
+          "type": "string",
+          "description": "Name of the parent merchant group."
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the merchant."
+        },
+        "logo": {
+          "type": "string",
+          "description": "URL of the merchant logo."
+        },
+        "type": {
+          "$ref": "#/$defs/MerchantType",
+          "description": "Type of accounts supported by this merchant."
+        },
+        "provider_ids": {
+          "$ref": "#/$defs/MerchantProviderIds"
+        },
+        "is_temp": {
+          "type": "boolean",
+          "description": "Whether this is a temporary merchant entry."
+        },
+        "account_number_formats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Accepted account number formats."
+        }
+      }
+    },
+    "MerchantProviderIds": {
+      "type": "object",
+      "properties": {
+        "plaid": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mx": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "finicity": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dpp": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rpps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "MerchantType": {
+      "type": "string",
+      "enum": [
+        "auto_loan",
+        "bank",
+        "bnpl",
+        "business_loan",
+        "city",
+        "collection",
+        "county",
+        "credit_builder",
+        "credit_card",
+        "electric_utility",
+        "fintech",
+        "home_equity_loan",
+        "home_loan",
+        "insurance",
+        "internet_utility",
+        "loan",
+        "medical",
+        "mortgage",
+        "personal_loan",
+        "student_loan",
+        "student_loans",
+        "subscription",
+        "telephone_utility",
+        "television_utility",
+        "unknown",
+        "utility",
+        "waste_utility",
+        "water_utility"
+      ]
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

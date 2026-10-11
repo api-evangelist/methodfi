@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-update-entity-verification-session-request-schema.json",
+  "title": "UpdateEntityVerificationSessionRequest",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entity-verification-sessions-api-openapi.yml#/components/schemas/UpdateEntityVerificationSessionRequest",
+  "type": "object",
+  "required": [
+    "type",
+    "method"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "The verification session type."
+    },
+    "method": {
+      "type": "string",
+      "description": "The verification method.",
+      "enum": [
+        "sms",
+        "sna",
+        "byo_sms",
+        "byo_kyc",
+        "kba",
+        "element",
+        "opal"
+      ]
+    },
+    "sms": {
+      "type": "object",
+      "description": "SMS verification data.",
+      "properties": {
+        "sms_code": {
+          "type": "string",
+          "description": "The 6-character SMS verification code.",
+          "minLength": 6,
+          "maxLength": 6
+        }
+      }
+    },
+    "sna": {
+      "type": "object",
+      "description": "SNA verification data."
+    },
+    "kba": {
+      "type": "object",
+      "description": "KBA verification data.",
+      "properties": {
+        "answers": {
+          "type": "array",
+          "description": "Array of KBA question answers.",
+          "items": {
+            "type": "object",
+            "required": [
+              "question_id",
+              "answer_id"
+            ],
+            "properties": {
+              "question_id": {
+                "type": "string",
+                "description": "The question identifier."
+              },
+              "answer_id": {
+                "type": "string",
+                "description": "The selected answer identifier."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

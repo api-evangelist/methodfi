@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-product-response-schema.json",
+  "title": "AccountProductResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-products-api-openapi.yml#/components/schemas/AccountProductResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/AccountProduct"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AccountProduct": {
+      "type": "object",
+      "description": "A product associated with an account.",
+      "required": [
+        "id",
+        "name",
+        "status",
+        "status_error",
+        "capabilities",
+        "reportable",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the product.",
+          "pattern": "^prd_\\w+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the product."
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the product.",
+          "enum": [
+            "available",
+            "unavailable",
+            "restricted"
+          ]
+        },
+        "status_error": {
+          "$ref": "#/$defs/ProductResourceError"
+        },
+        "capabilities": {
+          "type": "array",
+          "description": "Capabilities provided by this product.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reportable": {
+          "type": "boolean",
+          "description": "Whether this product generates reportable data."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the product was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the product was last updated."
+        }
+      }
+    },
+    "ProductResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Error details when a product execution fails.",
+      "required": [
+        "type",
+        "code",
+        "sub_type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The category of product error.",
+          "enum": [
+            "PRODUCT_EXECUTION_FAILED"
+          ]
+        },
+        "code": {
+          "type": "integer",
+          "description": "Numeric error code (24XXX range).",
+          "enum": [
+            24001
+          ]
+        },
+        "sub_type": {
+          "type": "string",
+          "description": "Specific product error classification.",
+          "enum": [
+            "PRODUCT_EXECUTION_FAILED"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description."
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

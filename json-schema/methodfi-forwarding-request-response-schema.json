@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-forwarding-request-response-schema.json",
+  "title": "ForwardingRequestResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-forwarding-requests-api-openapi.yml#/components/schemas/ForwardingRequestResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/ForwardingRequest"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "ForwardingRequest": {
+      "type": "object",
+      "required": [
+        "id",
+        "bindings",
+        "request",
+        "response",
+        "duration_ms",
+        "status",
+        "status_history",
+        "created_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the forwarding request."
+        },
+        "bindings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Key-value map of secret bindings used in the request."
+        },
+        "request": {
+          "$ref": "#/$defs/ForwardingRequestDetail"
+        },
+        "response": {
+          "$ref": "#/$defs/ForwardingResponseDetail"
+        },
+        "duration_ms": {
+          "type": "number",
+          "description": "Total duration of the forwarded request in milliseconds."
+        },
+        "status": {
+          "$ref": "#/$defs/ForwardingRequestStatus"
+        },
+        "status_history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StatusHistoryItem"
+          },
+          "description": "History of status transitions."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the forwarding request was created."
+        }
+      }
+    },
+    "ForwardingRequestDetail": {
+      "type": "object",
+      "required": [
+        "url",
+        "method",
+        "headers",
+        "body"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "The destination URL for the forwarded request."
+        },
+        "method": {
+          "type": "string",
+          "enum": [
+            "GET",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ],
+          "description": "HTTP method of the forwarded request."
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP headers sent with the forwarded request."
+        },
+        "body": {
+          "type": "string",
+          "description": "Body of the forwarded request."
+        }
+      }
+    },
+    "ForwardingRequestStatus": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "failed"
+      ]
+    },
+    "ForwardingResponseDetail": {
+      "type": "object",
+      "description": "Details of the upstream response captured for the forwarding request.",
+      "properties": {
+        "status_code": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "HTTP status code returned by the destination."
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP headers returned by the destination."
+        },
+        "body": {
+          "$ref": "#/$defs/JsonValue",
+          "description": "Body returned by the destination."
+        }
+      }
+    },
+    "JsonValue": {
+      "description": "Arbitrary JSON value.",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": true
+        },
+        {
+          "type": "array",
+          "items": {}
+        }
+      ]
+    },
+    "StatusHistoryItem": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-entity-credit-score-response-schema.json",
+  "title": "EntityCreditScoreResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-entity-credit-scores-api-openapi.yml#/components/schemas/EntityCreditScoreResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/SuccessEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/$defs/EntityCreditScore"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "CreditScoreResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Error details when a credit score pull fails.",
+      "required": [
+        "type",
+        "code",
+        "sub_type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The category of credit score error.",
+          "enum": [
+            "CREDIT_SCORE_FAILED"
+          ]
+        },
+        "code": {
+          "type": "integer",
+          "description": "Numeric error code (23XXX range).",
+          "enum": [
+            23001
+          ]
+        },
+        "sub_type": {
+          "type": "string",
+          "description": "Specific credit score error classification.",
+          "enum": [
+            "CREDIT_SCORE_FAILED_TEMPORARILY_UNAVAILABLE"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description."
+        }
+      }
+    },
+    "EntityCreditScore": {
+      "type": "object",
+      "required": [
+        "id",
+        "entity_id",
+        "status",
+        "scores",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the credit score."
+        },
+        "entity_id": {
+          "type": "string",
+          "description": "The ID of the entity this credit score belongs to."
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the credit score retrieval.",
+          "enum": [
+            "completed",
+            "in_progress",
+            "pending",
+            "failed"
+          ]
+        },
+        "scores": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "description": "Array of credit score results.",
+          "items": {
+            "type": "object",
+            "required": [
+              "score",
+              "source",
+              "model",
+              "factors",
+              "created_at"
+            ],
+            "properties": {
+              "score": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "description": "The credit score value."
+              },
+              "source": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The source of the credit score."
+              },
+              "model": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The scoring model used."
+              },
+              "factors": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "description": "Factors affecting the credit score.",
+                "items": {
+                  "$ref": "#/$defs/EntityCreditScoreFactor"
+                }
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp when this score was generated."
+              }
+            }
+          }
+        },
+        "error": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Error details if the resource encountered an error.",
+          "allOf": [
+            {
+              "$ref": "#/$defs/CreditScoreResourceError"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the credit score was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the credit score was last updated."
+        }
+      }
+    },
+    "EntityCreditScoreFactor": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Factor code."
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Human-readable description of the factor."
+        }
+      }
+    },
+    "SuccessEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a single payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific response payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

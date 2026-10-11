@@ -1,0 +1,835 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-update-list-response-schema.json",
+  "title": "AccountUpdateListResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-account-updates-api-openapi.yml#/components/schemas/AccountUpdateListResponse",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ListEnvelope"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AccountUpdate"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AccountUpdate": {
+      "type": "object",
+      "description": "An update record for an account.",
+      "required": [
+        "id",
+        "account_id",
+        "status",
+        "type",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the update.",
+          "pattern": "^upd_\\w+$"
+        },
+        "account_id": {
+          "type": "string",
+          "description": "The account this update belongs to.",
+          "pattern": "^acc_\\w+$"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the update.",
+          "enum": [
+            "completed",
+            "pending",
+            "failed"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "The liability type of the account being updated.",
+          "enum": [
+            "credit_card",
+            "auto_loan",
+            "mortgage",
+            "personal_loan",
+            "student_loan",
+            "student_loans",
+            "bnpl",
+            "fintech"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "description": "The data source used for this update.",
+          "enum": [
+            "direct",
+            "snapshot"
+          ]
+        },
+        "data_as_of": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time",
+          "description": "The timestamp of the data used to complete this update."
+        },
+        "credit_card": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Credit card update data. Present when `type` is `credit_card`.",
+          "properties": {
+            "sub_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "opened_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "closed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "balance": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Current balance in cents."
+            },
+            "last_payment_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Last payment amount in cents."
+            },
+            "last_payment_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_due_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_minimum_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Minimum payment due in cents."
+            },
+            "interest_rate_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "interest_rate_percentage_max": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "interest_rate_percentage_min": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "available_credit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Available credit in cents."
+            },
+            "credit_limit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Credit limit in cents."
+            },
+            "usage_pattern": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "auto_loan": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Auto loan update data. Present when `type` is `auto_loan`.",
+          "properties": {
+            "sub_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "opened_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "closed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "balance": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Current balance in cents."
+            },
+            "last_payment_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Last payment amount in cents."
+            },
+            "last_payment_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_due_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_minimum_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Minimum payment due in cents."
+            },
+            "interest_rate_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "expected_payoff_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "original_loan_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Original loan amount in cents."
+            },
+            "term_length": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "interest_rate_percentage": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "interest_rate_source": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "mortgage": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Mortgage update data. Present when `type` is `mortgage`.",
+          "properties": {
+            "sub_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "opened_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "closed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "balance": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Current balance in cents."
+            },
+            "last_payment_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Last payment amount in cents."
+            },
+            "last_payment_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_due_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_minimum_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Minimum payment due in cents."
+            },
+            "interest_rate_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "expected_payoff_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "original_loan_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Original loan amount in cents."
+            },
+            "term_length": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "interest_rate_percentage": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "interest_rate_source": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "personal_loan": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Personal loan update data. Present when `type` is `personal_loan`.",
+          "properties": {
+            "sub_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "opened_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "closed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "balance": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Current balance in cents."
+            },
+            "last_payment_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Last payment amount in cents."
+            },
+            "last_payment_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_due_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_minimum_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Minimum payment due in cents."
+            },
+            "interest_rate_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "available_credit": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Available credit in cents."
+            },
+            "original_loan_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Original loan amount in cents."
+            },
+            "term_length": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "interest_rate_percentage": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "interest_rate_source": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "student_loan": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Student loan update data. Present when `type` is `student_loan`.",
+          "properties": {
+            "sub_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "opened_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "closed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "balance": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Current balance in cents."
+            },
+            "last_payment_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Last payment amount in cents."
+            },
+            "last_payment_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_due_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_minimum_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Minimum payment due in cents."
+            },
+            "interest_rate_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "expected_payoff_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "original_loan_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Original loan amount in cents."
+            },
+            "term_length": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "interest_rate_percentage": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "interest_rate_source": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "student_loans": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Student loans aggregate update data. Present when `type` is `student_loans`.",
+          "properties": {
+            "sub_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "opened_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "closed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "balance": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Current balance in cents."
+            },
+            "last_payment_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Last payment amount in cents."
+            },
+            "last_payment_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_due_date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "next_payment_minimum_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Minimum payment due in cents."
+            },
+            "interest_rate_type": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "disbursements": {
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object"
+              }
+            },
+            "original_loan_amount": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Original loan amount in cents."
+            },
+            "interest_rate_percentage": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "interest_rate_source": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "bnpl": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Buy now pay later update data. Present when `type` is `bnpl`.",
+          "properties": {
+            "balance": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Current balance in cents."
+            },
+            "opened_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "closed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          }
+        },
+        "fintech": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "description": "Fintech account update data. Present when `type` is `fintech`.",
+          "properties": {
+            "balance": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "description": "Current balance in cents."
+            },
+            "opened_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "closed_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            }
+          }
+        },
+        "error": {
+          "$ref": "#/$defs/UpdateResourceError"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the update was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the update was last updated."
+        }
+      }
+    },
+    "ListEnvelope": {
+      "type": "object",
+      "description": "Standard envelope for successful responses that return a list payload.",
+      "required": [
+        "success",
+        "data",
+        "message"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "description": "Always `true` for successful responses."
+        },
+        "data": {
+          "description": "Operation-specific list payload."
+        },
+        "message": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "UpdateResourceError": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "Error details when an account update fails.",
+      "required": [
+        "type",
+        "code",
+        "sub_type",
+        "message"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The category of update error.",
+          "enum": [
+            "UPDATE_FAILED"
+          ]
+        },
+        "code": {
+          "type": "integer",
+          "description": "Numeric error code (21XXX range).",
+          "enum": [
+            21001
+          ]
+        },
+        "sub_type": {
+          "type": "string",
+          "description": "Specific update error classification.",
+          "enum": [
+            "UPDATE_TEMPORARILY_UNAVAILABLE"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error description."
+        }
+      }
+    }
+  }
+}

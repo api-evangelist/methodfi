@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/methodfi/main/json-schema/methodfi-account-create-request-schema.json",
+  "title": "AccountCreateRequest",
+  "description": "Request body for creating an account.\n`type` is recommended and used for discrimination in generated clients, but\nthe API can also infer the account type from the nested object you provide.\n",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/methodfi-accounts-api-openapi.yml#/components/schemas/AccountCreateRequest",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/CreateAchAccountRequest"
+    },
+    {
+      "$ref": "#/$defs/CreateLiabilityAccountRequest"
+    },
+    {
+      "$ref": "#/$defs/CreateClearingAccountRequest"
+    },
+    {
+      "$ref": "#/$defs/CreateDebitCardAccountRequest"
+    }
+  ],
+  "$defs": {
+    "CreateAchAccountRequest": {
+      "type": "object",
+      "description": "Create an ACH account.",
+      "required": [
+        "holder_id",
+        "ach"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "ach"
+          ]
+        },
+        "holder_id": {
+          "type": "string",
+          "description": "The entity ID that will own this account.",
+          "pattern": "^ent_\\w+$"
+        },
+        "ach": {
+          "type": "object",
+          "description": "ACH account details.",
+          "required": [
+            "routing",
+            "number",
+            "type"
+          ],
+          "properties": {
+            "routing": {
+              "type": "string",
+              "description": "The ACH routing number.",
+              "pattern": "^\\d{9}$"
+            },
+            "number": {
+              "type": "string",
+              "description": "The ACH account number.",
+              "pattern": "^\\d+$"
+            },
+            "type": {
+              "type": "string",
+              "description": "The type of ACH account.",
+              "enum": [
+                "checking",
+                "savings"
+              ]
+            }
+          }
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        }
+      }
+    },
+    "CreateClearingAccountRequest": {
+      "type": "object",
+      "description": "Create a clearing account.",
+      "required": [
+        "holder_id",
+        "clearing"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "clearing"
+          ]
+        },
+        "holder_id": {
+          "type": "string",
+          "description": "The entity ID that will own this account.",
+          "pattern": "^ent_\\w+$"
+        },
+        "clearing": {
+          "type": "object",
+          "description": "Clearing account details.",
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "The type of clearing account to create.",
+              "enum": [
+                "single_use",
+                "multi_use"
+              ]
+            }
+          }
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        }
+      }
+    },
+    "CreateDebitCardAccountRequest": {
+      "type": "object",
+      "description": "Create a debit card account.",
+      "required": [
+        "holder_id",
+        "debit_card"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "debit_card"
+          ]
+        },
+        "holder_id": {
+          "type": "string",
+          "description": "The entity ID that will own this account.",
+          "pattern": "^ent_\\w+$"
+        },
+        "debit_card": {
+          "type": "object",
+          "description": "Debit card details.",
+          "required": [
+            "number",
+            "exp_month",
+            "exp_year"
+          ],
+          "properties": {
+            "number": {
+              "type": "string",
+              "minLength": 15,
+              "maxLength": 16
+            },
+            "exp_month": {
+              "type": "string",
+              "pattern": "^(0[1-9]|1[0-2])$"
+            },
+            "exp_year": {
+              "type": "integer"
+            },
+            "cvv": {
+              "type": "string"
+            },
+            "billing_zip_code": {
+              "type": "string"
+            }
+          }
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        }
+      }
+    },
+    "CreateLiabilityAccountRequest": {
+      "type": "object",
+      "description": "Create a liability account.",
+      "required": [
+        "holder_id",
+        "liability"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "liability"
+          ]
+        },
+        "holder_id": {
+          "type": "string",
+          "description": "The entity ID that will own this account.",
+          "pattern": "^ent_\\w+$"
+        },
+        "liability": {
+          "type": "object",
+          "description": "Liability account details.",
+          "properties": {
+            "mch_id": {
+              "type": "string",
+              "description": "The merchant ID for the liability.",
+              "pattern": "^mch_\\w+$"
+            },
+            "account_number": {
+              "type": "string",
+              "description": "Full account number for the liability."
+            },
+            "number": {
+              "type": "string",
+              "description": "Alternative liability account number field."
+            },
+            "credit_card": {
+              "type": "object",
+              "description": "Optional supplemental card details for liability accounts.",
+              "required": [
+                "exp_month",
+                "exp_year"
+              ],
+              "properties": {
+                "billing_zip_code": {
+                  "type": "string"
+                },
+                "cvv": {
+                  "type": "string"
+                },
+                "exp_month": {
+                  "type": "string",
+                  "pattern": "^(0[1-9]|1[0-2])$"
+                },
+                "exp_year": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "oneOf": [
+            {
+              "required": [
+                "account_number"
+              ]
+            },
+            {
+              "required": [
+                "number"
+              ]
+            }
+          ]
+        },
+        "metadata": {
+          "$ref": "#/$defs/Metadata"
+        }
+      }
+    },
+    "Metadata": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "description": "Arbitrary key-value metadata attached to the resource."
+    }
+  }
+}
