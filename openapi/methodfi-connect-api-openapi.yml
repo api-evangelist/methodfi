@@ -39,6 +39,27 @@ paths:
                 $ref: '#/components/schemas/ConnectResponse'
 components:
   schemas:
+    ConnectResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - in_progress
+          - completed
+          - failed
+        accounts:
+          type: array
+          description: Liability accounts discovered for the entity.
+          items:
+            $ref: '#/components/schemas/AccountResponse'
+        created_at:
+          type: string
+          format: date-time
     AccountResponse:
       type: object
       properties:
@@ -74,27 +95,6 @@ components:
           type: string
           format: date-time
         updated_at:
-          type: string
-          format: date-time
-    ConnectResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        entity_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - in_progress
-          - completed
-          - failed
-        accounts:
-          type: array
-          description: Liability accounts discovered for the entity.
-          items:
-            $ref: '#/components/schemas/AccountResponse'
-        created_at:
           type: string
           format: date-time
   parameters:

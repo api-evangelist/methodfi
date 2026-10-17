@@ -132,7 +132,78 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
+  headers:
+    Pagination-Page-Limit:
+      description: Number of items per page.
+      schema:
+        type: integer
+    Pagination-Page-Count:
+      description: Total number of pages.
+      schema:
+        type: integer
+    Pagination-Page-Cursor-Prev:
+      description: Cursor for the previous page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Page-Cursor-Next:
+      description: Cursor for the next page, if available.
+      schema:
+        type:
+        - string
+        - 'null'
+    Pagination-Page:
+      description: Current page number.
+      schema:
+        type: integer
+    Pagination-Total-Count:
+      description: Total number of items across all pages.
+      schema:
+        type: integer
   parameters:
+    AccountIdParam:
+      name: accountId
+      in: path
+      required: true
+      description: Unique identifier for the account.
+      schema:
+        type: string
+        pattern: ^acc_\w+$
+    PageLimitParam:
+      name: page_limit
+      in: query
+      required: false
+      description: Number of items per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    AccountUpdateIdParam:
+      name: updateId
+      in: path
+      required: true
+      description: Unique identifier for the account update.
+      schema:
+        type: string
+        pattern: ^upd_\w+$
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: Page number for pagination (1-indexed).
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageCursorParam:
+      name: page_cursor
+      in: query
+      required: false
+      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
+      schema:
+        type: string
     idempotency_key:
       name: Idempotency-Key
       in: header
@@ -159,112 +230,119 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
-    AccountIdParam:
-      name: accountId
-      in: path
-      required: true
-      description: Unique identifier for the account.
-      schema:
-        type: string
-        pattern: ^acc_\w+$
-    PageCursorParam:
-      name: page_cursor
-      in: query
-      required: false
-      description: Cursor for cursor-based pagination. Use the value from `Pagination-Page-Cursor-Next` or `Pagination-Page-Cursor-Prev` response headers.
-      schema:
-        type: string
-    AccountUpdateIdParam:
-      name: updateId
-      in: path
-      required: true
-      description: Unique identifier for the account update.
-      schema:
-        type: string
-        pattern: ^upd_\w+$
-    PageLimitParam:
-      name: page_limit
-      in: query
-      required: false
-      description: Number of items per page.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    PageParam:
-      name: page
-      in: query
-      required: false
-      description: Page number for pagination (1-indexed).
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-  headers:
-    Pagination-Page-Count:
-      description: Total number of pages.
-      schema:
-        type: integer
-    Pagination-Page-Cursor-Next:
-      description: Cursor for the next page, if available.
-      schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page-Cursor-Prev:
-      description: Cursor for the previous page, if available.
-      schema:
-        type:
-        - string
-        - 'null'
-    Pagination-Page-Limit:
-      description: Number of items per page.
-      schema:
-        type: integer
-    Pagination-Page:
-      description: Current page number.
-      schema:
-        type: integer
-    Pagination-Total-Count:
-      description: Total number of items across all pages.
-      schema:
-        type: integer
+  responses:
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    UpdateResourceError:
-      type:
-      - object
-      - 'null'
-      description: Error details when an account update fails.
+    AccountUpdateListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/AccountUpdate'
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
       required:
-      - type
-      - code
-      - sub_type
+      - success
+      - data
       - message
       properties:
-        type:
-          type: string
-          description: The category of update error.
-          enum:
-          - UPDATE_FAILED
-        code:
-          type: integer
-          description: Numeric error code (21XXX range).
-          enum:
-          - 21001
-        sub_type:
-          type: string
-          description: Specific update error classification.
-          enum:
-          - UPDATE_TEMPORARILY_UNAVAILABLE
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
+    ListEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a list payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific list payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: []
+        message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
         message:
           type: string
-          description: Human-readable error description.
-      example:
-        type: UPDATE_FAILED
-        code: 21001
-        sub_type: UPDATE_TEMPORARILY_UNAVAILABLE
-        message: Update is temporarily unavailable for this account.
     AccountUpdate:
       type: object
       description: An update record for an account.
@@ -791,55 +869,13 @@ components:
           type: string
           format: date-time
           description: Timestamp when the update was last updated.
-    AccountUpdateListResponse:
+    AccountUpdateResponse:
       allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
+      - $ref: '#/components/schemas/SuccessEnvelope'
       - type: object
         properties:
           data:
-            type: array
-            items:
-              $ref: '#/components/schemas/AccountUpdate'
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
-          type: string
-    ListEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a list payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific list payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: []
-        message: null
+            $ref: '#/components/schemas/AccountUpdate'
     ErrorObject:
       type: object
       required:
@@ -865,76 +901,40 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
+    UpdateResourceError:
+      type:
+      - object
+      - 'null'
+      description: Error details when an account update fails.
       required:
-      - success
-      - data
+      - type
+      - code
+      - sub_type
       - message
       properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
+        type:
+          type: string
+          description: The category of update error.
+          enum:
+          - UPDATE_FAILED
+        code:
+          type: integer
+          description: Numeric error code (21XXX range).
+          enum:
+          - 21001
+        sub_type:
+          type: string
+          description: Specific update error classification.
+          enum:
+          - UPDATE_TEMPORARILY_UNAVAILABLE
         message:
-          type:
-          - string
-          - 'null'
+          type: string
+          description: Human-readable error description.
       example:
-        success: true
-        data: {}
-        message: null
-    AccountUpdateResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/AccountUpdate'
-  responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+        type: UPDATE_FAILED
+        code: 21001
+        sub_type: UPDATE_TEMPORARILY_UNAVAILABLE
+        message: Update is temporarily unavailable for this account.
   securitySchemes:
     OpalToken:
       type: http

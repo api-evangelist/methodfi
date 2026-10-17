@@ -111,34 +111,24 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  parameters:
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
   schemas:
+    ForwardingResponseDetail:
+      type: object
+      description: Details of the upstream response captured for the forwarding request.
+      properties:
+        status_code:
+          type:
+          - integer
+          - 'null'
+          description: HTTP status code returned by the destination.
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: HTTP headers returned by the destination.
+        body:
+          $ref: '#/components/schemas/JsonValue'
+          description: Body returned by the destination.
     StatusHistoryItem:
       type: object
       properties:
@@ -147,6 +137,45 @@ components:
         timestamp:
           type: string
           format: date-time
+    JsonValue:
+      description: Arbitrary JSON value.
+      oneOf:
+      - type: string
+      - type: number
+      - type: boolean
+      - type: 'null'
+      - type: object
+        additionalProperties: true
+      - type: array
+        items: {}
+    ForwardingRequestResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/ForwardingRequest'
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
     ForwardingRequest:
       type: object
       required:
@@ -186,30 +215,34 @@ components:
           type: string
           format: date-time
           description: Timestamp when the forwarding request was created.
-    ForwardingResponseDetail:
+    ForwardingRequestDetail:
       type: object
-      description: Details of the upstream response captured for the forwarding request.
+      required:
+      - url
+      - method
+      - headers
+      - body
       properties:
-        status_code:
-          type:
-          - integer
-          - 'null'
-          description: HTTP status code returned by the destination.
+        url:
+          type: string
+          description: The destination URL for the forwarded request.
+        method:
+          type: string
+          enum:
+          - GET
+          - POST
+          - PUT
+          - PATCH
+          - DELETE
+          description: HTTP method of the forwarded request.
         headers:
           type: object
           additionalProperties:
             type: string
-          description: HTTP headers returned by the destination.
+          description: HTTP headers sent with the forwarded request.
         body:
-          $ref: '#/components/schemas/JsonValue'
-          description: Body returned by the destination.
-    ForwardingRequestResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/ForwardingRequest'
+          type: string
+          description: Body of the forwarded request.
     ErrorEnvelope:
       type: object
       required:
@@ -268,34 +301,11 @@ components:
           - object
           - 'null'
           description: Optional metadata to attach to the forwarding request.
-    ForwardingRequestDetail:
-      type: object
-      required:
-      - url
-      - method
-      - headers
-      - body
-      properties:
-        url:
-          type: string
-          description: The destination URL for the forwarded request.
-        method:
-          type: string
-          enum:
-          - GET
-          - POST
-          - PUT
-          - PATCH
-          - DELETE
-          description: HTTP method of the forwarded request.
-        headers:
-          type: object
-          additionalProperties:
-            type: string
-          description: HTTP headers sent with the forwarded request.
-        body:
-          type: string
-          description: Body of the forwarded request.
+    ForwardingRequestStatus:
+      type: string
+      enum:
+      - completed
+      - failed
     ErrorObject:
       type: object
       required:
@@ -321,52 +331,15 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    SuccessEnvelope:
-      type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    JsonValue:
-      description: Arbitrary JSON value.
-      oneOf:
-      - type: string
-      - type: number
-      - type: boolean
-      - type: 'null'
-      - type: object
-        additionalProperties: true
-      - type: array
-        items: {}
-    ForwardingRequestStatus:
-      type: string
-      enum:
-      - completed
-      - failed
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
+    GatewayTimeout:
+      description: Upstream timeout - the request could not be completed before the upstream deadline.
       content:
         application/json:
           schema:
@@ -378,6 +351,24 @@ components:
           description: Number of seconds to wait before retrying.
           schema:
             type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
@@ -394,24 +385,33 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    GatewayTimeout:
-      description: Upstream timeout - the request could not be completed before the upstream deadline.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   securitySchemes:
     OpalToken:
       type: http

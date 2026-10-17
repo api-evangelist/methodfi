@@ -162,97 +162,95 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  parameters:
-    idempotency_key:
-      name: Idempotency-Key
-      in: header
-      required: false
-      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
-
-        retrying the same logical operation to avoid creating duplicate side effects.
-
-        '
-      schema:
-        type: string
-        format: uuid
-    EntityIdParam:
-      name: entityId
-      in: path
-      required: true
-      description: Unique identifier for the entity.
-      schema:
-        type: string
-        pattern: ^ent_\w+$
-    method_version:
-      name: Method-Version
-      in: header
-      required: true
-      description: 'API version to use for this request. This spec targets `2025-12-01`.
-
-        The SDK sets this header automatically.
-
-        '
-      schema:
-        type: string
-        enum:
-        - '2025-12-01'
-        default: '2025-12-01'
-    EntitySubscriptionIdParam:
-      name: subId
-      in: path
-      required: true
-      description: Unique identifier for the entity subscription.
-      schema:
-        type: string
-        pattern: ^sub_\w+$
+  responses:
+    InternalError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Unauthorized:
+      description: Unauthorized - missing or invalid authentication token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    RateLimited:
+      description: Too many requests - rate limit exceeded.
+      headers:
+        Retry-After:
+          description: Number of seconds to wait before retrying.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    Forbidden:
+      description: Forbidden - insufficient permissions for this operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    EntitySubscriptionResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/EntitySubscription'
-    EntitySubscription:
+    ErrorEnvelope:
       type: object
       required:
-      - id
-      - name
-      - status
-      - created_at
-      - updated_at
+      - success
+      - data
+      - message
       properties:
-        id:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
           type: string
-          description: Unique identifier for the entity subscription.
-          example: sub_JMDEwMTY1QwMj
-        name:
-          type: string
-          description: Name of the subscription.
-        status:
-          type: string
-          description: Current status of the subscription.
-          enum:
-          - active
-          - inactive
-        payload:
-          type:
-          - object
-          - 'null'
-          description: Subscription payload data.
-        latest_request_id:
+    SuccessEnvelope:
+      type: object
+      description: Standard envelope for successful responses that return a single payload.
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `true` for successful responses.
+        data:
+          description: Operation-specific response payload.
+        message:
           type:
           - string
           - 'null'
-          description: ID of the latest request for this subscription.
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the subscription was created.
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the subscription was last updated.
+      example:
+        success: true
+        data: {}
+        message: null
     EntitySubscriptionListResponse:
       allOf:
       - $ref: '#/components/schemas/SuccessEnvelope'
@@ -315,94 +313,96 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    SuccessEnvelope:
+    EntitySubscription:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
       required:
-      - success
-      - data
-      - message
+      - id
+      - name
+      - status
+      - created_at
+      - updated_at
       properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
+        id:
+          type: string
+          description: Unique identifier for the entity subscription.
+          example: sub_JMDEwMTY1QwMj
+        name:
+          type: string
+          description: Name of the subscription.
+        status:
+          type: string
+          description: Current status of the subscription.
+          enum:
+          - active
+          - inactive
+        payload:
+          type:
+          - object
+          - 'null'
+          description: Subscription payload data.
+        latest_request_id:
           type:
           - string
           - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    ErrorEnvelope:
-      type: object
-      required:
-      - success
-      - data
-      - message
-      properties:
-        success:
-          type: boolean
-          description: Always `false` for error responses.
-        data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
-        message:
+          description: ID of the latest request for this subscription.
+        created_at:
           type: string
-  responses:
-    Forbidden:
-      description: Forbidden - insufficient permissions for this operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: Internal server error.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    Unauthorized:
-      description: Unauthorized - missing or invalid authentication token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    RateLimited:
-      description: Too many requests - rate limit exceeded.
-      headers:
-        Retry-After:
-          description: Number of seconds to wait before retrying.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
+          format: date-time
+          description: Timestamp when the subscription was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the subscription was last updated.
+    EntitySubscriptionResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/EntitySubscription'
+  parameters:
+    EntityIdParam:
+      name: entityId
+      in: path
+      required: true
+      description: Unique identifier for the entity.
+      schema:
+        type: string
+        pattern: ^ent_\w+$
+    EntitySubscriptionIdParam:
+      name: subId
+      in: path
+      required: true
+      description: Unique identifier for the entity subscription.
+      schema:
+        type: string
+        pattern: ^sub_\w+$
+    idempotency_key:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: 'Idempotency key for safely retrying a write request. Reuse the same value when
+
+        retrying the same logical operation to avoid creating duplicate side effects.
+
+        '
+      schema:
+        type: string
+        format: uuid
+    method_version:
+      name: Method-Version
+      in: header
+      required: true
+      description: 'API version to use for this request. This spec targets `2025-12-01`.
+
+        The SDK sets this header automatically.
+
+        '
+      schema:
+        type: string
+        enum:
+        - '2025-12-01'
+        default: '2025-12-01'
   securitySchemes:
     OpalToken:
       type: http

@@ -124,6 +124,22 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   parameters:
+    ReversalIdParam:
+      name: reversalId
+      in: path
+      required: true
+      description: Unique identifier for the reversal.
+      schema:
+        type: string
+        pattern: ^rvs_\w+$
+    PaymentIdParam:
+      name: paymentId
+      in: path
+      required: true
+      description: Unique identifier for the payment.
+      schema:
+        type: string
+        pattern: ^pmt_\w+$
     idempotency_key:
       name: Idempotency-Key
       in: header
@@ -150,31 +166,9 @@ components:
         enum:
         - '2025-12-01'
         default: '2025-12-01'
-    ReversalIdParam:
-      name: reversalId
-      in: path
-      required: true
-      description: Unique identifier for the reversal.
-      schema:
-        type: string
-        pattern: ^rvs_\w+$
-    PaymentIdParam:
-      name: paymentId
-      in: path
-      required: true
-      description: Unique identifier for the payment.
-      schema:
-        type: string
-        pattern: ^pmt_\w+$
   responses:
-    BadRequest:
-      description: Bad request - invalid parameters or request body.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: Not found - the requested resource does not exist.
+    UnprocessableEntity:
+      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
       content:
         application/json:
           schema:
@@ -186,6 +180,18 @@ components:
           description: Number of seconds to wait before retrying.
           schema:
             type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: Not found - the requested resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    BadRequest:
+      description: Bad request - invalid parameters or request body.
       content:
         application/json:
           schema:
@@ -202,31 +208,10 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-    UnprocessableEntity:
-      description: Unprocessable entity - the request was valid JSON but failed business or validation rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    PaymentReversalListResponse:
-      allOf:
-      - $ref: '#/components/schemas/ListEnvelope'
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/PaymentReversal'
-    PaymentReversalUpdateRequest:
+    SuccessEnvelope:
       type: object
-      description: Request body for updating a payment reversal.
-      properties:
-        status:
-          type: string
-          description: Updated status for the reversal.
-    ErrorEnvelope:
-      type: object
+      description: Standard envelope for successful responses that return a single payload.
       required:
       - success
       - data
@@ -234,16 +219,17 @@ components:
       properties:
         success:
           type: boolean
-          description: Always `false` for error responses.
+          description: Always `true` for successful responses.
         data:
-          type: object
-          required:
-          - error
-          properties:
-            error:
-              $ref: '#/components/schemas/ErrorObject'
+          description: Operation-specific response payload.
         message:
-          type: string
+          type:
+          - string
+          - 'null'
+      example:
+        success: true
+        data: {}
+        message: null
     ListEnvelope:
       type: object
       description: Standard envelope for successful responses that return a list payload.
@@ -265,6 +251,41 @@ components:
         success: true
         data: []
         message: null
+    ErrorEnvelope:
+      type: object
+      required:
+      - success
+      - data
+      - message
+      properties:
+        success:
+          type: boolean
+          description: Always `false` for error responses.
+        data:
+          type: object
+          required:
+          - error
+          properties:
+            error:
+              $ref: '#/components/schemas/ErrorObject'
+        message:
+          type: string
+    PaymentReversalListResponse:
+      allOf:
+      - $ref: '#/components/schemas/ListEnvelope'
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/PaymentReversal'
+    PaymentReversalResponse:
+      allOf:
+      - $ref: '#/components/schemas/SuccessEnvelope'
+      - type: object
+        properties:
+          data:
+            $ref: '#/components/schemas/PaymentReversal'
     PaymentReversalResourceError:
       type:
       - object
@@ -403,34 +424,13 @@ components:
         message:
           type: string
           description: Human-readable error description.
-    SuccessEnvelope:
+    PaymentReversalUpdateRequest:
       type: object
-      description: Standard envelope for successful responses that return a single payload.
-      required:
-      - success
-      - data
-      - message
+      description: Request body for updating a payment reversal.
       properties:
-        success:
-          type: boolean
-          description: Always `true` for successful responses.
-        data:
-          description: Operation-specific response payload.
-        message:
-          type:
-          - string
-          - 'null'
-      example:
-        success: true
-        data: {}
-        message: null
-    PaymentReversalResponse:
-      allOf:
-      - $ref: '#/components/schemas/SuccessEnvelope'
-      - type: object
-        properties:
-          data:
-            $ref: '#/components/schemas/PaymentReversal'
+        status:
+          type: string
+          description: Updated status for the reversal.
   securitySchemes:
     OpalToken:
       type: http
