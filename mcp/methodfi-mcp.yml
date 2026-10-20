@@ -2,16 +2,17 @@ generated: '2026-10-12'
 method: searched
 status: live-docs-server
 source: https://docs.methodfi.com/mcp
-description: 'Method serves a remote MCP server on its own docs host (https://docs.methodfi.com/mcp, Mintlify-hosted). A probed
-  tools/list (2026-10-12, HTTP 200, no auth) returned three DOCUMENTATION tools: search_method_api_docs, query_docs_filesystem_method_api_docs,
-  submit_feedback. It searches the docs; it does not invoke the Method REST API. The candidate_tools below remain a DERIVED
-  mapping of REST operations to tools that no server ships.'
+description: 'Method serves a remote MCP server on its own docs host (https://docs.methodfi.com/mcp, Mintlify-hosted).
+  A probed tools/list (2026-10-12, HTTP 200, no auth) returned three DOCUMENTATION tools: search_method_api_docs,
+  query_docs_filesystem_method_api_docs, submit_feedback. It searches the docs; it does not invoke the
+  Method REST API. The candidate_tools below remain a DERIVED mapping of REST operations to tools that
+  no server ships.'
 server:
   name: Method API Docs
   transport: streamable-http
   url: https://docs.methodfi.com/mcp
-note: "Candidate only \u2014 128 operations exist in the OpenAPI; this is a representative subset. See agentic-access/methodfi-agentic-access.yml\
-  \ for per-operation execution contracts."
+note: Candidate only — 128 operations exist in the OpenAPI; this is a representative subset. See agentic-access/methodfi-agentic-access.yml
+  for per-operation execution contracts.
 deployment:
   mode: remote
   endpoint: https://docs.methodfi.com/mcp
@@ -88,3 +89,28 @@ candidate_tools:
 - name: create_webhook
   description: Register a webhook endpoint.
   source_operation: openapi/methodfi-openapi-original.yml#createWebhook
+tool_quality:
+  tool_count: 3
+  tokens_total: 1456
+  tokens_per_tool_median: 261
+  heavy_tools: []
+  heavy_tool_count: 0
+  params_total: 5
+  params_undescribed: 0
+  params_described_pct: 100.0
+  tools_with_undescribed_params: 0
+  tools_annotated: 3
+  annotated_pct: 100.0
+  state_changing_unhinted: []
+  tools_missing_schema: 0
+  short_descriptions: 0
+  duplicate_descriptions: 0
+  duplicate_names: 0
+  nonportable_names: []
+  output_schema_count: 0
+  token_estimate: chars/3.6 of each compact tool definition
+  source: mcp/methodfi-docs-mcp-tools-list.json
+  measured: '2026-10-20'
+  scored: false
+  note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
+    from Glimind's agent-readiness audit.
